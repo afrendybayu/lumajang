@@ -270,7 +270,8 @@ void vLedTask( void *pvParameters )	{
 	xLastWakeTime = xTaskGetTickCount();
 	for ( ;; )	{
 		FIO1PIN ^= LED_UTAMA;
-		//printf("testing %.4f\r\n", 12.3455*8.1);
+		printf("testing %.4f\r\n", 12.3455*8.1);
+		printf("testing %d\r\n", 12);
 		//qsprintf("perkalian %.4f\r\n", 12.328*3);
 		//hitung_rpm();
 		//data_frek_rpm();

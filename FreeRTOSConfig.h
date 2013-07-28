@@ -88,7 +88,7 @@
 #define PAKAI_LED_UTAMA
 #define PAKAI_SHELL
 #define printf 				printf0
-#define ST_LED				10
+#define ST_LED				20
 #define ST_SHELL			20
 #define ST_SANTER			10
 
