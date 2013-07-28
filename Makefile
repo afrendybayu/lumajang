@@ -112,8 +112,8 @@ THUMB_SOURCE= \
 		$(RTOS_SOURCE_DIR)/tasks.c \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/port.c \
 		$(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
-#		$(CMD)/sh_rtos.c			\
-#		$(CMD)/sh_hardware.c		\
+		$(CMD)/sh_rtos.c			\
+		$(CMD)/sh_hardware.c		\
 
 SERIAL_SOURCE=	\
 		$(MODUL)/serial/serial.c 	\
