@@ -108,8 +108,9 @@ void init_hardware()	{
 	#endif
 	
 	#ifdef PAKAI_SERIAL_2	
+		//qsprintf("init serial 2\r\n");
 		vAltStartCom2( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_2_P0 );
-		qsprintf("init serial 2\r\n");
+		
 	#endif
 	
 	#ifdef PAKAI_SDCARD

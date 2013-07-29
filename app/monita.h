@@ -42,6 +42,8 @@ typedef enum IAP_STATUS_t {
 
 //IAP_return_t iap_return;
 
+
+
 #define  sRPM			0
 #define	 sONOFF			1
 #define	 sPUSHBUTTON	2
@@ -54,6 +56,7 @@ typedef enum IAP_STATUS_t {
 #define	 DAYA			6
 #define  fENERGI		251
 #define	 sADC_ORI		9
+#define  sADC_7708		250
 
 //#define ATA		0
 //#define MMC		1
@@ -61,7 +64,7 @@ typedef enum IAP_STATUS_t {
 #define ROM		1
 #define SDC		0
 
-
+#define TIDAK_VALID		0xFFFF
 #define JML_SUMBER		2
 #define PER_SUMBER		20
 
@@ -148,7 +151,6 @@ struct t_kalib {
 	float m;
 	float C;
 	char status;		// [status lihat define di atas !!!] //
-	char ket[32];
 	char adc;
 	char formula[32];
 };
@@ -197,11 +199,13 @@ struct t_env {
 	float	intTole;
 	int		netTot;
 	char passwd[15];
+	char madein[18];
 	char nohp[18];
-	char cron;
+	char statusCron;
 	unsigned char almtSlave;
 	char statusSlave;
 	int		prioDebug;
+	int		prioDebug2;
 };
 struct t_env env;
 

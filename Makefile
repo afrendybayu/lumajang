@@ -114,10 +114,14 @@ THUMB_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
 		$(CMD)/sh_rtos.c			\
 		$(CMD)/sh_hardware.c		\
+		$(CMD)/sh_env.c		\
+		$(CMD)/sh_utils.c		\
+		$(CMD)/manual.c		\
+		
 
 SERIAL_SOURCE=	\
 		$(MODUL)/serial/serial.c 	\
-		$(CMD)/sh_serial.c			\
+		$(APP)/ap_serial.c			\
 		$(MODUL)/tinysh/tinysh.c	\
 #		$(MODUL)/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c	\
 

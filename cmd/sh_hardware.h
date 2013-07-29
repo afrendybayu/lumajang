@@ -1,7 +1,7 @@
 
 //#include <stdio.h>
 #include "FreeRTOS.h"
-#include "sh_serial.h"
+//#include "sh_serial.h"
 #include "cpu_setup.h"
 #include "tinysh/tinysh.h"
 

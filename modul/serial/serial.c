@@ -136,6 +136,7 @@ static volatile portLONG *plTHREEmpty2;
 #define serUART2_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
 #define serUART2_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
 
+extern void vSerialISRCreateQueues2(	unsigned portBASE_TYPE uxQueueLength, xQueueHandle *pxRxedChars, xQueueHandle *pxCharsForTx, long volatile **pplTHREEmptyFlag );
 
 xComPortHandle xSerialPortInit2( unsigned portLONG ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )	{
 	unsigned portLONG ulDivisor, ulWantedClock;
@@ -199,6 +200,21 @@ xComPortHandle xSerialPortInit2( unsigned portLONG ulWantedBaud, unsigned portBA
 	return xReturn;
 }
 
+signed portBASE_TYPE xSerialGetChar2( xComPortHandle pxPort2, signed portCHAR *pcRxedChar, portTickType xBlockTime )
+{
+	/* The port handle is not required as this driver only supports UART0. */
+	( void ) pxPort2;
+	/* Get the next character from the buffer.  Return false if no characters
+	are available, or arrive before xBlockTime expires. */
+	if( xQueueReceive( Qrx2, pcRxedChar, xBlockTime ) )
+	{
+		return pdTRUE;
+	}
+	else
+	{
+		return pdFALSE;
+	}
+}
 
 void vSerialPutString2( xComPortHandle pxPort2, const signed char * const pcString, unsigned short usStringLength )	{
 	signed portCHAR *pxNext;
@@ -266,7 +282,7 @@ signed portBASE_TYPE xSerialPutChar2( xComPortHandle pxPort2, signed portCHAR cO
 
 #endif
 
-
+#ifdef PAKAI_SHELL
 /* Queues used to hold received characters, and characters waiting to be
 transmitted. */
 static xQueueHandle xRxedChars; 
@@ -430,8 +446,4 @@ void vSerialClose( xComPortHandle xPort )
 }
 /*-----------------------------------------------------------*/
 
-
-
-
-
-	
+#endif

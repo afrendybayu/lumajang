@@ -21,3 +21,4 @@ static xComPortHandle xPort2;
 xTaskHandle *hdl_serial2;
 
 void vAltStartCom2( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate );
+void init_banner2()	;

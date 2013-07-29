@@ -4,7 +4,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#include "sh_serial.h"
+//#include "sh_serial.h"
 #include "tinysh/tinysh.h"
 
 #define mainLIST_BUFFER_SIZE				512

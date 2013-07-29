@@ -7,7 +7,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "serial/tinysh.h"
-#include "sh_serial.h"
+//#include "sh_serial.h"
 #include "monita.h"
 #include "sh_rtc.h"
 #include "hardware.h"

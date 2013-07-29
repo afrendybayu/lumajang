@@ -6,7 +6,7 @@
 #include "tinysh/tinysh.h"
 #endif
 
-#include "sh_serial.h"
+//#include "sh_serial.h"
 #include "sh_rtos.h"
 
 void task_list()	{
