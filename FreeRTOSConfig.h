@@ -88,9 +88,18 @@
 #define PAKAI_LED_UTAMA
 #define PAKAI_SHELL
 #define printf 				printf0
+//#define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
+#define PAKAI_TINYSH
+
 #define ST_LED				20
 #define ST_SHELL			20
 #define ST_SANTER			10
+
+#define PAKAI_SERIAL_2
+#ifdef  PAKAI_SERIAL_2
+	#define PAKAI_SERIAL_2_P0		115200
+	#define ST_SER2					10
+#endif
 
 /* Value to use on old rev '-' devices. */
 #define configPINSEL2_VALUE	0x50151105
@@ -132,6 +141,11 @@ to exclude the API function. */
 #define INCLUDE_vTaskDelayUntil             1
 #define INCLUDE_vTaskDelay                  1
 #define INCLUDE_xTaskGetCurrentTaskHandle	0
+
+//#define configGENERATE_RUN_TIME_STATS	1
+//#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() vConfigureTimerForRunTimeStats()
+//#define portGET_RUN_TIME_COUNTER_VALUE() ulGetRunTimeCounterValue()
+
 
 /* This demo makes use of one or more example stats formatting functions.  These
 format the raw data provided by the uxTaskGetSystemState() function in to human

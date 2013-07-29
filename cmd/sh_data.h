@@ -4,6 +4,9 @@
 
 
 void cek_data(int argc, char **argv);
-//static tinysh_cmd_t cek_data_cmd={ 0,"cek_data","cek data","", cek_data,0,0,0 };
+
+#ifdef PAKAI_TINYSH
+static tinysh_cmd_t cek_data_cmd={ 0,"cek_data","cek data","", cek_data,0,0,0 };
+#endif
 
 #endif

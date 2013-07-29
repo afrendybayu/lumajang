@@ -125,6 +125,148 @@
 
 /*-----------------------------------------------------------*/
 
+#ifdef PAKAI_SERIAL_2
+
+
+static xQueueHandle Qrx2;
+static xQueueHandle Qtx2;
+static volatile portLONG *plTHREEmpty2;
+
+#define serUART2_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
+#define serUART2_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
+#define serUART2_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
+
+
+xComPortHandle xSerialPortInit2( unsigned portLONG ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )	{
+	unsigned portLONG ulDivisor, ulWantedClock;
+	xComPortHandle xReturn = serHANDLE;
+	extern void ( vUART2_ISR_Wrapper )( void );
+	
+	//printf("%s(): ", __FUNCTION__);
+	
+	/* The queues are used in the serial ISR routine, so are created from
+	serialISR.c (which is always compiled to ARM mode. */
+	vSerialISRCreateQueues2( uxQueueLength, &Qrx2, &Qtx2, &plTHREEmpty2 );
+
+	if(
+		( Qrx2 != serINVALID_QUEUE ) &&
+		( Qtx2 != serINVALID_QUEUE ) &&
+		( ulWantedBaud != ( unsigned portLONG ) 0 )
+	  )
+	{
+		//printf(" buf OK\r\n");
+		portENTER_CRITICAL();
+		{
+			/* Setup the baud rate:  Calculate the divisor value. */
+			ulWantedClock = ulWantedBaud * serWANTED_CLOCK_SCALING;
+			ulDivisor = configCPU_CLOCK_HZ / ulWantedClock;
+			/* Set the DLAB bit so we can access the divisor. */
+			U2LCR |= serDLAB;
+			/* Setup the divisor. */
+			U2DLL = ( unsigned portCHAR ) ( ulDivisor & ( unsigned portLONG ) 0xff );
+			ulDivisor >>= 8;
+			U2DLM = ( unsigned portCHAR ) ( ulDivisor & ( unsigned portLONG ) 0xff );
+			/* Turn on the FIFO's and clear the buffers. */
+			U2FCR = ( serFIFO_ON | serCLEAR_FIFO );
+			/* Setup transmission format. */
+			U2LCR = serNO_PARITY | ser1_STOP_BIT | ser8_BIT_CHARS;
+			//#define serUART0_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
+			//#define serUART0_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
+			//#define serUART0_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
+
+			/* Setup the VIC for the UART. */
+			//VICIntSelect &= ~( serUART0_VIC_CHANNEL_BIT );
+			
+			#if 1
+			VICIntSelect &= ~BIT(28);
+			VICVectAddr28 = ( portLONG ) vUART2_ISR_Wrapper;
+			VICVectCntl28 = (serUART0_VIC_ENABLE | 28);
+		
+			/* Enable UART2 interrupts. */
+			U2IER |= serENABLE_INTERRUPTS;
+			
+			VICIntEnable |= BIT(28);
+			#endif
+			
+		}
+		portEXIT_CRITICAL();
+	}
+	else
+	{
+		//printf(" Tidak bisa init !!\r\n");
+		xReturn = ( xComPortHandle ) 0;
+	}
+	return xReturn;
+}
+
+
+void vSerialPutString2( xComPortHandle pxPort2, const signed char * const pcString, unsigned short usStringLength )	{
+	signed portCHAR *pxNext;
+	/* Send each character in the string, one at a time. */
+	pxNext = ( signed portCHAR * ) pcString;
+	while( *pxNext )
+	{	
+		xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
+		//xSerialPutChar2( 1, *pxNext, 1000 );	// 100 OK
+		pxNext++;
+	}
+}
+
+signed portBASE_TYPE xSerialPutChar2( xComPortHandle pxPort2, signed portCHAR cOutChar, portTickType xBlockTime )
+{
+	signed portBASE_TYPE xReturn;
+	/* This demo driver only supports one port so the parameter is not used. */
+	( void ) pxPort2;
+	
+	portENTER_CRITICAL();
+	{
+		/* Is there space to write directly to the UART? */
+		if( *plTHREEmpty2 == ( portLONG ) pdTRUE )
+		{
+			//printf2(": kosong\r\n");
+			
+			//* We wrote the character directly to the UART, so was
+			//successful. 
+			*plTHREEmpty2 = pdFALSE;
+			U2THR = cOutChar;
+			xReturn = pdPASS;
+		}
+		else
+		{
+			//printf2("%s(): aktif\r\n", __FUNCTION__);
+			/* We cannot write directly to the UART, so queue the character.
+			Block for a maximum of xBlockTime if there is no space in the
+			queue. */
+			xReturn = xQueueSend( Qtx2, &cOutChar, xBlockTime );
+			
+			/*
+			if (xReturn == pdPASS)
+				printf2("%s(): bs masuk\r\n", __FUNCTION__);
+			else
+				printf2("%s(): masih penuh\r\n", __FUNCTION__);
+			*/
+			
+			#if 0
+			/* Depending on queue sizing and task prioritisation:  While we
+			were blocked waiting to post interrupts were not disabled.  It is
+			possible that the serial ISR has emptied the Tx queue, in which
+			case we need to start the Tx off again. */
+			if( ( *plTHREEmpty2 == ( portLONG ) pdTRUE ) && ( xReturn == pdPASS ) )
+			{
+				xQueueReceive( Qtx2, &cOutChar, serNO_BLOCK );
+				*plTHREEmpty2 = pdFALSE;
+				U2THR = cOutChar;
+			}
+			#endif
+		}
+	}
+	portEXIT_CRITICAL();	
+	return xReturn;
+}
+
+#endif
+
+
 /* Queues used to hold received characters, and characters waiting to be
 transmitted. */
 static xQueueHandle xRxedChars; 

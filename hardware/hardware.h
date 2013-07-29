@@ -31,6 +31,7 @@ void rtcWrite(struct tm *newTime);
 						FIO1DIR = LED_UTAMA;	\
 						FIO1CLR = LED_UTAMA;	\
 					} while(0)
+			#define toogle_led_utama()	FIO1PIN ^= LED_UTAMA;
 		#endif
 		
 		#ifdef PAKAI_RTC
@@ -80,8 +81,8 @@ void rtcWrite(struct tm *newTime);
 					} while(0)	
 		#endif
 		
-		//#ifdef PAKAI_SHELL
-		#if 1
+		#ifdef PAKAI_SHELL
+		//#if 1
 			#define mainTX_ENABLE	( ( unsigned long ) 0x00010 )
 			#define mainRX_ENABLE	( ( unsigned long ) 0x00040 )
 			
@@ -95,18 +96,31 @@ void rtcWrite(struct tm *newTime);
 		
 		#ifdef PAKAI_SERIAL_2
 			#ifdef PAKAI_SERIAL_2_P0
-			#define setup_serial2_P0()	do 	{	\
-										PCONP |= BIT(24);	\
-										PCLKSEL1 &= ~(BIT(16) | BIT(17));	\
-										PCLKSEL1 |= BIT(16);	\
-										PINSEL0 &= ~(BIT(23) | BIT(22) | BIT(21) | BIT(20));	\
-										PINSEL0 |= (BIT(20) | BIT(22));	\
-						} while(0)
-					// PCONP uart2, pclk=cclk, 
+			
+				#define TXDE2	BIT(25)		// P3.25
+				//#define RXDE2	BIT(23)		--> Pull down ke GND
+				#define setup_gpio_485_2()	do		{	\
+								FIO3DIR = TXDE2;		\
+							} while (0)
+				
+				//	TXD2: P0.10, RXD2: P0.11
+				#define setup_serial2_P0()	do 	{	\		
+											PCONP |= BIT(24);	\
+											PCLKSEL1 &= ~(BIT(16) | BIT(17));	\
+											PCLKSEL1 |= BIT(16);	\
+											PINSEL0 &= ~(BIT(23) | BIT(22) | BIT(21) | BIT(20));	\
+											PINSEL0 |= (BIT(20) | BIT(22));	\
+											setup_gpio_485_2();		\
+							} while(0)
+						// PCONP uart2, pclk=cclk, 
 
-			#define init_serial2_P0()	do {				\
-						} while(0)
+				#define init_serial2_P0()	do {				\
+							} while(0)
+				#define enaTX2_485()		FIO3SET = TXDE2;
+				#define disTX2_485()		FIO3CLR = TXDE2;
 			#endif
+			
+			
 		#endif
 
 		#ifdef PAKAI_SPI_SSP0		// SDCard

@@ -118,11 +118,11 @@ THUMB_SOURCE= \
 SERIAL_SOURCE=	\
 		$(MODUL)/serial/serial.c 	\
 		$(CMD)/sh_serial.c			\
-#		$(CMD)/serial_tes.c			\		
+		$(MODUL)/tinysh/tinysh.c	\
+#		$(MODUL)/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c	\
 
-
-
-		
+SERIAL2_SOURCE= \
+		$(APP)/ap_serial2.c	\
 
 ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
@@ -137,6 +137,7 @@ THUMB_OBJS = $(THUMB_SOURCE:.c=.o)
 ARM_OBJS = $(ARM_SOURCE:.c=.o)
 
 THUMB_SOURCE += $(SERIAL_SOURCE)
+THUMB_SOURCE += $(SERIAL2_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 

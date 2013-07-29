@@ -19,7 +19,7 @@
 #include "monita.h"
 //#include "sh_hardware.h"
 
-
+#ifdef PAKAI_SERIAL_2
 
 extern struct t_st_hw st_hw;
 
@@ -32,16 +32,17 @@ char s[30];
 
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
-	vTaskDelay(1);
-	
+	vTaskDelay(500);
+	uprintf("masuk task RS485_2\r\n");
 	
 	vTaskDelay(500);
 	st_hw.init++;
 	//int itung=0;
-	
+	enaTX2_485();
 	
 	for( ;; )	{
-		vTaskDelay(100);
+		vTaskDelay(1);
+		
 		vSerialPutString2(xPort2, "tes2\r\n", 6);
 		//qsprintf("serial 2\r\n");
 
@@ -69,3 +70,5 @@ const unsigned portBASE_TYPE uxQueueLength = 128;
 	/* The Tx task is spawned with a lower priority than the Rx task. */
 	xTaskCreate( vComTask2, ( signed char * ) "Serial2", comSTACK_SIZE * ST_SER2, NULL, uxPriority, ( xTaskHandle * ) hdl_serial2 );
 }
+
+#endif

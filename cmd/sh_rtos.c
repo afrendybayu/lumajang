@@ -1,15 +1,19 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-//#include "serial/tinysh.h"
+
+#ifdef PAKAI_TINYSH
+#include "tinysh/tinysh.h"
+#endif
+
 #include "sh_serial.h"
 #include "sh_rtos.h"
 
 void task_list()	{
 static signed char cListBuffer[ mainLIST_BUFFER_SIZE ];
 const signed char *pcList = &( cListBuffer[ 0 ] );
-const char * const pcHeader = "\r\nTask          State  Priority  Stack	#\r\n************************************************";
-	sprintf(cListBuffer, "Jml Task: %d\r\n", uxTaskGetNumberOfTasks());
+const char * const pcHeader = "Task          State  Priority  Stack	#\r\n************************************************\r\n";
+	sprintf(cListBuffer, "\r\nJml Task: %d\r\n", uxTaskGetNumberOfTasks());
 	qsprintf(cListBuffer);
 	qsprintf(pcHeader);
 	vTaskList( cListBuffer );
@@ -20,7 +24,7 @@ const char * const pcHeader = "\r\nTask          State  Priority  Stack	#\r\n***
 void task_run_time()	{
 static signed char cListBuffer[ mainLIST_BUFFER_SIZE ];
 const signed char *pcList = &( cListBuffer[ 0 ] );
-const char * const pcHeader = "\r\nTask          State  Priority  Stack	#\r\n************************************************";
+const char * const pcHeader = "\r\nTask          Time  %	#\r\n************************************************\r\n";
 	qsprintf(pcHeader);
 	vTaskGetRunTimeStats( cListBuffer );
 	qsprintf(cListBuffer);
