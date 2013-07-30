@@ -91,8 +91,8 @@
 //#define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 #define PAKAI_TINYSH
 
-#define ST_LED				20
-#define ST_SHELL			20
+#define ST_LED				3
+#define ST_SHELL			30
 #define ST_SANTER			10
 
 #define PAKAI_SERIAL_2
@@ -114,6 +114,8 @@
 	#error Please uncomment one of the two configPINSEL2_VALUE definitions above, depending on the revision of the LPC2000 device being used.
 #endif
 
+#define INCLUDE_uxTaskGetStackHighWaterMark	1
+
 #define configUSE_PREEMPTION		1
 #define configUSE_IDLE_HOOK         1
 #define configUSE_TICK_HOOK         1
@@ -121,7 +123,7 @@
 #define configTICK_RATE_HZ          ( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 4 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 104 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 24 * 1024 ) )
+#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 30 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 16 )
 #define configUSE_TRACE_FACILITY	1
 #define configUSE_16_BIT_TICKS		0

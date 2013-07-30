@@ -14,9 +14,9 @@
 extern struct t_env env;
 
 void cek_env(int argc, char **argv)	{
-	uprintf("\r\n  Cek modul %s %s   \r\n  *************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
-	uprintf("  No Seri  : %s\r\n", st_env.SN);
-	uprintf("  No Ajaib : %02X:%02X\r\n", st_env.magic1, st_env.magic2);
+	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
+	uprintf("  No Seri    : %s\r\n", st_env.SN);
+	uprintf("  No Ajaib   : %02X:%02X\r\n", st_env.magic1, st_env.magic2);
 	#ifdef PAKAI_ETH
 	uprintf("  Konfigurasi Ethernet\r\n");
 	uprintf("    Alamat IP: %d.%d.%d.%d\r\n", st_env.IP0, st_env.IP1, st_env.IP2, st_env.IP3);

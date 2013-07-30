@@ -179,9 +179,12 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&reset_cmd);
 	tinysh_add_command(&task_list_cmd);
+	tinysh_add_command(&cek_stack_cmd);
 //	tinysh_add_command(&task_run_time_cmd);
 	tinysh_add_command(&idle_tick_cmd);
 	tinysh_add_command(&sektor_free_cmd);
+	tinysh_add_command(&hapus_sektor_rom_cmd);
+	tinysh_add_command(&simpan_sektor_rom_cmd);
 	
 	tinysh_add_command(&cek_data_cmd);
 	

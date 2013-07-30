@@ -65,8 +65,8 @@ typedef enum IAP_STATUS_t {
 #define SDC		0
 
 #define TIDAK_VALID		0xFFFF
-#define JML_SUMBER		2
-#define PER_SUMBER		20
+#define JML_SUMBER		4
+#define PER_SUMBER		10
 
 //#define ANGKA_PENTING	1
 
@@ -103,15 +103,28 @@ float data_f [ JML_TITIK_DATA ];
 #define ALMT_SEKTOR_26	0x7C000
 #define ALMT_SEKTOR_27	0x7D000
 
-#define SEKTOR_ENV		22
-#define ALMT_ENV		ALMT_SEKTOR_22
+#define SEKTOR_ENV		21
+#define ALMT_ENV		(ALMT_SEKTOR_21)
+#define ALMT_SUMBER		(ALMT_SEKTOR_21+1024*1)
+#define ALMT_CRON		(ALMT_SEKTOR_21+1024*2)
 
+#define SEKTOR_DATA		20
+#define ALMT_DATA		ALMT_SEKTOR_20
 
 #define JUM_GPIO	10
 #define JML_KANAL	10
 
 #define uchr		unsigned char
 //#define uint		unsigned int
+
+enum t_struct{ 
+	DATA,
+	ENV,
+	SUMBER,
+	CRON,
+	
+}; 
+enum t_struct st_struct;
 
 typedef struct {
 	//unsigned int new_period;
@@ -152,7 +165,6 @@ struct t_kalib {
 	float C;
 	char status;		// [status lihat define di atas !!!] //
 	char adc;
-	char formula[32];
 };
 
 struct t_adc {
@@ -162,17 +174,49 @@ struct t_adc {
 	unsigned short data[JML_KANAL];
 	//float flt_data[JML_KANAL];
 };
-
 struct t_adc adc;
 
 struct t_data {
 	unsigned int id;
 	char satuan[6];
-	char nama[32];
+	int  rangeL;
+	int  batasLL;
+	int  batasL;
+	int  batasH;
+	int  batasHH;
+	int  rangeH;
+	char nama[24];
 	char status;
-	char ket[32];
+	char formula[16];
 };
-struct t_data st_data[JML_SUMBER*PER_SUMBER];
+struct t_data st_data[JML_TITIK_DATA];
+
+#ifdef PAKAI_CRON
+struct t_cron {
+	char 	mnt[20];
+	char 	jam[20];
+	char	tgl[20];
+	char	bln[20];
+	char	cmd[20];
+	char 	alamat;
+	char	status;			// status perintahnya : suruh dihidup ato mati
+	char 	set;			// status cron : aktif atau mati
+};
+#endif 
+
+struct t_sumber {
+	char nama[32];
+	char alamat;		/* untuk alamat modbus Power meter atau stack board (jika ada) */
+	unsigned char IP0;			// klo sumber berupa modul monita 
+	unsigned char IP1;
+	unsigned char IP2;
+	unsigned char IP3;
+	//char modul;			// khusus modbus, jenis modul 0: PM, 1: KTA, 2:????, dst
+	char stack;			// jika modul berisi BANYAK_SUMBER : adc, pm, dll
+	char status;		// tidak aktif, timeout, dll
+	char tipe;			// 0:PM_710, 1:PM_810, 2:KTA, 3:MICOM
+};
+struct t_sumber st_sumber[JML_SUMBER];
 
 struct t_env {
 	char nama_board[32];

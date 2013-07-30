@@ -133,7 +133,7 @@
 static void vLedTask( void *pvParameters );
 /* The queue used to send messages to the LCD task. */
 //xQueueHandle xLCDQueue;
-xTaskHandle hdl_led;
+xTaskHandle *hdl_led;
 
 #ifdef PAKAI_SHELL
 xSemaphoreHandle xSemSer0 = NULL;

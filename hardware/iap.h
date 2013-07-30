@@ -6,7 +6,7 @@
 
 #define IAP_CMD_PREPARESECTORFORWRITE (50)
 #define IAP_CMD_COPYRAMTOFLASH        (51)
-#define CAP_CMD_ERASESECTORS          (52)
+#define IAP_CMD_ERASESECTORS          (52)
 #define IAP_CMD_BLANKCHECKSECTOR      (53)
 #define IAP_CMD_READPARTID            (54)
 #define IAP_CMD_READBOOTCODEVERSION   (55)
@@ -19,6 +19,7 @@ IAP_return_t iapReadSerialNumber(void);
 IAP_return_t iapReadBlankSector(uchr awal, uchr akhir)	;
 IAP_return_t iapEraseSector(uchr awal, uchr akhir)	;
 IAP_return_t iapJob(uchr iapcmd, uchr awal, uchr akhir);
+IAP_return_t iapCopyMemorySector(unsigned int addr, char* data, int pjg);
 
 #define iapSiapSektor(awal, akhir)		iapJob(IAP_CMD_PREPARESECTORFORWRITE, awal, akhir)
 #define iapCekSektor(awal, akhir)		iapJob(IAP_CMD_BLANKCHECKSECTOR, awal, akhir)

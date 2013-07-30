@@ -9,6 +9,9 @@
 //#include "sh_serial.h"
 #include "sh_rtos.h"
 
+extern xTaskHandle *hdl_shell;
+extern xTaskHandle *hdl_led;
+
 void task_list()	{
 static signed char cListBuffer[ mainLIST_BUFFER_SIZE ];
 const signed char *pcList = &( cListBuffer[ 0 ] );
@@ -19,6 +22,19 @@ const char * const pcHeader = "Task          State  Priority  Stack	#\r\n*******
 	vTaskList( cListBuffer );
 	qsprintf(cListBuffer);
 }
+
+void cek_memory_stack()		{
+#if 0
+	printf("\r\n");
+	printf("  Jml min stack space task shell : %d\r\n", uxTaskGetStackHighWaterMark( hdl_shell ));
+	printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( hdl_led ));
+	
+	#ifdef PAKAI_SERIAL_2
+	//printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( &hdl_led );
+	#endif
+#endif
+}
+
 
 #if 0
 void task_run_time()	{
