@@ -18,15 +18,15 @@ void idle_tick()	{
 void cek_blank_sector_rom()		{
 	IAP_return_t iap_return;
 	uchr i;
+	uprintf("\r\n  Cek Kondisi Sektor ROM\r\n  ***********************************************\r\n");
 	for (i=0; i<JML_SECTOR_LPC; i++)	{
-		uprintf("\r\n");
 		iap_return = iapReadBlankSector(i, i);
 		if (iap_return.ReturnCode == 0)	{
 			uprintf("  Sektor %2d kosong : %08X - %04X\r\n", i, iap_return.Result[0], iap_return.Result[1]);
 		} else if (iap_return.ReturnCode == SRC_ADDR_ERROR) {
 			uprintf("  Sektor %2d ISI[2] : %08X - %04X\r\n", i, iap_return.Result[0], iap_return.Result[1]);
 		} else if (iap_return.ReturnCode == SECTOR_NOT_BLANK) {
-			uprintf("  Sektor %2d ISI[SECTOR_NOT_BLANK] : mulai sektor %02d - %04X\r\n", i, iap_return.Result[0], iap_return.Result[1]);
+			uprintf("  Sektor %2d ISI[NOT_BLANK] : mulai sektor %02d - %04X\r\n", i, iap_return.Result[0], iap_return.Result[1]);
 		} else {
 			uprintf("  Error no : %d\r\n", iap_return.ReturnCode);
 		}

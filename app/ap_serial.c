@@ -21,18 +21,19 @@
 #include <stdarg.h>
 #include "queue.h"
 #include "semphr.h"
+
 #include "hardware.h"
+#include "monita.h"
+#include "iap.h"
 
 #include "sh_hardware.h"
 #include "sh_rtos.h"
 #include "sh_data.h"
 #include "sh_env.h"
-
-#include "monita.h"
-#include "iap.h"
+#include "sh_utils.h"
 
 #ifdef PAKAI_FREERTOS_CLI
-#include "FreeRTOS-Plus-CLI/FreeRTOS_CLI.h"
+	#include "FreeRTOS-Plus-CLI/FreeRTOS_CLI.h"
 #endif
 
 #ifdef PAKAI_ADC_7708
@@ -62,7 +63,7 @@ void printd(int prio, const char *format, ...)	{
 	int lg=0;
 	char str_buffer[128];
 	//if (prio>0)	{
-	if (prio>=env.prioDebug)	{
+	if (prio>=st_env.prioDebug)	{
 		if( xSemSer0 != NULL )    {
 			if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
 				va_start (arg, format);
@@ -174,6 +175,7 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&cek_env_cmd);
 	tinysh_add_command(&set_env_cmd);
+	tinysh_add_command(&cek_struct_cmd);
 	
 	tinysh_add_command(&reset_cmd);
 	tinysh_add_command(&task_list_cmd);
@@ -364,13 +366,18 @@ void qsprintf(char *fmt, ...) {
 void uprintf(char *fmt, ...) {
 #ifdef PAKAI_SHELL
 //#if 1
-	char str_buffer[128];
+	char str_buffer[256];
 	int lg=0;
     va_list args;
     va_start(args, fmt);
     lg = vsprintf(str_buffer, fmt, args);
     va_end(args);
-    vSerialPutString(xPort, str_buffer, lg);
+    if( xSemSer0 != NULL )    {
+		if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
+			vSerialPutString(xPort, str_buffer, lg);
+			xSemaphoreGive( xSemSer0 );
+		}
+	}
 	vTaskDelay(5);
 #endif
 }

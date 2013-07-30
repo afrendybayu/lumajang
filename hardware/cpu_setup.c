@@ -68,7 +68,7 @@ void setup_watchdog(void)		{
 }
 
 void reset_cpu(void)		{
-	//uprintf("... reset cpu ...\r\n");
+	uprintf("\r\n\r\n... reset cpu ...\r\n");
 	
 	//WDTC = 125000;				// 500ms
 	WDTC = 300;				// 500ms

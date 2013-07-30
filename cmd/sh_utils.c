@@ -1,4 +1,5 @@
 
+#include "FreeRTOS.h"
 #include "monita.h"
 #include "sh_utils.h"
 #include <stdio.h>
@@ -27,4 +28,26 @@ unsigned int baca_ip(char *sIP)	{
 		pch = strchr(pch+1,'.');
 	}
 	return ip;
+}
+
+int cek_jml_struct(char *str)	{
+	if (strcmp(str, "env")==0)
+		return (sizeof(struct t_env));
+	else if (strcmp(str, "data")==0)
+		return (sizeof(struct t_data));
+	else 
+		return 0;
+}
+
+void cek_struct(int argc, char **argv)		{
+	if (argc>2)	{
+		return;
+	}
+	if (argc==1)	{
+		printf("\r\n");
+		printf("  Jml struct env : %d\r\n", cek_jml_struct("env"));
+		printf("  Jml struct data: %d\r\n", (cek_jml_struct("data")*JML_SUMBER*PER_SUMBER));
+		return;
+	}
+	printf("  Jml struct env : %d\r\n", cek_jml_struct(argv[1]));
 }

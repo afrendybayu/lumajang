@@ -80,7 +80,7 @@ typedef enum IAP_STATUS_t {
 float data_f [ JML_TITIK_DATA ];
 
 // 32 KB
-#define ALMT_SEKTOR_8	0x08000
+#define ALMT_SEKTOR_8	0x08000	
 #define ALMT_SEKTOR_9	0x10000
 #define ALMT_SEKTOR_10	0x18000
 #define ALMT_SEKTOR_11	0x20000
@@ -165,6 +165,14 @@ struct t_adc {
 
 struct t_adc adc;
 
+struct t_data {
+	unsigned int id;
+	char satuan[6];
+	char nama[32];
+	char status;
+	char ket[32];
+};
+struct t_data st_data[JML_SUMBER*PER_SUMBER];
 
 struct t_env {
 	char nama_board[32];
@@ -207,7 +215,7 @@ struct t_env {
 	int		prioDebug;
 	int		prioDebug2;
 };
-struct t_env env;
+struct t_env st_env;
 
 
 #ifdef PAKAI_RTC

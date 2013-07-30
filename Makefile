@@ -101,22 +101,22 @@ CFLAGS= $(DEBUG) \
 THUMB_SOURCE= \
 		main.c \
 		$(HW)/hardware.c		\
-		$(HW)/cpu_setup.c	\
+		$(HW)/cpu_setup.c		\
 		$(HW)/syscalls.c		\
-		$(HW)/iap.c			\
+		$(HW)/iap.c				\
 		$(CMD)/sh_data.c			\
 		$(APP)/ap_rpm.c				\
 		$(APP)/ap_ambilcepat.c		\
-		$(RTOS_SOURCE_DIR)/list.c \
-		$(RTOS_SOURCE_DIR)/queue.c \
-		$(RTOS_SOURCE_DIR)/tasks.c \
-		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/port.c \
-		$(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c \
+		$(RTOS_SOURCE_DIR)/list.c	\
+		$(RTOS_SOURCE_DIR)/queue.c 	\
+		$(RTOS_SOURCE_DIR)/tasks.c 	\
+		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/port.c 	\
+		$(RTOS_SOURCE_DIR)/portable/MemMang/heap_2.c 			\
 		$(CMD)/sh_rtos.c			\
 		$(CMD)/sh_hardware.c		\
-		$(CMD)/sh_env.c		\
-		$(CMD)/sh_utils.c		\
-		$(CMD)/manual.c		\
+		$(CMD)/sh_env.c				\
+		$(CMD)/sh_utils.c			\
+		$(CMD)/manual.c				\
 		
 
 SERIAL_SOURCE=	\
