@@ -88,7 +88,7 @@ IAP_return_t iapEraseSector(uchr awal, uchr akhir)		{
 	return iap_return;
 }
 
-IAP_return_t iapCopyMemorySector(unsigned int addr, char* data, int pjg)		{
+IAP_return_t iapCopyMemorySector(unsigned int addr, unsigned short * data, int pjg)		{
 	IAP_return_t iap_return;
 	// ToDo: Why does IAP sometime cause the application to halt when read???
 	
@@ -96,7 +96,7 @@ IAP_return_t iapCopyMemorySector(unsigned int addr, char* data, int pjg)		{
 	
 	param_table[0] = IAP_CMD_COPYRAMTOFLASH;
 	param_table[1] = addr;
-	param_table[2] = data;
+	param_table[2] = (unsigned short*) &data[0];
 	param_table[3] = pjg;
 	param_table[4] = (configCPU_CLOCK_HZ/configTICK_RATE_HZ);
 	
@@ -127,7 +127,7 @@ char hapuskan_sektor(int sektor)	{
 	return 0;
 }
 
-char simpan_data_rom(int sektor, unsigned int addr, char * data, int jml)	{
+char simpan_data_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	//if (hapuskan_sektor(sektor)==CMD_SUCCESS)	
 	//int nSktr = cek_nomor_valid(sektor, JML_SECTOR_LPC-1);
 	int nSktr = sektor;

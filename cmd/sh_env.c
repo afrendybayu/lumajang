@@ -15,6 +15,7 @@ extern struct t_env env;
 
 void cek_env(int argc, char **argv)	{
 	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
+	uprintf("  Nama Board : %s\r\n", st_env.nama_board);
 	uprintf("  No Seri    : %s\r\n", st_env.SN);
 	uprintf("  No Ajaib   : %02X:%02X\r\n", st_env.magic1, st_env.magic2);
 	#ifdef PAKAI_ETH
@@ -132,6 +133,17 @@ char set_env(int argc, char **argv)	{
 		}	
 	}
 	printf("\r\n");
+	
+	int i;
+	char *pch;
+	pch = &st_env;
+	printf("  data: ");
+	for (i=0; i<10; i++)	{
+		printf("%02X ", pch[i]);
+	}
+	printf("\r\n");
+	
+	
 	return 0;
 }
 

@@ -119,7 +119,7 @@ void simpan_sector_rom(int argc, char **argv)			{
 	pdata = pvPortMalloc(jml);
 	if (pdata!=NULL)	{
 		taskENTER_CRITICAL();
-		memcpy(pdata, &pch, jml);
+		memcpy(pdata, pch, jml);
 		taskEXIT_CRITICAL();
 		printf("  memSIP : %d/%d, Alm: 0x%08X.\r\n", jml, nn, alamat);
 	} else {
@@ -127,9 +127,30 @@ void simpan_sector_rom(int argc, char **argv)			{
 		vPortFree (pdata);
 		return;
 	}
+
+	simpan_data_rom(sektor, alamat, (unsigned short *)pdata, nn);	
 	
-	simpan_data_rom(sektor, alamat, pdata, nn);	
+	printf("  data: ");
+	for (i=0; i<10; i++)	{
+		printf("%02X ", pdata[i]);
+	}
+	printf("\r\n");
+	
 	vPortFree (pdata);
-	//printf("\r\n");
 }
 
+void baca_rom()	{
+	struct t_env *penv;
+	penv = (char *) ALMT_ENV;
+	
+	printf("\r\n  SN: %s, prio: %d\r\n", penv->SN, penv->prioDebug);
+	
+	int i;
+	char *envx;
+	envx = (char *) ALMT_ENV;
+	printf("  data: ");
+	for (i=0; i<10; i++)	{
+		printf("%02X ", envx[i]);
+	}
+	printf("\r\n");
+}

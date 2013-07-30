@@ -186,6 +186,8 @@ void cmd_shell()	{
 	tinysh_add_command(&hapus_sektor_rom_cmd);
 	tinysh_add_command(&simpan_sektor_rom_cmd);
 	
+	tinysh_add_command(&baca_rom_cmd);
+	
 	tinysh_add_command(&cek_data_cmd);
 	
 	#ifdef PAKAI_ADC_7708
@@ -401,5 +403,6 @@ int printf0 (const char *fmt, ...)		{
 			xSemaphoreGive( xSemSer0 );
 		}
 	}
+	vTaskDelay(1);
 	return 0;
 } 

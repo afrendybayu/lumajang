@@ -19,7 +19,8 @@ IAP_return_t iapReadSerialNumber(void);
 IAP_return_t iapReadBlankSector(uchr awal, uchr akhir)	;
 IAP_return_t iapEraseSector(uchr awal, uchr akhir)	;
 IAP_return_t iapJob(uchr iapcmd, uchr awal, uchr akhir);
-IAP_return_t iapCopyMemorySector(unsigned int addr, char* data, int pjg);
+IAP_return_t iapCopyMemorySector(unsigned int addr, unsigned short *data, int pjg);
+char simpan_data_rom(int sektor,  unsigned int addr, unsigned short *data, int jml);
 
 #define iapSiapSektor(awal, akhir)		iapJob(IAP_CMD_PREPARESECTORFORWRITE, awal, akhir)
 #define iapCekSektor(awal, akhir)		iapJob(IAP_CMD_BLANKCHECKSECTOR, awal, akhir)
