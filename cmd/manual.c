@@ -1,6 +1,10 @@
 
 #include "manual.h"
 
+void sumber_kitab()		{
+	printf(" Perintah untuk mengubah konfig sumber !\r\n");
+}
+
 void env_kitab()	{
 	printf(" Perintah untuk mengubah konfig modul !\r\n");
 	printf(" 1. set_env help|default\r\n");

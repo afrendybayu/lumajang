@@ -71,6 +71,106 @@ void hapus_sector_rom(int argc, char **argv)			{
 	#endif
 }
 
+//void simpan_struct_rom(int st)			{
+void simpan_struct_rom(int argc, char **argv)			{
+	printf("\r\n");
+	
+	//struct t_env *pst_env;
+	//struct t_sumber *pst_sumber;
+	//struct t_cron *pst_cron;
+	
+	char *pdata1, *pdata2, *pdata3;
+	char *pch1, *pch2, *pch3;
+	int  alm1, alm2, alm3;
+	int	 jml1, jml2, jml3;
+	int ndata=-1, st=-1, jml, hapus;
+	
+	char* istilah[] = {"data", "env", "sumber", "cron", NULL};
+	int i = parsing_istilah(argv[1], istilah);
+	if (i>=0)	{
+		if ( argc>2 && strcmp("data", argv[1])==0 )	{
+			ndata = atoi(argv[2]);
+			st = 0;		// data
+			printf("Simpan data: %d!!\r\n", ndata);
+		} else {
+			st = 1;		// env, sumber
+			printf("Simpan env sumber: %d!!\r\n", st);
+		}
+	} else return;
+	
+	if (st == 1)	{		// env
+		// simpan_data_rom(nfmt, sektor, addr1, 4, "merdeka", addr2, 232, "jayaindonesia");
+		hapus = 1;
+		jml = 2 + 3*2;
+		alm1 = ALMT_ENV;
+		alm2 = ALMT_SUMBER;
+		jml1 = cek_jml_struct(ENV);
+		jml2 = cek_jml_struct(SUMBER)*JML_SUMBER;
+		pch1 = &st_env;
+		pch2 = &st_sumber[0];
+		
+		// ENV
+		pdata1 = pvPortMalloc(jml1);
+		if (pdata1!=NULL)	{
+			taskENTER_CRITICAL();
+			memcpy(pdata1, pch1, jml1);
+			taskEXIT_CRITICAL();
+			//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml1, alm1);
+		} else {
+			printf("  GAGAL alokmem !\r\n");
+			vPortFree (pch1);
+			return;
+		}
+		
+		// SUMBER
+		pdata2 = pvPortMalloc(jml2);
+		if (pdata2!=NULL)	{
+			taskENTER_CRITICAL();
+			memcpy(pdata2, pch2, jml2);
+			taskEXIT_CRITICAL();
+			//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml2, alm2);
+		} else {
+			printf("  GAGAL alokmem !\r\n");
+			vPortFree (pch1);
+			vPortFree (pch2);
+			//vPortFree (pch2);
+			return;
+		}
+		
+		simpan_data_rom(jml, SEKTOR_ENV, hapus, alm1, jml1, (unsigned short *)pch1, alm2, jml2, (unsigned short *)pch2);
+		vPortFree (pch1);
+		vPortFree (pch2);
+	}
+	else if (st == 0)	{		// data
+		jml = 2 + 3*1;
+		alm1 = ALMT_DATA;
+		jml1 = cek_jml_struct(DATA)*PER_SUMBER;
+		int j;
+		
+		// DATA
+		for (j=0; j<JML_SUMBER; j++)	{
+			pch1 = &st_data[i];
+			pdata1 = pvPortMalloc(jml1);
+			if (pdata1!=NULL)	{
+				taskENTER_CRITICAL();
+				memcpy(pdata1, pch1, jml1);
+				taskEXIT_CRITICAL();
+				printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml1, alm1);
+			} else {
+				printf("  GAGAL alokmem !\r\n");
+				vPortFree (pch1);
+				return;
+			}
+			if (i==0)	hapus = 1;
+			else 		hapus = 0;
+			
+			simpan_data_rom(jml, SEKTOR_DATA, hapus, alm1, jml1, (unsigned short *)pch1);
+			vPortFree (pch1);
+		}
+	}
+}
+
+
 
 void simpan_sector_rom(int argc, char **argv)			{
 	printf("\r\n");
@@ -129,7 +229,8 @@ void simpan_sector_rom(int argc, char **argv)			{
 	}
 
 	hapuskan_sektor(sektor);
-	simpan_data_rom(sektor, alamat, (unsigned short *)pdata, nn);	
+	simpan_rom(sektor, alamat, (unsigned short *)pdata, nn);	
+	//simpan_rom(sektor, alamat, (unsigned short *)pch, nn);	
 	
 	printf("  data: ");
 	for (i=0; i<10; i++)	{
@@ -139,6 +240,8 @@ void simpan_sector_rom(int argc, char **argv)			{
 	
 	vPortFree (pdata);
 }
+
+
 
 void baca_rom()	{
 	struct t_env *penv;

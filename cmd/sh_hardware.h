@@ -14,6 +14,7 @@ void hapus_sector_rom();
 void simpan_sector_rom(int argc, char **argv);
 
 void baca_rom();
+void simpan_struct_rom(int argc, char **argv);
 
 #ifdef PAKAI_TINYSH
 static tinysh_cmd_t reset_cmd={0,"reset","reset cpu","[args]", reset_cpu,0,0,0};
@@ -23,7 +24,7 @@ static tinysh_cmd_t hapus_sektor_rom_cmd={ 0,"hapus_sektor_rom","hapus memori RO
 static tinysh_cmd_t simpan_sektor_rom_cmd={ 0,"simpan_sektor_rom","simpan memori ROM ","", simpan_sector_rom,0,0,0 };
 
 static tinysh_cmd_t baca_rom_cmd={ 0,"baca_rom","baca memori ROM ","", baca_rom,0,0,0 };
-
+static tinysh_cmd_t simpan_struct_rom_cmd={ 0,"simpan_struct","baca memori ROM ","", simpan_struct_rom,0,0,0 };
 
 #endif
 

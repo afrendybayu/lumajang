@@ -309,7 +309,7 @@ extern void ( vUART_ISR_Wrapper )( void );
 
 	/* The queues are used in the serial ISR routine, so are created from
 	serialISR.c (which is always compiled to ARM mode. */
-	vSerialISRCreateQueues( uxQueueLength, &xRxedChars, &xCharsForTx, &plTHREEmpty );
+	vSerialISRCreateQueues( uxQueueLength*8, &xRxedChars, &xCharsForTx, &plTHREEmpty );
 
 	if( 
 		( xRxedChars != serINVALID_QUEUE ) && 

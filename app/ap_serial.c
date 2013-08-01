@@ -27,9 +27,11 @@
 #include "iap.h"
 
 #include "sh_hardware.h"
+#include "sh_sumber.h"
+#include "sh_env.h"
 #include "sh_rtos.h"
 #include "sh_data.h"
-#include "sh_env.h"
+
 #include "sh_utils.h"
 
 #ifdef PAKAI_FREERTOS_CLI
@@ -177,18 +179,26 @@ void cmd_shell()	{
 	tinysh_add_command(&set_env_cmd);
 	tinysh_add_command(&cek_struct_cmd);
 	
+	tinysh_add_command(&set_data_cmd);
+	tinysh_add_command(&cek_data_cmd);
+	
+	tinysh_add_command(&cek_sumber_cmd);
+	tinysh_add_command(&set_sumber_cmd);
+	
 	tinysh_add_command(&reset_cmd);
 	tinysh_add_command(&task_list_cmd);
 	tinysh_add_command(&cek_stack_cmd);
 //	tinysh_add_command(&task_run_time_cmd);
 	tinysh_add_command(&idle_tick_cmd);
+	
+	
 	tinysh_add_command(&sektor_free_cmd);
 	tinysh_add_command(&hapus_sektor_rom_cmd);
 	tinysh_add_command(&simpan_sektor_rom_cmd);
+	tinysh_add_command(&simpan_struct_rom_cmd);
 	
 	tinysh_add_command(&baca_rom_cmd);
-	
-	tinysh_add_command(&cek_data_cmd);
+
 	
 	#ifdef PAKAI_ADC_7708
 	tinysh_add_command(&cek_adc_cmd);
@@ -367,10 +377,11 @@ void qsprintf(char *fmt, ...) {
 }
 
 // uprintf : user/custom printf ke serial debug
+char str_buffer[256];
 void uprintf(char *fmt, ...) {
 #ifdef PAKAI_SHELL
 //#if 1
-	char str_buffer[256];
+	
 	int lg=0;
     va_list args;
     va_start(args, fmt);
@@ -378,27 +389,27 @@ void uprintf(char *fmt, ...) {
     va_end(args);
     if( xSemSer0 != NULL )    {
 		if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
-			vSerialPutString(xPort, str_buffer, lg);
+			vSerialPutString(xPort, str_buffer, 0xffff);
 			xSemaphoreGive( xSemSer0 );
 		}
 	}
-	vTaskDelay(5);
+	vTaskDelay(10);
 #endif
 }
 
 int printf0 (const char *fmt, ...)		{
 	va_list args;
 	int i;
-	char printbuffer[256];
+	//char printbuffer[256];
 	va_start (args, fmt);
 
-	i = vsprintf (printbuffer, fmt, args);
+	i = vsprintf (str_buffer, fmt, args);
 	va_end (args);
 
 	/* Print the string */
 	if( xSemSer0 != NULL )    {
 		if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
-			vSerialPutString(xPort, printbuffer, 256);
+			vSerialPutString(xPort, str_buffer, 256);
 			xSemaphoreGive( xSemSer0 );
 		}
 	}

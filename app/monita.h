@@ -77,7 +77,7 @@ typedef enum IAP_STATUS_t {
 	#define JML_TITIK_DATA	(JML_SUMBER * PER_SUMBER)
 #endif
 
-float data_f [ JML_TITIK_DATA ];
+volatile float data_f [ JML_TITIK_DATA ];
 
 // 32 KB
 #define ALMT_SEKTOR_8	0x08000	
@@ -186,7 +186,7 @@ struct t_data {
 	int  batasHH;
 	int  rangeH;
 	char nama[24];
-	char status;
+	char status;			// 
 	char formula[16];
 };
 struct t_data st_data[JML_TITIK_DATA];
@@ -215,6 +215,7 @@ struct t_sumber {
 	char stack;			// jika modul berisi BANYAK_SUMBER : adc, pm, dll
 	char status;		// tidak aktif, timeout, dll
 	char tipe;			// 0:PM_710, 1:PM_810, 2:KTA, 3:MICOM
+	char ket[32];
 };
 struct t_sumber st_sumber[JML_SUMBER];
 

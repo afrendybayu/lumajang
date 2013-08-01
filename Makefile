@@ -116,6 +116,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_hardware.c		\
 		$(CMD)/sh_env.c				\
 		$(CMD)/sh_utils.c			\
+		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
 		
 

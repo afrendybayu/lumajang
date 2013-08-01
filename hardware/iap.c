@@ -122,7 +122,7 @@ char hapuskan_sektor(int sektor)	{
 	}
 
 	if (iap_return.ReturnCode == CMD_SUCCESS)	
-		printf("  HS[%d].\r\n", nSktr);
+		printf(" HS[%d].\r\n", nSktr);
 	else	{
 		printf("  GAGAL Hapus Sektor %d !!\r\n", nSktr);
 		return 2;
@@ -141,7 +141,7 @@ int hitung_ram(int jml)	{
 }
 
 char simpan_data_rom(int no, ...)	{
-	int i, nn, sektor, addr;
+	int i, nn, sektor, addr, hapus;
 	unsigned short *pdata;
 	
 	va_list vl;
@@ -150,22 +150,26 @@ char simpan_data_rom(int no, ...)	{
 
 	for (i=0; i<no; i++)	{
 		if (i==0)	{
-			sektor = va_arg(vl, int);
+			sektor = va_arg(vl, int);			// sektor
 			//printf("%d Sektor: %d\r\n", i, sektor);
-			hapuskan_sektor(sektor);
 		}
-		else if (i%3==1)	{
+		else if (i==1)	{					// alamat memori
+			hapus = va_arg(vl, int);
+			if (hapus)	hapuskan_sektor(sektor);
+			//printf("%d Hapus: %d\r\n", i, hapus);
+		}
+		else if (i%3==2)	{					// alamat memori
 			addr = va_arg(vl, int);
 			//printf("%d addr: %d\r\n", i, addr);
 		}
-		else if (i%3==2)	{
+		else if (i%3==0)	{					// jml data
 			nn = va_arg(vl, int);
 			//printf("%d jml: %d\r\n", i, nn);
-		} else {
-			pch = va_arg(vl, char*);
+		} else {								// datanya
+			pdata = va_arg(vl, char*);
 			//printf("%d data: %s\r\n", i, pch);
-			printf("---> simpan, sktr: %d, addr: %d, n: %d\r\n", sektor, addr, nn);
-			simpan_rom(sektor, addr,  (unsigned short *)pdata, nn);
+			printf("--->sktr: %d, addr: 0x%08X, n: %d/%d\r\n", sektor, addr, nn, hitung_ram(nn));
+			simpan_rom(sektor, addr,  (unsigned short *)pdata, hitung_ram(nn));
 		}
 	}
 	va_end(vl);	
