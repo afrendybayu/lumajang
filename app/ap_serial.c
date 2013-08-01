@@ -167,8 +167,6 @@ static void atoxi_fnt(int argc, char **argv)	{
 }
 #endif
 
-
-
 void cmd_shell()	{
 #ifdef PAKAI_TINYSH
 	#ifdef PAKAI_CONTOH_SHELL
@@ -196,6 +194,7 @@ void cmd_shell()	{
 	tinysh_add_command(&hapus_sektor_rom_cmd);
 	tinysh_add_command(&simpan_sektor_rom_cmd);
 	tinysh_add_command(&simpan_struct_rom_cmd);
+	tinysh_add_command(&kopi_sektor_cmd);
 	
 	tinysh_add_command(&baca_rom_cmd);
 
@@ -301,7 +300,8 @@ char s[30];
 	//vSerialPutString(xPort, "mulakan\r\n", 9);
 	
 	init_banner();
-	set_env_default();
+	//set_env_default();
+	baca_konfig_rom();
 	
 	cmd_shell();
 	st_hw.init++;

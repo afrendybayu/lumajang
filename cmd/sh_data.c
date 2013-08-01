@@ -13,6 +13,10 @@
 
 void cek_data(int argc, char **argv)	{
 	int i=0 ;
+	
+	//struct t_data *st_data;
+	//st_data = (char *) ALMT_DATA;
+	
 	uprintf("\r\n    Cek data input modul    \r\n****************************************\r\n");
 	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status |\r\n");
 	for (i=0; i<JML_TITIK_DATA; i++ ) {
@@ -126,7 +130,7 @@ char set_data(int argc, char **argv)		{
 			return;
 		}
 	}
-	printf("\r\n");	
+	//printf("\r\n");	
 	return 0;
 }
 

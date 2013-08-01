@@ -17,14 +17,7 @@ void idle_tick()	{
 	qsprintf("\r\n  idle tick : %d/s, adc: %d/s\r\n", st_hw.idle, st_hw.adc_pd);
 }
 
-int ukuran_rom (char no)	{
-	if (no>=0 && no<=JML_SECTOR_LPC-1)	{
-		if (no>7 && no<22)		return	32;
-		else 					return  4;
-	} else {
-		return 0;
-	}
-}
+
 
 void cek_blank_sector_rom()		{
 	IAP_return_t iap_return;
@@ -71,9 +64,11 @@ void hapus_sector_rom(int argc, char **argv)			{
 	#endif
 }
 
-//void simpan_struct_rom(int st)			{
+
+
 void simpan_struct_rom(int argc, char **argv)			{
 	printf("\r\n");
+	struct t_sumber st_sumber[JML_SUMBER];
 	
 	//struct t_env *pst_env;
 	//struct t_sumber *pst_sumber;
@@ -175,6 +170,8 @@ void simpan_struct_rom(int argc, char **argv)			{
 void simpan_sector_rom(int argc, char **argv)			{
 	printf("\r\n");
 
+	struct t_sumber st_sumber[JML_SUMBER];
+
 	char *pdata, *pch;
 	int jml = 0, nn=256, sektor = SEKTOR_ENV;
 	int ndata=-1, st=-1;
@@ -241,7 +238,18 @@ void simpan_sector_rom(int argc, char **argv)			{
 	vPortFree (pdata);
 }
 
-
+char kopi_sektor(int argc, char **argv)	{
+	if (argc!=2)	{
+		printf("\r\n kopi_sektor [SEKTOR SUMBER]\r\n");
+		return;
+	}
+	
+	int hasil, almt = atoi(argv[1]);
+	if (almt<10)	return;
+	
+	printf("\r\n  Kopi_sektor %d ke sektor %d: 0x%08X\r\n", almt, SEKTOR_TEMP, alamat_sektor(almt));
+	return kopikan_sektor_tmp(alamat_sektor(almt));
+}
 
 void baca_rom()	{
 	struct t_env *penv;

@@ -14,9 +14,11 @@
 #include "manual.h"
 
 
-void cek_sumber(int argc, char **argv)	{
+void cek_sumber(int argc, char **argv)		{
 	int i=0;
-	
+	struct t_sumber *st_sumber;
+	st_sumber = (char *) ALMT_SUMBER;
+
 	uprintf("\r\n  Cek Sumber\r\n  ******************************\r\n");
 	uprintf (" no |        Nama       |        IP       | Almt | Stack |      Keterangan     |\r\n");
 	for (i=0; i<JML_SUMBER; i++)	{
@@ -40,13 +42,23 @@ char set_sumber(int argc, char **argv)		{
 		sumber_kitab();
 		return 1;
 	}
-	
+
 	int no = cek_nomor_valid(argv[1], JML_SUMBER);
 	no--;
 	if (no == TIDAK_VALID)	{
 		printf("  no sumber TIDAK VALID\r\n");
 		return 2;
 	}
+	
+	struct t_sumber *st_sumber;
+	st_sumber = pvPortMalloc( JML_SUMBER * sizeof (struct t_sumber) );
+	if (st_sumber == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		return -1;
+	}
+	//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+	memcpy((char *) st_sumber, (char *) ALMT_SUMBER, (JML_SUMBER * sizeof (struct t_sumber)));
+	
 	
 	if (argc==4)	{
 		printf("\r\n");
@@ -81,14 +93,14 @@ char set_sumber(int argc, char **argv)		{
 		}
 		#endif
 		else if (strcmp(argv[2], "ket") == 0)	{
-			printf("  Set nama ");
+			printf("  Set Keterangan ");
 
 			if (strlen(argv[3]) > sizeof (st_sumber[no].ket))		{
 				printf("terlalu panjang !\r\n");
 				return 1;	
 			}
 			else	{
-				sprintf(st_env.nama_board, "%s", argv[3]);
+				sprintf(st_sumber[no].ket, "%s", argv[3]);
 				printf(": %s\r\n", st_sumber[no].ket);
 			}
 		}
@@ -97,23 +109,20 @@ char set_sumber(int argc, char **argv)		{
 			printf("  Tipe:%d\r\n", st_sumber[no].tipe);
 			
 		}
+		else if (strcmp(argv[2], "stack") == 0)	{
+			st_sumber[no].stack = atoi( argv[3] );
+			printf("  Tipe:%d\r\n", st_sumber[no].stack);
+			
+		}
 		else if (strcmp(argv[2], "alamat") == 0)	{
 			st_sumber[no].alamat = atoi( argv[3] );
-			printf("  Tipe:%d\r\n", st_sumber[no].alamat);
+			printf("  Alamat:%d\r\n", st_sumber[no].alamat);
 			
 		}	
 	}
-	printf("\r\n");
+	//printf("\r\n");
 	
-	int i;
-	char *pch;
-	pch = &st_env;
-	printf("  data: ");
-	for (i=0; i<10; i++)	{
-		printf("%02X ", pch[i]);
-	}
-	printf("\r\n");
-	
+	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, (char *) st_sumber);
 	
 	return 0;
 }
@@ -121,6 +130,7 @@ char set_sumber(int argc, char **argv)		{
 void set_sumber_default()		{
 	int i;
 	
+	struct t_sumber st_sumber[JML_SUMBER];
 	for (i=0; i<JML_SUMBER; i++)	{
 		sprintf(st_sumber[i].nama, "Sumber %d", i+1);
 		st_sumber[i].IP0 = 192;
@@ -131,7 +141,8 @@ void set_sumber_default()		{
 		st_sumber[i].alamat = 0;
 		st_sumber[i].tipe = 0;
 		strcpy(st_sumber[i].ket, "---");
-		
 	}
+	
+	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, (char *) st_sumber);
 }
 

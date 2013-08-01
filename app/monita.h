@@ -64,9 +64,10 @@ typedef enum IAP_STATUS_t {
 #define ROM		1
 #define SDC		0
 
-#define TIDAK_VALID		0xFFFF
-#define JML_SUMBER		4
-#define PER_SUMBER		10
+#define TIDAK_VALID			0xFFFF
+#define PER_SUMBER			10
+#define JML_SUMBER			 4
+#define SUMBER_PER_SEKTOR	32
 
 //#define ANGKA_PENTING	1
 
@@ -78,6 +79,7 @@ typedef enum IAP_STATUS_t {
 #endif
 
 volatile float data_f [ JML_TITIK_DATA ];
+
 
 // 32 KB
 #define ALMT_SEKTOR_8	0x08000	
@@ -110,6 +112,10 @@ volatile float data_f [ JML_TITIK_DATA ];
 
 #define SEKTOR_DATA		20
 #define ALMT_DATA		ALMT_SEKTOR_20
+
+#define SEKTOR_TEMP		18
+#define ALMT_SKTR_TEMP	ALMT_SEKTOR_18
+#define JML_KOPI_TEMP	1024
 
 #define JUM_GPIO	10
 #define JML_KANAL	10
@@ -217,7 +223,7 @@ struct t_sumber {
 	char tipe;			// 0:PM_710, 1:PM_810, 2:KTA, 3:MICOM
 	char ket[32];
 };
-struct t_sumber st_sumber[JML_SUMBER];
+//struct t_sumber st_sumber[JML_SUMBER];
 
 struct t_env {
 	char nama_board[32];
