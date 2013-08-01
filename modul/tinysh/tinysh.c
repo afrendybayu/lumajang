@@ -265,7 +265,7 @@ static int exec_command_line(tinysh_cmd_t *cmd, uchar *_str)
         }
       else if(ret==AMBIG)
         {
-          puts("ambiguity: ");
+          puts("AMBIGUITY: ");
           puts(str);
           //putchar('\n');
           puts("\r\n");
@@ -273,8 +273,8 @@ static int exec_command_line(tinysh_cmd_t *cmd, uchar *_str)
         }
       else if(ret==UNMATCH) /* UNMATCH */
         {
-          
-          puts("no match: ");
+          //puts("\r\n");
+          puts("\r\n  no match: ");
           puts(str);
           //putchar('\n');
           puts("\r\n");

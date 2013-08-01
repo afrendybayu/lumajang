@@ -128,6 +128,7 @@ void simpan_sector_rom(int argc, char **argv)			{
 		return;
 	}
 
+	hapuskan_sektor(sektor);
 	simpan_data_rom(sektor, alamat, (unsigned short *)pdata, nn);	
 	
 	printf("  data: ");
@@ -141,16 +142,22 @@ void simpan_sector_rom(int argc, char **argv)			{
 
 void baca_rom()	{
 	struct t_env *penv;
-	penv = (char *) ALMT_ENV;
+	//penv = (char *) ALMT_ENV;
+	penv = ALMT_ENV;
 	
-	printf("\r\n  SN: %s, prio: %d\r\n", penv->SN, penv->prioDebug);
+	printf("\r\n  almt: %08X, board: %s, SN: %s, prio: %d\r\n", ALMT_ENV, penv->nama_board, penv->SN, penv->prioDebug);
+	
+	struct t_env *penx;
+	char *aaa;
+	aaa = (char *) ALMT_ENV;
+	
 	
 	int i;
 	char *envx;
 	envx = (char *) ALMT_ENV;
 	printf("  data: ");
 	for (i=0; i<10; i++)	{
-		printf("%02X ", envx[i]);
+		printf("%02X ", *envx++);
 	}
 	printf("\r\n");
 }

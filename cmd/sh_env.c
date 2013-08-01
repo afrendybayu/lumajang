@@ -47,7 +47,7 @@ char set_env(int argc, char **argv)	{
 			return 0;
 		}
 		else if (strcmp(argv[1], "default") == 0)	{
-			printf("set env dengan konfig default !\n");
+			printf("set env dengan konfig default !\r\n");
 			set_env_default();
 			return 0;
 		}

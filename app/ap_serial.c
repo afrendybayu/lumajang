@@ -331,20 +331,19 @@ char s[30];
 	
 	#ifdef PAKAI_TINYSH
 	tinysh_set_prompt(s);
-	tinysh_char_in('\r');//	tinysh_char_in('\n');
+	tinysh_char_in('\r');
 	vTaskDelay(500);
 	for( ;; )	{
 		vTaskDelay(10);
 		//printf("testing\r\n");
 		xGotChar = xSerialGetChar( xPort, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
-			//if( xSerialGetChar( xPort, &ch, comRX_BLOCK_TIME ) )		{ // comRX_BLOCK_TIME = 0xffff
 			tinysh_char_in((unsigned char) ch);
 			toogle_led_utama();
 		}
 		qrprintf(0);
 	}
-	#endif
+	#endif	
 	
 	for( ;; )	{
 		vTaskDelay(10);

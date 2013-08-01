@@ -3,6 +3,9 @@
 #include "task.h"
 #include "iap.h"
 #include "monita.h"
+
+#include <stdio.h>
+#include <stdarg.h>
  
 unsigned int param_table[5];
 
@@ -127,7 +130,48 @@ char hapuskan_sektor(int sektor)	{
 	return 0;
 }
 
-char simpan_data_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
+int hitung_ram(int jml)	{
+	int nn;
+	
+	if (jml > 256)  nn =  512;
+	if (jml > 512)  nn = 1024;
+	if (jml > 1024) nn = 4096;
+	
+	return nn;
+}
+
+char simpan_data_rom(int no, ...)	{
+	int i, nn, sektor, addr;
+	unsigned short *pdata;
+	
+	va_list vl;
+	va_start(vl,no);
+	//printf("jml no: %d\r\n", no);
+
+	for (i=0; i<no; i++)	{
+		if (i==0)	{
+			sektor = va_arg(vl, int);
+			//printf("%d Sektor: %d\r\n", i, sektor);
+			hapuskan_sektor(sektor);
+		}
+		else if (i%3==1)	{
+			addr = va_arg(vl, int);
+			//printf("%d addr: %d\r\n", i, addr);
+		}
+		else if (i%3==2)	{
+			nn = va_arg(vl, int);
+			//printf("%d jml: %d\r\n", i, nn);
+		} else {
+			pch = va_arg(vl, char*);
+			//printf("%d data: %s\r\n", i, pch);
+			printf("---> simpan, sktr: %d, addr: %d, n: %d\r\n", sektor, addr, nn);
+			simpan_rom(sektor, addr,  (unsigned short *)pdata, nn);
+		}
+	}
+	va_end(vl);	
+}
+
+char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	//if (hapuskan_sektor(sektor)==CMD_SUCCESS)	
 	//int nSktr = cek_nomor_valid(sektor, JML_SECTOR_LPC-1);
 	int nSktr = sektor;
