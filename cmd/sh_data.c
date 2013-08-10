@@ -12,18 +12,24 @@
 //extern volatile float data_f[];
 
 void cek_data(int argc, char **argv)	{
-	int i=0 ;
-	
-	//struct t_data *st_data;
-	//st_data = (char *) ALMT_DATA;
+	int i, j ;
+	struct t_data *st_data;
 	
 	uprintf("\r\n    Cek data input modul    \r\n****************************************\r\n");
 	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status |\r\n");
-	for (i=0; i<JML_TITIK_DATA; i++ ) {
-		uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %-6s |\r\n", \
-			i+1, st_data[i].id, st_data[i].nama, data_f[i], st_data[i].satuan,	\
-			st_data[i].rangeL, st_data[i].batasLL, st_data[i].batasL, st_data[i].batasH, st_data[i].batasHH,
-			st_data[i].rangeH, st_data[i].status?"Aktif":"Mati" );
+	for (i=0; i<JML_SUMBER; i++ ) {
+		st_data = ALMT_DATA + i*JML_KOPI_TEMP;
+		for (j=0; j<PER_SUMBER; j++)	{
+			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+			#if 1
+			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %-6s |\r\n", 	\
+				i*PER_SUMBER+j+1, st_data[i*PER_SUMBER+j].id, st_data[i*PER_SUMBER+j].nama, data_f[i*PER_SUMBER+j], 		\
+				st_data[i*PER_SUMBER+j].satuan,	st_data[i*PER_SUMBER+j].rangeL, 	\
+				st_data[i*PER_SUMBER+j].batasLL, st_data[i*PER_SUMBER+j].batasL, 	\
+				st_data[i*PER_SUMBER+j].batasH, st_data[i*PER_SUMBER+j].batasHH,	\
+				st_data[i*PER_SUMBER+j].rangeH, st_data[i*PER_SUMBER+j].status?"Aktif":"Mati" );
+			#endif
+		}
 	}
 }
 
@@ -38,11 +44,22 @@ char set_data(int argc, char **argv)		{
 			return 0;
 		}
 		else if (strcmp(argv[1], "idurut") == 0)	{
+			struct t_data *st_data;
+			st_data = pvPortMalloc( JML_SUMBER*PER_SUMBER * sizeof (struct t_data) );
+			if (st_data == NULL)	{
+				printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+				return 3;
+			}
+			//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+			memcpy((char *) st_data, (char *) ALMT_DATA, (JML_SUMBER*PER_SUMBER * sizeof (struct t_data)));
+	
+			
 			printf("set_data dengan id urut dari kanal 1: %d !\r\n", st_data[0].id);
 			int i, awal = st_data[0].id;
-			for (i=1; i<JML_SUMBER*PER_SUMBER; i++)		{
+			for (i=1; i<(JML_SUMBER*PER_SUMBER); i++)		{
 				st_data[i].id = st_data[0].id + i;
 			}
+			vPortFree (st_data);
 		} else	{
 			data_kitab();
 			return 1;
@@ -56,6 +73,16 @@ char set_data(int argc, char **argv)		{
 		printf("  no sumber TIDAK VALID\r\n");
 		return 2;
 	}
+	
+	struct t_data *st_data;
+	st_data = pvPortMalloc( JML_SUMBER*PER_SUMBER * sizeof (struct t_data) );
+	if (st_data == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		return 3;
+	}
+	//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+	memcpy((char *) st_data, (char *) ALMT_DATA, (JML_SUMBER*PER_SUMBER * sizeof (struct t_data)));
+	
 	
 	if (argc==4)	{
 		printf("\r\n");
@@ -131,13 +158,16 @@ char set_data(int argc, char **argv)		{
 		}
 	}
 	//printf("\r\n");	
+	vPortFree (st_data);
 	return 0;
 }
 
 void set_data_default()		{
 	int i;
 	
-	for (i=0; i<PER_SUMBER*JML_SUMBER; i++)	{
+	struct t_data st_data[PER_SUMBER*JML_SUMBER];
+	
+	for (i=0; i<PER_SUMBER; i++)	{
 		sprintf(st_data[i].nama, "data %d", i+1);
 		st_data[i].id      = 0;
 		st_data[i].rangeL  = -50;
@@ -150,5 +180,8 @@ void set_data_default()		{
 		strcpy(st_data[i].satuan, "-");
 		strcpy(st_data[i].formula, "");
 	}
+	
+	i = simpan_struct_block_rom(SEKTOR_DATA, -1, (char *) st_data);
+	printf("hsl: %d\r\n", i);
 }
 

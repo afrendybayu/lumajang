@@ -11,29 +11,32 @@
 #include "sh_utils.h"
 #include "manual.h"
 
-extern struct t_env env;
+//extern struct t_env env;
 
 void cek_env(int argc, char **argv)	{
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	
 	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
-	uprintf("  Nama Board : %s\r\n", st_env.nama_board);
-	uprintf("  No Seri    : %s\r\n", st_env.SN);
-	uprintf("  No Ajaib   : %02X:%02X\r\n", st_env.magic1, st_env.magic2);
+	uprintf("  Nama Board : %s\r\n", st_env->nama_board);
+	uprintf("  No Seri    : %s\r\n", st_env->SN);
+	uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
 	#ifdef PAKAI_ETH
 	uprintf("  Konfigurasi Ethernet\r\n");
-	uprintf("    Alamat IP: %d.%d.%d.%d\r\n", st_env.IP0, st_env.IP1, st_env.IP2, st_env.IP3);
-	uprintf("    Gateway  : %d.%d.%d.%d\r\n", st_env.GW0, st_env.GW1, st_env.GW2, st_env.GW3);
-	uprintf("    Server IP: %d.%d.%d.%d\r\n", st_env.wIP0, st_env.wIP1, st_env.wIP2, st_env.wIP3);
-	uprintf("    File     : %s\r\n", st_env.berkas);
-	uprintf("    Webclient: [%d] : %s\r\n", st_env.statusWebClient, (st_env.statusWebClient?"Aktif":"Mati"));
+	uprintf("    Alamat IP: %d.%d.%d.%d\r\n", st_env->IP0, st_env->IP1, st_env->IP2, st_env->IP3);
+	uprintf("    Gateway  : %d.%d.%d.%d\r\n", st_env->GW0, st_env->GW1, st_env->GW2, st_env->GW3);
+	uprintf("    Server IP: %d.%d.%d.%d\r\n", st_env->wIP0, st_env->wIP1, st_env->wIP2, st_env->wIP3);
+	uprintf("    File     : %s\r\n", st_env->berkas);
+	uprintf("    Webclient: [%d] : %s\r\n", st_env->statusWebClient, (st_env->statusWebClient?"Aktif":"Mati"));
 	#endif
 	#ifdef MODBUS_RTU_SLAVE
 	uprintf("  Konfigurasi Modbus RTU Slave\r\n");
-	uprintf("    ID Device: %d\r\n", st_env.almtSlave);
+	uprintf("    ID Device: %d\r\n", st_env->almtSlave);
 	uprintf("    BaudRate : %d\r\n", PAKAI_SERIAL_2_P0);
 	#endif
-	uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env.statusCron, (st_env.statusCron?"Aktif":"Mati"));
-	uprintf("  Konfig Debug1: %d\r\n", st_env.prioDebug);
-	uprintf("  Konfig Debug2: %d\r\n", st_env.prioDebug2);
+	uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
+	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
+	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 }
 
 
@@ -53,17 +56,27 @@ char set_env(int argc, char **argv)	{
 		}
 		return 1;
 	}
+	
+	struct t_env *st_env;
+	st_env = pvPortMalloc( sizeof (struct t_env) );
+	if (st_env == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		return 2;
+	}
+	//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
+	
 	if (argc==3)	{
 		printf("\r\n");
 		if (strcmp(argv[1], "SN") == 0)	{
 			printf(" set no seri \r\n");
-			if (strlen(argv[2]) > sizeof (st_env.SN))		{
+			if (strlen(argv[2]) > sizeof (st_env->SN))		{
 				printf("SN terlalu panjang !");
-				return 1;	
+				return 3;	
 			}
 			else	{
-				sprintf(st_env.SN, "%s", argv[2]);
-				printf(" SN : %s\n", st_env.SN);
+				sprintf(st_env->SN, "%s", argv[2]);
+				printf(" SN : %s\n", st_env->SN);
 			}
 		}
 		#ifdef PAKAI_ETH
@@ -72,83 +85,79 @@ char set_env(int argc, char **argv)	{
 			
 			uint ret_ip = baca_ip( argv[2] );
 			if (ret_ip > 0)	{
-				st_env.IP0 = (unsigned char)(ret_ip >> 24);
-				st_env.IP1 = (unsigned char)(ret_ip >> 16);
-				st_env.IP2 = (unsigned char)(ret_ip >> 8);
-				st_env.IP3 = (unsigned char)(ret_ip);
-				printf("%d.%d.%d.%d\r\n", st_env.IP0, st_env.IP1, st_env.IP2, st_env.IP3);
+				st_env->IP0 = (unsigned char)(ret_ip >> 24);
+				st_env->IP1 = (unsigned char)(ret_ip >> 16);
+				st_env->IP2 = (unsigned char)(ret_ip >> 8);
+				st_env->IP3 = (unsigned char)(ret_ip);
+				printf("%d.%d.%d.%d\r\n", st_env->IP0, st_env->IP1, st_env->IP2, st_env->IP3);
 			} 
-			else		return 2;
+			else		return 4;
 		}
 		else if (strcmp(argv[1], "gateway") == 0)  	{
 			printf(" set GATEWAY address ");  
 
 			uint ret_ip = baca_ip( argv[2] );
 			if (ret_ip > 0)	{
-				st_env.GW0 = (unsigned char)(ret_ip >> 24);
-				st_env.GW1 = (unsigned char)(ret_ip >> 16);
-				st_env.GW2 = (unsigned char)(ret_ip >> 8);
-				st_env.GW3 = (unsigned char)(ret_ip);
-				printf("%d.%d.%d.%d\r\n", st_env.GW0, st_env.GW1, st_env.GW2, st_env.GW3);
+				st_env->GW0 = (unsigned char)(ret_ip >> 24);
+				st_env->GW1 = (unsigned char)(ret_ip >> 16);
+				st_env->GW2 = (unsigned char)(ret_ip >> 8);
+				st_env->GW3 = (unsigned char)(ret_ip);
+				printf("%d.%d.%d.%d\r\n", st_env->GW0, st_env->GW1, st_env->GW2, st_env->GW3);
 			} 
-			else		return 2;
+			else		return 4;
 		}
 		else if (strcmp(argv[1], "server") == 0)  	{
 			printf(" set Server Tujuan address ");  
 
 			uint ret_ip = baca_ip( argv[2] );
 			if (ret_ip > 0)	{
-				st_env.wIP0 = (unsigned char)(ret_ip >> 24);
-				st_env.wIP1 = (unsigned char)(ret_ip >> 16);
-				st_env.wIP2 = (unsigned char)(ret_ip >> 8);
-				st_env.wIP3 = (unsigned char)(ret_ip);
-				printf("%d.%d.%d.%d\r\n", st_env.wIP0, st_env.wIP1, st_env.wIP2, st_env.wIP3);
+				st_env->wIP0 = (unsigned char)(ret_ip >> 24);
+				st_env->wIP1 = (unsigned char)(ret_ip >> 16);
+				st_env->wIP2 = (unsigned char)(ret_ip >> 8);
+				st_env->wIP3 = (unsigned char)(ret_ip);
+				printf("%d.%d.%d.%d\r\n", st_env->wIP0, st_env->wIP1, st_env->wIP2, st_env->wIP3);
 			} 
-			else		return 2;
+			else		return 5;
 		}
 		#endif
 		else if (strcmp(argv[1], "nama") == 0)	{
 			printf(" set nama board\r\n");
 
-			if (strlen(argv[2]) > sizeof (st_env.nama_board))		{
+			if (strlen(argv[2]) > sizeof (st_env->nama_board))		{
 				printf("Nama board terlalu panjang !");
-				return 1;	
+				return 6;	
 			}
 			else	{
-				sprintf(st_env.nama_board, "%s", argv[2]);
-				printf(" Nama board : %s\n", st_env.nama_board);
+				sprintf(st_env->nama_board, "%s", argv[2]);
+				printf(" Nama board : %s\r\n", st_env->nama_board);
 			}
 		}
-		else if (strcmp(argv[1], "prio") == 0)	{
+		else if (strcmp(argv[1], "debug1") == 0)	{
 			printf("  Debug prio serial0\r\n");
-			st_env.prioDebug = atoi( argv[2] );
-			printf("  Nomor batas prioritas debug : %d\r\n", st_env.prioDebug);
+			st_env->prioDebug = atoi( argv[2] );
+			printf("  Nomor batas prioritas debug : %d\r\n", st_env->prioDebug);
 			
 		}
-		else if (strcmp(argv[1], "prio2") == 0)	{
+		else if (strcmp(argv[1], "debug2") == 0)	{
 			printf("  Debug prio serial2\r\n");
-			st_env.prioDebug2 = atoi( argv[2] );
-			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env.prioDebug2);
+			st_env->prioDebug2 = atoi( argv[2] );
+			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env->prioDebug2);
 			
 		}	
 	}
+	
+	simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
+	vPortFree (st_env);
+	
 	printf("\r\n");
-	
-	int i;
-	char *pch;
-	pch = &st_env;
-	printf("  data: ");
-	for (i=0; i<10; i++)	{
-		printf("%02X ", pch[i]);
-	}
-	printf("\r\n");
-	
-	
 	return 0;
 }
 
 void set_env_default()		{
 	int i;
+	
+	struct t_env st_env;
+	
 	strcpy(st_env.nama_board, BOARD_SANTER);
 	st_env.IP0 = 192;
 	st_env.IP1 = 168;
@@ -192,7 +201,10 @@ void set_env_default()		{
 	st_env.statusCron = 0;
 	st_env.almtSlave = 1;
 	st_env.statusSlave = 0;
-	st_env.prioDebug = 0;
-	st_env.prioDebug2 = 0;
+	st_env.prioDebug  = 10;
+	st_env.prioDebug2 = 20;
+	
+	simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
+	
 }
 

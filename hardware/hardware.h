@@ -119,8 +119,20 @@ void rtcWrite(struct tm *newTime);
 				#define enaTX2_485()		FIO3SET = TXDE2;
 				#define disTX2_485()		FIO3CLR = TXDE2;
 			#endif
-			
-			
+		#endif
+		
+		#ifdef PAKAI_SERIAL_1
+			#ifdef PAKAI_SERIAL_1_P2
+				// TX1: P2.0, RX1: P2.1
+				#define setup_serial1_P2	do	{									\
+											PCONP	|= BIT(4);						\
+											PCLKSEL0 &= ~(BIT(8) | BIT(9));			\
+											PCLKSEL0 |= BIT(8);						\
+											PINSEL4 &= ~(BIT(3) | BIT(2) | BIT(1) | BIT(0));	\
+											PINSEL4 |= (BIT(3) | BIT(1));			\
+				} while (0)
+				
+			#endif
 		#endif
 
 		#ifdef PAKAI_SPI_SSP0		// SDCard

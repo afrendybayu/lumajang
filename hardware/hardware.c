@@ -14,7 +14,8 @@ void setup_hardware()	{
 	PCLKSEL0 = 0x55555555;		// PCLK is the same as CCLK
 	PCLKSEL1 = 0x55555555;
 	
-	PCONP   |= 0x80000000;
+	PCONP   |= BIT(31);		// Power USB aktif
+	PCONP   |= BIT(30);		// Power Ethernet Aktif
 	FIO1DIR  = 0xFFFFFFFF;
 
 	/* USB Power dinyalakan supaya memory USB bisa dipakai */

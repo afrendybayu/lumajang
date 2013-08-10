@@ -236,15 +236,15 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	IAP_return_t iap_return = iapSiapSektor(nSktr, nSktr);
 	//printf("  ---> hasil siap: %d\r\n", iap_return.ReturnCode);
 	if ( iap_return.ReturnCode == CMD_SUCCESS )		{
-		//printf("  SS[%d]", nSktr);
+		printf("  SS[%d]", nSktr);
 		iap_return = iapCopyMemorySector(addr, data, jml);
-	//	printf("  ---> hasil kopi: %d\r\n", iap_return.ReturnCode);
+		//printf("  ---> hasil kopi: %d\r\n", iap_return.ReturnCode);
 	} 
 	else
 		return 1;
 	
 	if (iap_return.ReturnCode == CMD_SUCCESS)	{
-		//printf("  TS[%d]. BERHASIL\r\n", nSktr);
+		printf("  TS[%d].\r\n", nSktr);
 	}
 	else	{
 		printf("  GAGAL SALIN S%d : %d\r\n", nSktr, iap_return.ReturnCode);
@@ -254,7 +254,7 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	return 0;
 }
 
-char simpan_struct_block_rom(int sektor, int st, char *pdata)	{
+char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 	char *pdata1, *pdata2;
 	char *pch1, *pch2;
 	int hapus=0, i;
@@ -262,86 +262,72 @@ char simpan_struct_block_rom(int sektor, int st, char *pdata)	{
 	unsigned almt;
 	
 	if (sektor == SEKTOR_ENV)		{
-	//if (st == SUMBER)	{		// env
-		// simpan_data_rom(nfmt, sektor, addr1, 4, "merdeka", addr2, 232, "jayaindonesia");
+		//printf("sektor: %d, st: %d\r\n", sektor, st);
 		jml = 2 + 3*1;
 		jml1 = cek_jml_struct(ENV);
 		jml2 = cek_jml_struct(SUMBER)*JML_SUMBER;
 
 		// ENV diamankan
+		printf("env");
 		pdata1 = pvPortMalloc(jml1);
-		if (st == ENV)	{
-			if (pdata1!=NULL)	{
-				taskENTER_CRITICAL();
-				memcpy(pdata1, pdata, jml1);
-				taskEXIT_CRITICAL();
-				//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml2, alm2);
+		if (pdata1!=NULL)	{
+			taskENTER_CRITICAL();
+			if (st == ENV)	{
+				//memcpy((char *) pdata1, (char *) pdata, jml1);
 			} else {
-				printf("  GAGAL alokmem !\r\n");
-				vPortFree (pdata1);
-				return 1;
+				//memcpy((char *) pdata1, (char *) ALMT_ENV, jml1);
 			}
+			taskEXIT_CRITICAL();
+			//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml1, ALMT_ENV);
+		} else {
+			printf("  GAGAL alokmem !\r\n");
+			//vPortFree (pdata1);
+			return 1;
 		}
-		else 	{
-			if (pdata1!=NULL)	{
-				taskENTER_CRITICAL();
-				memcpy((char *) pdata1, (char *) ALMT_ENV, jml1);
-				taskEXIT_CRITICAL();
-				//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml1, alm1);
-			} else {
-				printf("  GAGAL alokmem !\r\n");
-				vPortFree (pdata1);
-				return 2;
-			}
-		}
+		printf(" end\r\n");
 		
 		// SUMBER
+		printf("sumber");
 		pdata2 = pvPortMalloc(jml2);
-		if ( st == SUMBER )	{
-			if (pdata2!=NULL)	{
-				taskENTER_CRITICAL();
-				memcpy(pdata2, pdata, jml2);
-				taskEXIT_CRITICAL();
-				//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml2, alm2);
+		if (pdata2!=NULL)	{
+			taskENTER_CRITICAL();
+			if (st == SUMBER) 	{
+				memcpy((char *) pdata2, (char *) pdata, jml2);
 			} else {
-				printf("  GAGAL alokmem !\r\n");
-				vPortFree (pdata1);
-				vPortFree (pdata2);
-				return 3;
+				memcpy((char *) pdata2, (char *) ALMT_SUMBER, jml2);
 			}
+			taskEXIT_CRITICAL();
+			printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml2, ALMT_SUMBER);
 		} else {
-			if (pdata2!=NULL)	{
-				taskENTER_CRITICAL();
-				memcpy(pdata2, (char *) ALMT_SUMBER, jml2);
-				taskEXIT_CRITICAL();
-				//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml2, alm2);
-			} else {
-				printf("  GAGAL alokmem !\r\n");
-				vPortFree (pdata1);
-				vPortFree (pdata2);
-				return 4;
-			}
+			printf("  GAGAL alokmem !\r\n");
+			vPortFree (pdata1);
+			vPortFree (pdata2);
+			return 3;
 		}
-
+		printf(" end\r\n");
+#if 0		
 		hapuskan_sektor(SEKTOR_ENV);
 		//simpan_data_rom(jml, SEKTOR_ENV, hapus, alm1, jml1, (unsigned short *)pch1, alm2, jml2, (unsigned short *)pch2);
 		simpan_data_rom(jml, SEKTOR_ENV, hapus, ALMT_ENV,    jml1, (unsigned short *)pdata1);
 		simpan_data_rom(jml, SEKTOR_ENV, hapus, ALMT_SUMBER, jml2, (unsigned short *)pdata2);
-		
+#endif
 		vPortFree (pdata1);
 		vPortFree (pdata2);
 	}
-	else if (sektor == SEKTOR_DATA)	{
+	else if (sektor == SEKTOR_DATA)	{				// 10 data, per_sumber
 		jml1 = cek_jml_struct(DATA)*PER_SUMBER;
 		jml = 2 + 3*1;
-		kopikan_sektor_tmp(SEKTOR_DATA);
+		IAP_return_t iap_return = iapReadBlankSector(SEKTOR_DATA, SEKTOR_DATA);
+		if ( (iap_return.ReturnCode==SECTOR_NOT_BLANK) && (st!=-1) )
+			kopikan_sektor_tmp(SEKTOR_DATA);
 		hapuskan_sektor(SEKTOR_DATA);
 		
 		for (i=0; i<JML_SUMBER; i++)	{
 		//for (i=0; i<SUMBER_PER_SEKTOR; i++)	{
+			almt = i*JML_KOPI_TEMP + ALMT_DATA;
 			pdata1 = pvPortMalloc(JML_KOPI_TEMP);
-			almt = i*JML_KOPI_TEMP + ALMT_SKTR_TEMP;
-			if ( st == i )	{				// data yg berubah
+			if ( (st==i) || (st==-1) )	{				// data yg berubah
+				printf("-1/%d almt: 0x%08X\r\n", i, almt);
 				if (pdata1!=NULL)	{
 					taskENTER_CRITICAL();
 					memcpy(pdata1, pdata, jml1);
@@ -369,6 +355,8 @@ char simpan_struct_block_rom(int sektor, int st, char *pdata)	{
 			vPortFree (pdata1);
 		}
 	}
+	vPortFree (pdata1);
+	vPortFree (pdata2);
 	return 0;
 }
 

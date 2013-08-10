@@ -92,7 +92,7 @@
 #define PAKAI_TINYSH
 
 #define ST_LED				3
-#define ST_SHELL			30
+#define ST_SHELL			32
 #define ST_SANTER			10
 
 #define PAKAI_SERIAL_2
@@ -114,7 +114,7 @@
 	#error Please uncomment one of the two configPINSEL2_VALUE definitions above, depending on the revision of the LPC2000 device being used.
 #endif
 
-#define INCLUDE_uxTaskGetStackHighWaterMark	1
+//#define INCLUDE_uxTaskGetStackHighWaterMark	1
 
 #define configUSE_PREEMPTION		1
 #define configUSE_IDLE_HOOK         1

@@ -164,7 +164,7 @@ struct t_st_hw  {
 	unsigned char sdc;
 };
 
-struct t_st_hw st_hw;
+volatile struct t_st_hw st_hw;
 
 struct t_kalib {
 	float m;
@@ -195,7 +195,7 @@ struct t_data {
 	char status;			// 
 	char formula[16];
 };
-struct t_data st_data[JML_TITIK_DATA];
+//struct t_data st_data[JML_TITIK_DATA];
 
 #ifdef PAKAI_CRON
 struct t_cron {
@@ -266,7 +266,7 @@ struct t_env {
 	int		prioDebug;
 	int		prioDebug2;
 };
-struct t_env st_env;
+//struct t_env st_env;
 
 
 #ifdef PAKAI_RTC

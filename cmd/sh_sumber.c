@@ -122,7 +122,8 @@ char set_sumber(int argc, char **argv)		{
 	}
 	//printf("\r\n");
 	
-	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, (char *) st_sumber);
+	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 0, (char *) st_sumber);
+	vPortFree(st_sumber);
 	
 	return 0;
 }
@@ -143,6 +144,6 @@ void set_sumber_default()		{
 		strcpy(st_sumber[i].ket, "---");
 	}
 	
-	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, (char *) st_sumber);
+	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);
 }
 

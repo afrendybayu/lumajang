@@ -9,7 +9,7 @@
 #endif
 
 xTaskHandle *hdl_cepat;
-extern struct t_st_hw st_hw;
+extern volatile struct t_st_hw st_hw;
 
 void init_ambilCepatTasks( )		{
 	xTaskCreate( sedotDataTask, ( signed portCHAR * ) "Santer", configMINIMAL_STACK_SIZE*ST_SANTER, NULL, \

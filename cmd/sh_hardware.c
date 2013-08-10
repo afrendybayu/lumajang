@@ -9,7 +9,7 @@
 #include "manual.h"
 #include "sh_utils.h"
 
-extern struct t_st_hw st_hw;
+//extern struct t_st_hw st_hw;
 
 
 
@@ -66,9 +66,10 @@ void hapus_sector_rom(int argc, char **argv)			{
 
 
 
-void simpan_struct_rom(int argc, char **argv)			{
+void simpan_struct_rom(int argc, char **argv)			{		// bisa dihapus ????
 	printf("\r\n");
 	struct t_sumber st_sumber[JML_SUMBER];
+	struct t_env *st_env;
 	
 	//struct t_env *pst_env;
 	//struct t_sumber *pst_sumber;
@@ -144,7 +145,7 @@ void simpan_struct_rom(int argc, char **argv)			{
 		
 		// DATA
 		for (j=0; j<JML_SUMBER; j++)	{
-			pch1 = &st_data[i];
+//			pch1 = &st_data[i];
 			pdata1 = pvPortMalloc(jml1);
 			if (pdata1!=NULL)	{
 				taskENTER_CRITICAL();
@@ -171,6 +172,8 @@ void simpan_sector_rom(int argc, char **argv)			{
 	printf("\r\n");
 
 	struct t_sumber st_sumber[JML_SUMBER];
+	struct t_env *st_env;
+	struct t_data st_data[JML_SUMBER];
 
 	char *pdata, *pch;
 	int jml = 0, nn=256, sektor = SEKTOR_ENV;
@@ -253,7 +256,6 @@ char kopi_sektor(int argc, char **argv)	{
 
 void baca_rom()	{
 	struct t_env *penv;
-	//penv = (char *) ALMT_ENV;
 	penv = ALMT_ENV;
 	
 	printf("\r\n  almt: %08X, board: %s, SN: %s, prio: %d\r\n", ALMT_ENV, penv->nama_board, penv->SN, penv->prioDebug);

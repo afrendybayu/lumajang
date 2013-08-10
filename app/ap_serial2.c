@@ -25,7 +25,7 @@
 char strSer2[256];
 int nSer2;
 static xComPortHandle xPort2;
-extern struct t_st_hw st_hw;
+extern volatile struct t_st_hw st_hw;
 
 void sedot_mod(int ch);
 int proses_mod_cmd();

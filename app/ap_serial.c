@@ -56,16 +56,20 @@ static xComPortHandle xPort;
 extern xSemaphoreHandle xSemSer0;
 static xQueueHandle xPrintQueue;
 xTaskHandle *hdl_shell;
-extern struct t_st_hw st_hw;
+extern volatile struct t_st_hw st_hw;
 
 #if 1
 
 void printd(int prio, const char *format, ...)	{
 	va_list arg;
 	int lg=0;
+	
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	
 	char str_buffer[128];
 	//if (prio>0)	{
-	if (prio>=st_env.prioDebug)	{
+	if (prio>=st_env->prioDebug)	{
 		if( xSemSer0 != NULL )    {
 			if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
 				va_start (arg, format);

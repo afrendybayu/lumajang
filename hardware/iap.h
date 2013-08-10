@@ -21,9 +21,8 @@ IAP_return_t iapEraseSector(uchr awal, uchr akhir)	;
 IAP_return_t iapJob(uchr iapcmd, uchr awal, uchr akhir);
 IAP_return_t iapCopyMemorySector(unsigned int addr, unsigned short *data, int pjg);
 char simpan_rom(int sektor,  unsigned int addr, unsigned short *data, int jml);
-char simpan_struct_block_rom(int sektor, int st, char *pdata);
 char simpan_data_rom(int no, ...);
-
+char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata);
 
 #define iapSiapSektor(awal, akhir)		iapJob(IAP_CMD_PREPARESECTORFORWRITE, awal, akhir)
 #define iapCekSektor(awal, akhir)		iapJob(IAP_CMD_BLANKCHECKSECTOR, awal, akhir)
