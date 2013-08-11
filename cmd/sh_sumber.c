@@ -12,9 +12,16 @@
 #include "sh_utils.h"
 #include "sh_sumber.h"
 #include "manual.h"
-
+#include "iap.h"
 
 void cek_sumber(int argc, char **argv)		{
+	IAP_return_t iap_return;
+	iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
+	if (iap_return.ReturnCode == CMD_SUCCESS)	{
+		printf("  ERR: Sektor Kosong ! Lakukan: set_env default\r\n");
+		return;
+	}
+	
 	int i=0;
 	struct t_sumber *st_sumber;
 	st_sumber = (char *) ALMT_SUMBER;

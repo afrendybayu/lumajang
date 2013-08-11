@@ -10,10 +10,18 @@
 #include "sh_env.h"
 #include "sh_utils.h"
 #include "manual.h"
+#include "iap.h"
 
 //extern struct t_env env;
 
 void cek_env(int argc, char **argv)	{
+	IAP_return_t iap_return;
+	iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
+	if (iap_return.ReturnCode == CMD_SUCCESS)	{
+		printf("  ERR: Sektor Kosong ! Lakukan: set_env default\r\n");
+		return;
+	}
+	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	

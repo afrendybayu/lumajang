@@ -390,13 +390,14 @@ char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 }
 
 void baca_konfig_rom()		{
-	printf("Data env & sumber\r\n");
-	IAP_return_t iap_return = iapReadBlankSector(ALMT_ENV, ALMT_ENV);
+	//printf("Data env & sumber\r\n");
+	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
 		
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
-		
+		set_env_default();
+		set_sumber_default();
 	} else {
 		
 	}
