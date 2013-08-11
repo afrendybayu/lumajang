@@ -92,10 +92,10 @@
 #define PAKAI_TINYSH
 
 #define ST_LED				3
-#define ST_SHELL			32
-#define ST_SANTER			10
+#define ST_SHELL			30
+#define ST_SANTER			1		//	10
 
-#define PAKAI_SERIAL_2
+//#define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	#define PAKAI_SERIAL_2_P0		115200
 	//#define PAKAI_SERIAL_2_P0		9600

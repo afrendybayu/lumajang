@@ -13,6 +13,9 @@ extern xTaskHandle *hdl_shell;
 extern xTaskHandle *hdl_led;
 
 void task_list()	{
+#if INCLUDE_vTaskSuspend==0
+	qsprintf("\r\n--> task list NON AKTIF, INCLUDE_vTaskSuspend perlu diaktifkan.\r\n");
+#else
 static signed char cListBuffer[ mainLIST_BUFFER_SIZE ];
 const signed char *pcList = &( cListBuffer[ 0 ] );
 const char * const pcHeader = "Task          State  Priority  Stack	#\r\n************************************************\r\n";
@@ -21,6 +24,7 @@ const char * const pcHeader = "Task          State  Priority  Stack	#\r\n*******
 	qsprintf(pcHeader);
 	vTaskList( cListBuffer );
 	qsprintf(cListBuffer);
+#endif
 }
 
 void cek_memory_stack()		{

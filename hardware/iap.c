@@ -95,7 +95,7 @@ IAP_return_t iapCopyMemorySector(unsigned int addr, unsigned short * data, int p
 	IAP_return_t iap_return;
 	// ToDo: Why does IAP sometime cause the application to halt when read???
 	
-	//printf("\r\n%s cmd: %d, addr: %d, pjg: %d\r\n", __FUNCTION__, IAP_CMD_COPYRAMTOFLASH, addr, pjg);
+	//printf("\r\n%s cmd: %d, addr: 0x%08X, pjg: %d\r\n", __FUNCTION__, IAP_CMD_COPYRAMTOFLASH, addr, pjg);
 	
 	param_table[0] = IAP_CMD_COPYRAMTOFLASH;
 	param_table[1] = addr;
@@ -244,10 +244,10 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 		return 1;
 	
 	if (iap_return.ReturnCode == CMD_SUCCESS)	{
-		printf("  TS[%d].\r\n", nSktr);
+		printf(" TS[%d].\r\n", nSktr);
 	}
 	else	{
-		printf("  GAGAL SALIN S%d : %d\r\n", nSktr, iap_return.ReturnCode);
+		printf(" GAGAL SALIN S%d : %d\r\n", nSktr, iap_return.ReturnCode);
 		return 2;
 	}
 	
@@ -269,23 +269,25 @@ char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 
 		// ENV diamankan
 		printf("env");
+		//return 0;
 		pdata1 = pvPortMalloc(jml1);
+		printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, pdata1);
 		if (pdata1!=NULL)	{
 			taskENTER_CRITICAL();
 			if (st == ENV)	{
-				//memcpy((char *) pdata1, (char *) pdata, jml1);
+				memcpy((char *) pdata1, (char *) pdata, jml1);
 			} else {
-				//memcpy((char *) pdata1, (char *) ALMT_ENV, jml1);
+				memcpy((char *) pdata1, (char *) ALMT_ENV, jml1);
 			}
 			taskEXIT_CRITICAL();
-			//printf("  memSIP : %d, Alm: 0x%08X.\r\n", jml1, ALMT_ENV);
+			printf("  memSIP : %d, Alm: 0x%08X.", jml1, ALMT_ENV);
 		} else {
-			printf("  GAGAL alokmem !\r\n");
+			printf("  GAGAL alokmem !");
 			//vPortFree (pdata1);
 			return 1;
 		}
 		printf(" end\r\n");
-		
+		#if 0
 		// SUMBER
 		printf("sumber");
 		pdata2 = pvPortMalloc(jml2);
@@ -305,14 +307,15 @@ char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 			return 3;
 		}
 		printf(" end\r\n");
-#if 0		
+		#endif
+#if 1
 		hapuskan_sektor(SEKTOR_ENV);
 		//simpan_data_rom(jml, SEKTOR_ENV, hapus, alm1, jml1, (unsigned short *)pch1, alm2, jml2, (unsigned short *)pch2);
 		simpan_data_rom(jml, SEKTOR_ENV, hapus, ALMT_ENV,    jml1, (unsigned short *)pdata1);
-		simpan_data_rom(jml, SEKTOR_ENV, hapus, ALMT_SUMBER, jml2, (unsigned short *)pdata2);
+		//simpan_data_rom(jml, SEKTOR_ENV, hapus, ALMT_SUMBER, jml2, (unsigned short *)pdata2);
 #endif
 		vPortFree (pdata1);
-		vPortFree (pdata2);
+		//vPortFree (pdata2);
 	}
 	else if (sektor == SEKTOR_DATA)	{				// 10 data, per_sumber
 		jml1 = cek_jml_struct(DATA)*PER_SUMBER;
@@ -373,3 +376,28 @@ void baca_konfig_rom()		{
 	}
 	printf("Data data\r\n");
 }
+
+char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
+	printf("jml: %d, ENV: %d\r\n", hitung_ram(cek_jml_struct(ENV)), ENV);
+	
+	if (sektor==SEKTOR_ENV)		{
+		kopikan_sektor_tmp(SEKTOR_ENV);
+		if (st==ENV)	{
+			hapuskan_sektor(sektor);
+			simpan_rom(sektor, ALMT_ENV, (unsigned short *) pdata, hitung_ram(cek_jml_struct(ENV)) );
+		}
+	}
+}
+
+#if 0
+char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
+	printf("jml: %d, ENV: %d\r\n", hitung_ram(cek_jml_struct(ENV)), ENV);
+	
+	if (sektor==SEKTOR_ENV)		{
+		if (st==ENV)	{
+			hapuskan_sektor(sektor);
+			simpan_rom(sektor, ALMT_ENV, (unsigned short *) pdata, hitung_ram(cek_jml_struct(ENV)) );
+		}
+	}
+}
+#endif

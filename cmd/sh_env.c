@@ -63,7 +63,7 @@ char set_env(int argc, char **argv)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		return 2;
 	}
-	//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
 	if (argc==3)	{
@@ -156,55 +156,65 @@ char set_env(int argc, char **argv)	{
 void set_env_default()		{
 	int i;
 	
-	struct t_env st_env;
+	struct t_env *st_env;
+	st_env = pvPortMalloc( sizeof (struct t_env) );
 	
-	strcpy(st_env.nama_board, BOARD_SANTER);
-	st_env.IP0 = 192;
-	st_env.IP1 = 168;
-	st_env.IP2 = 1;
-	st_env.IP3 = 250;
-	st_env.GW0 = 192;
-	st_env.GW1 = 168;
-	st_env.GW2 = 1;
-	st_env.GW3 = 1;
+	if (st_env==NULL)	{
+		printf("  GAGAL alokmem !");
+		vPortFree (st_env);
+		return;
+	}
+	//memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
+	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+	strcpy(st_env->nama_board, BOARD_SANTER);
+	st_env->IP0 = 192;
+	st_env->IP1 = 168;
+	st_env->IP2 = 1;
+	st_env->IP3 = 250;
+	st_env->GW0 = 192;
+	st_env->GW1 = 168;
+	st_env->GW2 = 1;
+	st_env->GW3 = 1;
 	
 	for (i=0; i<JML_KANAL; i++)	{
-		st_env.kalib[i].m = 1;
-		st_env.kalib[i].C = 0;
+		st_env->kalib[i].m = 1;
+		st_env->kalib[i].C = 0;
 		//strcpy(env.kalib[i].ket, "----");
 	}
 	
-	st_env.magic1 = 0x01;
-	st_env.magic2 = 0x01;
-	st_env.mmc_serial = 0;
-	strcpy(st_env.SN, "STR.kalender");
+	st_env->magic1 = 0x01;
+	st_env->magic2 = 0x01;
+	st_env->mmc_serial = 0;
+	strcpy(st_env->SN, "STR.kalender");
 
-	strcpy(st_env.berkas, "/monita3/ml.php");
-	st_env.statusWebClient = 0;
-	st_env.banyak_sumber = 5;
-	st_env.burst = 0;
-	st_env.wIP0 = 192;
-	st_env.wIP1 = 168;
-	st_env.wIP2 = 1;
-	st_env.wIP3 = 99;
-	st_env.k1 = 0;
-	st_env.k2 = 0;
-	st_env.uRTC = 0;
-	st_env.statusSerClient = 0;
-	st_env.intKirim = 10;
-	st_env.intReset = 30;
-	st_env.intTole = 10;
-	st_env.netTot = 10;
-	strcpy(st_env.passwd, "monita");
-	strcpy(st_env.madein, "Afrendy Bayu");
-	strcpy(st_env.nohp, "082114722505");
-	st_env.statusCron = 0;
-	st_env.almtSlave = 1;
-	st_env.statusSlave = 0;
-	st_env.prioDebug  = 10;
-	st_env.prioDebug2 = 20;
+	strcpy(st_env->berkas, "/monita3/ml.php");
+	st_env->statusWebClient = 0;
+	st_env->banyak_sumber = 5;
+	st_env->burst = 0;
+	st_env->wIP0 = 192;
+	st_env->wIP1 = 168;
+	st_env->wIP2 = 1;
+	st_env->wIP3 = 99;
+	st_env->k1 = 0;
+	st_env->k2 = 0;
+	st_env->uRTC = 0;
+	st_env->statusSerClient = 0;
+	st_env->intKirim = 10;
+	st_env->intReset = 30;
+	st_env->intTole = 10;
+	st_env->netTot = 10;
+	strcpy(st_env->passwd, "monita");
+	strcpy(st_env->madein, "Afrendy Bayu");
+	strcpy(st_env->nohp, "082114722505");
+	st_env->statusCron = 0;
+	st_env->almtSlave = 1;
+	st_env->statusSlave = 0;
+	st_env->prioDebug  = 10;
+	st_env->prioDebug2 = 20;
 	
-	simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
-	
+	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env);
+	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
+	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, &st_env);
+	vPortFree (st_env);
 }
 

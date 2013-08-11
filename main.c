@@ -289,8 +289,11 @@ void vLedTask( void *pvParameters )	{
 			stat_ps();
 			pll_feed();
 		}
-
+		#if INCLUDE_vTaskDelayUntil==1
 		vTaskDelayUntil( &xLastWakeTime, xFrequency );
+		#else
+		vTaskDelay(495);
+		#endif
 	}
 
 }

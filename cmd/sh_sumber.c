@@ -56,7 +56,7 @@ char set_sumber(int argc, char **argv)		{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		return -1;
 	}
-	//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
+	printf(" -->%s(): Mallok @%X\r\n", __FUNCTION__, st_sumber);
 	memcpy((char *) st_sumber, (char *) ALMT_SUMBER, (JML_SUMBER * sizeof (struct t_sumber)));
 	
 	
@@ -122,7 +122,7 @@ char set_sumber(int argc, char **argv)		{
 	}
 	//printf("\r\n");
 	
-	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 0, (char *) st_sumber);
+	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 0, (char *) st_sumber);
 	vPortFree(st_sumber);
 	
 	return 0;
@@ -131,7 +131,17 @@ char set_sumber(int argc, char **argv)		{
 void set_sumber_default()		{
 	int i;
 	
-	struct t_sumber st_sumber[JML_SUMBER];
+	//struct t_sumber st_sumber[JML_SUMBER];
+	struct t_sumber *st_sumber;
+	
+	st_sumber = pvPortMalloc( sizeof (struct t_sumber)*JML_SUMBER );
+	
+	if (st_sumber==NULL)	{
+		printf("  GAGAL alokmem !");
+		vPortFree (st_sumber);
+		return;
+	}
+	
 	for (i=0; i<JML_SUMBER; i++)	{
 		sprintf(st_sumber[i].nama, "Sumber %d", i+1);
 		st_sumber[i].IP0 = 192;
@@ -144,6 +154,8 @@ void set_sumber_default()		{
 		strcpy(st_sumber[i].ket, "---");
 	}
 	
-	simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);
+	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);
+	//simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber);
+	vPortFree (st_sumber);
 }
 
