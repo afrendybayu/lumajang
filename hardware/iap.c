@@ -396,6 +396,7 @@ void baca_konfig_rom()		{
 		
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
+		printf("  >> Init ROM: ENV, SUMBER\r\n");
 		set_env_default();
 		set_sumber_default();
 	} else {
@@ -404,6 +405,7 @@ void baca_konfig_rom()		{
 	printf("Data data\r\n");
 }
 
+// flag belum dipake
 char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 	printf("jml: %d, st: %d, ENV: %d, SMBR: %d\r\n", hitung_ram(cek_jml_struct(ENV)), st, ENV, SUMBER);
 	

@@ -144,6 +144,7 @@ char set_sumber(int argc, char **argv)		{
 	//printf("\r\n");
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 0, (char *) st_sumber);
+	simpan_st_rom(SEKTOR_ENV, SUMBER, 0, (unsigned short *) st_sumber);
 	vPortFree(st_sumber);
 	
 	return 0;

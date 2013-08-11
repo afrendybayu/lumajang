@@ -28,7 +28,7 @@ void cek_env(int argc, char **argv)	{
 	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
 	uprintf("  Nama Board : %s\r\n", st_env->nama_board);
 	uprintf("  No Seri    : %s\r\n", st_env->SN);
-	uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
+	//uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
 	#ifdef PAKAI_ETH
 	uprintf("  Konfigurasi Ethernet\r\n");
 	uprintf("    Alamat IP: %d.%d.%d.%d\r\n", st_env->IP0, st_env->IP1, st_env->IP2, st_env->IP3);
@@ -42,7 +42,7 @@ void cek_env(int argc, char **argv)	{
 	uprintf("    ID Device: %d\r\n", st_env->almtSlave);
 	uprintf("    BaudRate : %d\r\n", PAKAI_SERIAL_2_P0);
 	#endif
-	uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
+	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 }
@@ -154,7 +154,8 @@ char set_env(int argc, char **argv)	{
 		}	
 	}
 	
-	simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
+	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
+	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env);
 	vPortFree (st_env);
 	
 	printf("\r\n");
