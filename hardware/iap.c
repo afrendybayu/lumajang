@@ -226,6 +226,20 @@ char kopikan_sektor_tmp(int ALAMAT_SEKTOR)	{
 		vPortFree (pdata);
 		if (hasil>0) return 1;
 	}
+	
+	#if 1
+	char *en;
+	en = (char *) ALMT_SKTR_TEMP;
+	for (i=0; i<16; i++)
+		printf(" %02X", *(en++));
+	printf("\r\n");
+	
+	en = (char *) ALAMAT_SEKTOR;
+	for (i=0; i<16; i++)
+		printf(" %02X", *(en++));
+	printf("\r\n");
+	#endif
+	
 	return 0;
 }
 
@@ -378,13 +392,38 @@ void baca_konfig_rom()		{
 }
 
 char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
-	printf("jml: %d, ENV: %d\r\n", hitung_ram(cek_jml_struct(ENV)), ENV);
+	printf("jml: %d, st: %d, ENV: %d, SMBR: %d\r\n", hitung_ram(cek_jml_struct(ENV)), st, ENV, SUMBER);
 	
 	if (sektor==SEKTOR_ENV)		{
-		kopikan_sektor_tmp(SEKTOR_ENV);
+		//kopikan_sektor_tmp(SEKTOR_ENV);
+		kopikan_sektor_tmp(alamat_sektor(SEKTOR_ENV));
+		//cek_sumber_temp();
 		if (st==ENV)	{
 			hapuskan_sektor(sektor);
 			simpan_rom(sektor, ALMT_ENV, (unsigned short *) pdata, hitung_ram(cek_jml_struct(ENV)) );
+			
+			struct t_sumber *st_sumber;
+			st_sumber = pvPortMalloc( sizeof (struct t_sumber)*JML_SUMBER );
+			
+			if (st_sumber==NULL)	{
+				printf("  GAGAL alokmem !");
+				vPortFree (st_sumber);
+				return;
+			}
+			
+			printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
+			taskENTER_CRITICAL();
+			memcpy((char *) st_sumber, (char *) ALMT_SUMBER_TMP, sizeof (struct t_sumber)*JML_SUMBER);
+			taskEXIT_CRITICAL();
+			
+			simpan_rom(sektor, ALMT_SUMBER, (unsigned short *) st_sumber, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
+			vPortFree (st_sumber);
+		}
+		
+		if (st==SUMBER)	{
+			hapuskan_sektor(sektor);
+			simpan_rom(sektor, ALMT_SUMBER, (unsigned short *) pdata, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
+			//kopikan_sektor_tmp(SEKTOR_ENV);
 		}
 	}
 }

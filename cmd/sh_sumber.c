@@ -28,6 +28,19 @@ void cek_sumber(int argc, char **argv)		{
 	}
 }
 
+void cek_sumber_temp(int argc, char **argv)		{
+	int i=0;
+	struct t_sumber *st_sumber;
+	st_sumber = (char *) ALMT_SUMBER_TMP;
+	
+	uprintf("\r\n  Cek Sumber: 0x%08X\r\n  ******************************\r\n", ALMT_SUMBER_TMP);
+	uprintf (" no |        Nama       |        IP       | Almt | Stack |      Keterangan     |\r\n");
+	for (i=0; i<JML_SUMBER; i++)	{
+		printf(" %2d | %-17s | %3d.%3d.%3d.%3d | %4d |  %3d  | %-19s |\r\n", i+1, st_sumber[i].nama, \
+			st_sumber[i].IP0, st_sumber[i].IP1, st_sumber[i].IP2, st_sumber[i].IP3,	\
+			st_sumber[i].alamat, st_sumber[i].stack, st_sumber[i].ket);
+	}
+}
 
 
 char set_sumber(int argc, char **argv)		{
@@ -142,6 +155,7 @@ void set_sumber_default()		{
 		return;
 	}
 	
+	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
 	for (i=0; i<JML_SUMBER; i++)	{
 		sprintf(st_sumber[i].nama, "Sumber %d", i+1);
 		st_sumber[i].IP0 = 192;
@@ -155,7 +169,7 @@ void set_sumber_default()		{
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);
-	//simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber);
+	simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber);
 	vPortFree (st_sumber);
 }
 

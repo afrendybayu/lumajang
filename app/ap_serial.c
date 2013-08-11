@@ -186,6 +186,7 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&cek_sumber_cmd);
 	tinysh_add_command(&set_sumber_cmd);
+	tinysh_add_command(&cek_sumber_temp_cmd);
 	
 	tinysh_add_command(&reset_cmd);
 	tinysh_add_command(&task_list_cmd);
