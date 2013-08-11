@@ -6,7 +6,9 @@
 
 #include <stdio.h>
 #include <stdarg.h>
- 
+
+#define DEBUG_IAP
+
 unsigned int param_table[5];
 
 //typedef void (*IAP)(unsigned int [],unsigned int[]);
@@ -114,17 +116,23 @@ char hapuskan_sektor(int sektor)	{
 	IAP_return_t iap_return = iapSiapSektor(nSktr, nSktr);
 	
 	if ( iap_return.ReturnCode == CMD_SUCCESS )	{
+		#ifdef DEBUG_IAP
 		printf("  SS[%d]", nSktr);
+		#endif
 		iap_return = iapEraseSector(nSktr, nSktr);
 	} 
 	else	{
 		return 1;
 	}
 
-	if (iap_return.ReturnCode == CMD_SUCCESS)	
+	if (iap_return.ReturnCode == CMD_SUCCESS)
+		#ifdef DEBUG_IAP
 		printf(" HS[%d].\r\n", nSktr);
+		#endif
 	else	{
+		#ifdef DEBUG_IAP
 		printf("  GAGAL Hapus Sektor %d !!\r\n", nSktr);
+		#endif
 		return 2;
 	}
 	return 0;
@@ -227,7 +235,7 @@ char kopikan_sektor_tmp(int ALAMAT_SEKTOR)	{
 		if (hasil>0) return 1;
 	}
 	
-	#if 1
+	#if 0
 	char *en;
 	en = (char *) ALMT_SKTR_TEMP;
 	for (i=0; i<16; i++)
@@ -258,10 +266,14 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 		return 1;
 	
 	if (iap_return.ReturnCode == CMD_SUCCESS)	{
+		#ifdef DEBUG_IAP
 		printf(" TS[%d].\r\n", nSktr);
+		#endif
 	}
 	else	{
+		#ifdef DEBUG_IAP
 		printf(" GAGAL SALIN S%d : %d\r\n", nSktr, iap_return.ReturnCode);
+		#endif
 		return 2;
 	}
 	
@@ -395,9 +407,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 	printf("jml: %d, st: %d, ENV: %d, SMBR: %d\r\n", hitung_ram(cek_jml_struct(ENV)), st, ENV, SUMBER);
 	
 	if (sektor==SEKTOR_ENV)		{
-		//kopikan_sektor_tmp(SEKTOR_ENV);
 		kopikan_sektor_tmp(alamat_sektor(SEKTOR_ENV));
-		//cek_sumber_temp();
 		if (st==ENV)	{
 			hapuskan_sektor(sektor);
 			simpan_rom(sektor, ALMT_ENV, (unsigned short *) pdata, hitung_ram(cek_jml_struct(ENV)) );
@@ -408,7 +418,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 			if (st_sumber==NULL)	{
 				printf("  GAGAL alokmem !");
 				vPortFree (st_sumber);
-				return;
+				return 1;
 			}
 			
 			printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
@@ -423,9 +433,22 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 		if (st==SUMBER)	{
 			hapuskan_sektor(sektor);
 			simpan_rom(sektor, ALMT_SUMBER, (unsigned short *) pdata, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
-			//kopikan_sektor_tmp(SEKTOR_ENV);
+			
+			struct t_env *st_env;
+			st_env = pvPortMalloc( sizeof (struct t_env) );
+			if (st_env == NULL)	{
+				printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+				return 2;
+			}
+			printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+			memcpy((char *) st_env, (char *) ALMT_ENV_TMP, (sizeof (struct t_env)));
+			simpan_rom(sektor, ALMT_ENV, (unsigned short *) st_env, hitung_ram(cek_jml_struct(ENV)) );
+			vPortFree (st_env);
 		}
 	}
+	
+	
+	return 0;
 }
 
 #if 0

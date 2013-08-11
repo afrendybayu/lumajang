@@ -24,6 +24,7 @@ const char * const pcHeader = "Task          State  Priority  Stack	#\r\n*******
 	qsprintf(pcHeader);
 	vTaskList( cListBuffer );
 	qsprintf(cListBuffer);
+	printf("\r\n");
 #endif
 }
 

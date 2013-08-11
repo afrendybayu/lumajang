@@ -28,6 +28,7 @@ void cek_sumber(int argc, char **argv)		{
 	}
 }
 
+#if 0
 void cek_sumber_temp(int argc, char **argv)		{
 	int i=0;
 	struct t_sumber *st_sumber;
@@ -41,7 +42,7 @@ void cek_sumber_temp(int argc, char **argv)		{
 			st_sumber[i].alamat, st_sumber[i].stack, st_sumber[i].ket);
 	}
 }
-
+#endif
 
 char set_sumber(int argc, char **argv)		{
 	if (argc>4 || argc==1)		sumber_kitab();

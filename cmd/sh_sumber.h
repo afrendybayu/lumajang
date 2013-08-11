@@ -14,7 +14,9 @@ void cek_sumber_temp(int argc, char **argv);
 static tinysh_cmd_t cek_sumber_cmd={ 0,"cek_sumber","cek sumber modul","", cek_sumber,0,0,0 };
 static tinysh_cmd_t set_sumber_cmd={ 0,"set_sumber","set sumber modul","", set_sumber,0,0,0 };
 
+#if 0
 static tinysh_cmd_t cek_sumber_temp_cmd={ 0,"cek_sumber_temp","cek sumber modul","", cek_sumber_temp,0,0,0 };
+#endif
 #endif
 
 #endif
