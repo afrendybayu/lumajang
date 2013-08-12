@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define DEBUG_IAP
+//#define DEBUG_IAP
+extern volatile float data_f[];
 
 unsigned int param_table[5];
 
@@ -125,10 +126,11 @@ char hapuskan_sektor(int sektor)	{
 		return 1;
 	}
 
-	if (iap_return.ReturnCode == CMD_SUCCESS)
+	if (iap_return.ReturnCode == CMD_SUCCESS)	{
 		#ifdef DEBUG_IAP
 		printf(" HS[%d].\r\n", nSktr);
 		#endif
+	}
 	else	{
 		#ifdef DEBUG_IAP
 		printf("  GAGAL Hapus Sektor %d !!\r\n", nSktr);
@@ -258,7 +260,9 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	IAP_return_t iap_return = iapSiapSektor(nSktr, nSktr);
 	//printf("  ---> hasil siap: %d\r\n", iap_return.ReturnCode);
 	if ( iap_return.ReturnCode == CMD_SUCCESS )		{
+		#ifdef DEBUG_IAP
 		printf("  SS[%d]", nSktr);
+		#endif
 		iap_return = iapCopyMemorySector(addr, data, jml);
 		//printf("  ---> hasil kopi: %d\r\n", iap_return.ReturnCode);
 	} 
@@ -280,6 +284,7 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 	return 0;
 }
 
+#if 0
 char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 	char *pdata1, *pdata2;
 	char *pch1, *pch2;
@@ -297,7 +302,7 @@ char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 		printf("env");
 		//return 0;
 		pdata1 = pvPortMalloc(jml1);
-		printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, pdata1);
+		printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, pdata1);
 		if (pdata1!=NULL)	{
 			taskENTER_CRITICAL();
 			if (st == ENV)	{
@@ -388,26 +393,44 @@ char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata)	{
 	vPortFree (pdata2);
 	return 0;
 }
+#endif
+
+void generate_data_random()		{
+	int i;
+	for (i=0; i<JML_SUMBER*PER_SUMBER; i++)		{
+		data_f[i] = ((float)rand() / 1000000);
+	}
+}
 
 void baca_konfig_rom()		{
 	//printf("Data env & sumber\r\n");
 	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
-		
+		printf("Baca Konfig ENV & SUMBER  ");
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
-		printf("  >> Init ROM: ENV, SUMBER\r\n");
+		printf(">> Init ROM: ENV, SUMBER\r\n");
 		set_env_default();
 		set_sumber_default();
 	} else {
 		
 	}
-	printf("Data data\r\n");
+	//printf("Data data\r\n");
+	generate_data_random();
+	iap_return = iapReadBlankSector(SEKTOR_DATA, SEKTOR_DATA);
+	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
+		printf("Baca Konfig DATA");
+	}
+	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
+		printf(">> Init ROM: DATA\r\n");
+		set_data_default();
+	}
+	printf("\r\n");
 }
 
-// flag belum dipake
-char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
-	printf("jml: %d, st: %d, ENV: %d, SMBR: %d\r\n", hitung_ram(cek_jml_struct(ENV)), st, ENV, SUMBER);
+// flag dipake untuk data
+char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part)	{
+	//printf("jml: %d, st: %d, ENV: %d, SMBR: %d, DATA: %d\r\n", hitung_ram(cek_jml_struct(ENV)), st, ENV, SUMBER, DATA);
 	
 	if (sektor==SEKTOR_ENV)		{
 		kopikan_sektor_tmp(alamat_sektor(SEKTOR_ENV));
@@ -424,7 +447,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 				return 1;
 			}
 			
-			printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
+			printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
 			taskENTER_CRITICAL();
 			memcpy((char *) st_sumber, (char *) ALMT_SUMBER_TMP, sizeof (struct t_sumber)*JML_SUMBER);
 			taskEXIT_CRITICAL();
@@ -444,12 +467,166 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{
 				return 2;
 			}
 			printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+			taskENTER_CRITICAL();
 			memcpy((char *) st_env, (char *) ALMT_ENV_TMP, (sizeof (struct t_env)));
+			taskEXIT_CRITICAL();
 			simpan_rom(sektor, ALMT_ENV, (unsigned short *) st_env, hitung_ram(cek_jml_struct(ENV)) );
 			vPortFree (st_env);
 		}
 	}
+	else if (sektor==SEKTOR_DATA)		{
+		#if 0
+		if (part==1)	{					// kopi data 
+			kopikan_sektor_tmp(alamat_sektor(SEKTOR_DATA));
+		}
+		#endif
+		if (flag==1)	{
+			printf("kopi sektor ke TMP\r\n");
+			kopikan_sektor_tmp(alamat_sektor(SEKTOR_DATA));
+			hapuskan_sektor(sektor);		// hapus sektor
+		}
+		if (part==0)	{					// set_data default
+			simpan_rom(sektor, ALMT_DATA+(st*JML_KOPI_TEMP), (unsigned short *) pdata, hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
+		}
+		else if (part==1)	{
+			int i;
+
+			printf("sektor: %d, part: %d, st: %d, flag: %d\r\n", sektor, part, st, flag);
+			//for (i=0; i<ukuran_rom(SEKTOR_DATA); i++)		{
+			for (i=0; i<JML_SUMBER; i++)		{
+				printf(" >> i: %d, ", i);
+				if (i==st)	{
+					printf("data asli\r\n");
+					simpan_rom(sektor, ALMT_DATA+(st*JML_KOPI_TEMP), (unsigned short *) pdata, \
+						hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
+				}
+				else		{
+					printf("data temp\r\n");
+					struct t_data *st_data;
+					st_data = pvPortMalloc( PER_SUMBER*sizeof (struct t_data) );
+					if (st_data == NULL)	{
+						printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+						vPortFree (st_data);
+						return 2;
+					}
+					printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_data);
+
+					taskENTER_CRITICAL();
+					memcpy((char *) st_data, (char *) ALMT_DATA_TMP+(i*JML_KOPI_TEMP), (PER_SUMBER*sizeof (struct t_data)));
+					taskEXIT_CRITICAL();
+					
+					simpan_rom(sektor, ALMT_DATA+(i*JML_KOPI_TEMP), (unsigned short *) st_data, \
+						hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );					
+					vPortFree (st_data);
+				}
+			}
+		}		
+		
+		#if 0
+		if (flag == 0)	{		// data default
+			int i=0, j;
+			char *en;			
+
+			hapuskan_sektor(sektor);
+			for (i=0; i<JML_SUMBER; i++)	{
+//				printf("sektor: %d, ALMT: 0x%08X, jml: %d\r\n", sektor, ALMT_DATA+(i*JML_KOPI_TEMP), hitung_ram(cek_jml_struct(DATA)*PER_SUMBER));
+				simpan_rom(sektor, ALMT_DATA+(i*JML_KOPI_TEMP), (unsigned short *) pdata, hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
+
+				#if 0
+				en = (char *) ALMT_DATA+(i*JML_KOPI_TEMP);
+				for (j=0;j<40; j++)	{
+					printf(" %02X", *(en++));
+				}
+				printf("\r\n");
+				#endif
+			}
+			
+			
+			struct t_data *dt;
+			dt = (char *) ALMT_DATA;
+			//for (i=0; i<JML_SUMBER; i++)	
+			{
+				for (j=0; j<2; j++)		
+				{
+					printf("%d. %s, %d\r\n", j+1, dt[j].nama, dt[j].rangeL);
+				}
+			}
+			dt = (char *) ALMT_DATA+(1*JML_KOPI_TEMP);
+			//for (i=0; i<JML_SUMBER; i++)	
+			{
+				for (j=0; j<2; j++)		
+				{
+					printf("%d. %s, %d\r\n", j+1, dt[j].nama, dt[j].rangeL);
+				}
+			}
+			
+		} 
+		else	{
+			
+		}
+		#endif
+	}
 	
+	return 0;
+}
+
+char simpan_mem_rom(int sektor, int st, int flag, unsigned short *pdata, int def)	{
+	if (sektor==SEKTOR_DATA)		{
+		
+		if (flag==1)	{
+			kopikan_sektor_tmp(alamat_sektor(SEKTOR_DATA));
+			hapuskan_sektor(sektor);		// hapus sektor
+		}
+		
+		simpan_rom(sektor, ALMT_DATA+(st*JML_KOPI_TEMP), (unsigned short *) pdata, hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
+		
+		
+		#if 0
+		if (flag == 0)	{		// data default
+			int i=0, j;
+			char *en;			
+
+			hapuskan_sektor(sektor);
+			for (i=0; i<JML_SUMBER; i++)	{
+//				printf("sektor: %d, ALMT: 0x%08X, jml: %d\r\n", sektor, ALMT_DATA+(i*JML_KOPI_TEMP), hitung_ram(cek_jml_struct(DATA)*PER_SUMBER));
+				simpan_rom(sektor, ALMT_DATA+(i*JML_KOPI_TEMP), (unsigned short *) pdata, hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
+
+				#if 0
+				en = (char *) ALMT_DATA+(i*JML_KOPI_TEMP);
+				for (j=0;j<40; j++)	{
+					printf(" %02X", *(en++));
+				}
+				printf("\r\n");
+				#endif
+			}
+			
+			
+			struct t_data *dt;
+			dt = (char *) ALMT_DATA;
+			//for (i=0; i<JML_SUMBER; i++)	
+			{
+				for (j=0; j<2; j++)		
+				{
+					printf("%d. %s, %d\r\n", j+1, dt[j].nama, dt[j].rangeL);
+				}
+			}
+			dt = (char *) ALMT_DATA+(1*JML_KOPI_TEMP);
+			//for (i=0; i<JML_SUMBER; i++)	
+			{
+				for (j=0; j<2; j++)		
+				{
+					printf("%d. %s, %d\r\n", j+1, dt[j].nama, dt[j].rangeL);
+				}
+			}
+			
+		} 
+		else	{
+			
+		}
+		#endif
+		
+		
+	}
 	
 	return 0;
 }

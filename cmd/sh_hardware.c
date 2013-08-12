@@ -48,7 +48,11 @@ void hapus_sector_rom(int argc, char **argv)			{
 	if (atoi(argv[1])==0)	return;
 	
 	int nSktr = cek_nomor_valid(argv[1], JML_SECTOR_LPC-1);
-	hapuskan_sektor(nSktr);
+	char hsl = hapuskan_sektor(nSktr);
+	printf("  Hapus Sektor %d ", nSktr);
+	if (hsl==0)		printf("BERHASIL\r\n");
+	else 			printf("GAGAL !!\r\n");
+	
 	#if 0
 	IAP_return_t iap_return = iapSiapSektor(nSktr, nSktr);
 	

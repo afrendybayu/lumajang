@@ -56,7 +56,7 @@ char set_sumber(int argc, char **argv)		{
 	if (argc==2 || argc==3)	{
 		printf("\r\n");
 		if (strcmp(argv[1], "default") == 0)	{
-			printf("set_sumber dengan konfig default !\r\n");
+			printf("  set_sumber dengan konfig default !\r\n");
 			set_sumber_default();
 			return 0;
 		}
@@ -78,8 +78,9 @@ char set_sumber(int argc, char **argv)		{
 		return -1;
 	}
 	printf(" -->%s(): Mallok @%X\r\n", __FUNCTION__, st_sumber);
+	taskENTER_CRITICAL();
 	memcpy((char *) st_sumber, (char *) ALMT_SUMBER, (JML_SUMBER * sizeof (struct t_sumber)));
-	
+	taskEXIT_CRITICAL();
 	
 	if (argc==4)	{
 		printf("\r\n");
@@ -144,7 +145,7 @@ char set_sumber(int argc, char **argv)		{
 	//printf("\r\n");
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 0, (char *) st_sumber);
-	simpan_st_rom(SEKTOR_ENV, SUMBER, 0, (unsigned short *) st_sumber);
+	simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber, 0);
 	vPortFree(st_sumber);
 	
 	return 0;
@@ -164,7 +165,7 @@ void set_sumber_default()		{
 		return;
 	}
 	
-	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
+	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
 	for (i=0; i<JML_SUMBER; i++)	{
 		sprintf(st_sumber[i].nama, "Sumber %d", i+1);
 		st_sumber[i].IP0 = 192;
@@ -178,7 +179,7 @@ void set_sumber_default()		{
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);
-	simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber);
+	simpan_st_rom(SEKTOR_ENV, SUMBER, 0, (unsigned short *) st_sumber, 0);
 	vPortFree (st_sumber);
 }
 

@@ -24,7 +24,8 @@ char simpan_rom(int sektor,  unsigned int addr, unsigned short *data, int jml);
 char simpan_data_rom(int no, ...);
 char simpan_struct_block_rom(int sektor, int st, int flag, char *pdata);
 
-char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata);
+//char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata);
+char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part);
 
 
 #define iapSiapSektor(awal, akhir)		iapJob(IAP_CMD_PREPARESECTORFORWRITE, awal, akhir)

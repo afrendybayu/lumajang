@@ -58,7 +58,7 @@ char set_env(int argc, char **argv)	{
 			return 0;
 		}
 		else if (strcmp(argv[1], "default") == 0)	{
-			printf("set env dengan konfig default !\r\n");
+			printf("  set env dengan konfig default !\r\n");
 			set_env_default();
 			return 0;
 		}
@@ -71,7 +71,7 @@ char set_env(int argc, char **argv)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		return 2;
 	}
-	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
 	if (argc==3)	{
@@ -155,7 +155,7 @@ char set_env(int argc, char **argv)	{
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
-	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env);
+	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 	
 	printf("\r\n");
@@ -174,7 +174,7 @@ void set_env_default()		{
 		return;
 	}
 	//memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
-	printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
 	strcpy(st_env->nama_board, BOARD_SANTER);
 	st_env->IP0 = 192;
 	st_env->IP1 = 168;
@@ -221,7 +221,7 @@ void set_env_default()		{
 	st_env->prioDebug  = 10;
 	st_env->prioDebug2 = 20;
 	
-	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env);
+	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, &st_env);
 	vPortFree (st_env);
