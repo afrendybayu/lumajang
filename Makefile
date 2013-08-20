@@ -51,6 +51,8 @@
 #    licensing and training services.
 #*/
 
+#include FreeRTOSConfig.h
+
 NAMA_FILE=santer
 RTOS_SOURCE_DIR=../../../Source
 DEMO_COMMON_DIR=../../Common/Minimal
@@ -118,6 +120,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_utils.c			\
 		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
+		$(APP)/ap_utils.c			\
 		
 
 SERIAL_SOURCE=	\
@@ -129,6 +132,9 @@ SERIAL_SOURCE=	\
 SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\
 
+RELAY_SOURCE=	\
+		$(CMD)/sh_relay.c	\
+
 ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
 		
@@ -136,13 +142,14 @@ ARM_SOURCE= \
 SERIAL_SOURCE_ISR=	\
 		$(MODUL)/serial/serialISR.c	\
 		
-		
+
 		
 THUMB_OBJS = $(THUMB_SOURCE:.c=.o)
 ARM_OBJS = $(ARM_SOURCE:.c=.o)
 
 THUMB_SOURCE += $(SERIAL_SOURCE)
 THUMB_SOURCE += $(SERIAL2_SOURCE)
+THUMB_SOURCE += $(RELAY_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 

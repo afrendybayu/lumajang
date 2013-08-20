@@ -48,14 +48,14 @@
 #endif
 
 
-char  ramdrv0[MDRIVER_RAM_VOLUME0_SIZE];
+char  ramdrv0[MDRIVER_RAM_VOLUME0_SIZE];		// MDRIVER_RAM_VOLUME0_SIZE = 128 * 1024
 
 typedef struct
 {
   char         * ramdrv;
   unsigned long  maxsector;
   int            use;
-  F_DRIVER     * driver;
+  F_DRIVER     * driver;			// 
 } t_RamDrv;
 
 static F_DRIVER  t_drivers[1];
@@ -63,6 +63,7 @@ static F_DRIVER  t_drivers[1];
 static t_RamDrv  RamDrv[1] =
 {
   { ramdrv0, ( MDRIVER_RAM_VOLUME0_SIZE / MDRIVER_RAM_SECTOR_SIZE ), 0, &t_drivers[0] }
+  //	MDRIVER_RAM_VOLUME0_SIZE = 128*1024; 	MDRIVER_RAM_SECTOR_SIZE = 512
 };
 
 
@@ -82,9 +83,9 @@ static int ram_readsector ( F_DRIVER * driver, void * data, unsigned long sector
   }
 
   s = p->ramdrv;
-  s += sector * MDRIVER_RAM_SECTOR_SIZE;
-  len = MDRIVER_RAM_SECTOR_SIZE;
-
+  s += sector * MDRIVER_RAM_SECTOR_SIZE;		// sector * 512 @config_mdriver_ram_template.h:49
+  len = MDRIVER_RAM_SECTOR_SIZE;				// 512
+	
 #if MDRIVER_MEM_LONG_ACCESS
   if ( ( !( len & 3 ) ) && ( !( ( (long)d ) & 3 ) ) && ( !( ( (long)s ) & 3 ) ) )
   {

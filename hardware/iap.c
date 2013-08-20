@@ -570,6 +570,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 	return 0;
 }
 
+#if 0
 char simpan_mem_rom(int sektor, int st, int flag, unsigned short *pdata, int def)	{
 	if (sektor==SEKTOR_DATA)		{
 		
@@ -630,6 +631,8 @@ char simpan_mem_rom(int sektor, int st, int flag, unsigned short *pdata, int def
 	
 	return 0;
 }
+#endif
+
 
 #if 0
 char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata)	{

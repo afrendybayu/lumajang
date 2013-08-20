@@ -11,6 +11,7 @@
 
 /* Demo program include files. */
 #include "serial.h"
+#include "ap_utils.h"
 #include "ap_serial2.h"
 //#include "sh_serial.h"
 //#include <stdarg.h>
@@ -29,7 +30,7 @@ extern volatile struct t_st_hw st_hw;
 
 void sedot_mod(int ch);
 int proses_mod_cmd();
-int parsing_mod(unsigned char *x);
+//int parsing_mod(unsigned char *x);
 int respon_modbus();
 
 #if 0
@@ -77,10 +78,7 @@ char s[30];
 	( void ) pvParameters;
 	vTaskDelay(100);
 	init_banner2();
-	printf("Task vComTask2 Init\r\n");
-	//printd2(10, "masuk task RS485_2\r\n");
-	//vSerialPutString2(xPort2, "vSerialPutString2\r\n", 6);
-
+	
 	vTaskDelay(500);
 	st_hw.init++;
 	nSer2 = 0;
@@ -93,12 +91,13 @@ char s[30];
 		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
 			//printd2("%02x ", (char) ch);
-			printf("%c ", (char) ch);
-			//sedot_mod(ch);
+			//printf("%c ", (char) ch);
+			sedot_mod(ch);
+			flag_ms=1;
 		}
 		else {
 			//printf("&");
-			if (flag_ms==1)	{
+			if (flag_ms==1 && nSer2>0)	{
 				proses_mod_cmd();
 			}
 			flag_ms = 0;
@@ -107,7 +106,19 @@ char s[30];
 	}
 }
 
-int respon_modbus()	{
+int respon_modbus(int cmd, int reg, int pjg)	{
+	if (cmd==READ_HOLDING_REG)		baca_reg_mb(reg, pjg);
+	
+	if (cmd==WRITE_MULTIPLE_REG)	tulis_reg_mb(reg, pjg);
+	
+	if (cmd==READ_FILE_NAME)		{
+		
+	}
+	
+	if (cmd==READ_FILE_CONTENT)		{
+		
+	}
+	
 	#if 0
 	struct t_setting *p_kfg;
 	p_kfg = (char *) ALMT_KONFIG;
@@ -130,9 +141,23 @@ int respon_modbus()	{
 }
 
 int cek_crc_mod(unsigned char *x)	{
-#if 0
 	unsigned char lo, hi;
-	unsigned short mbhcrc;
+
+	unsigned int i, Crc = 0xFFFF;
+	for (i=0; i<(nSer2-2); i++) {
+		Crc = CRC16 (Crc, strSer2[i]);
+	}
+	hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
+	//printf("CRC Modbus: %04X\r\n", Crc);
+	
+	if (hi==strSer2[nSer2-1] && lo==strSer2[nSer2-2]) {
+		//printf("SIP crc\r\n");
+		return 1;
+	}
+	return 0;
+	
+#if 0
+	
 	mbhcrc = usMBCRC16((unsigned char *) x, 6, 0);
 	hi = ((mbhcrc&0xFF00)>>8);	lo = (mbhcrc&0xFF);
 	//printf(">>> %s hi: %02x, lo: %02x -->", __FUNCTION__, hi, lo);
@@ -145,10 +170,18 @@ int cek_crc_mod(unsigned char *x)	{
 #endif
 }
 
-int parsing_mod(unsigned char *x)	{
 #if 0
+int parsing_mod(unsigned char *x)	{
 	struct t_env *p_env3;
 	p_env3 = (char *) ALMT_ENV;
+	
+	if (p_env3->almtSlave != x[0])	{
+		return 0;
+	}
+	return  x[1];
+	
+#if 0
+	
 	
 	p_mod_sl.almt = x[0];
 	p_mod_sl.cmd  = x[1];
@@ -162,17 +195,36 @@ int parsing_mod(unsigned char *x)	{
 	return 0;
 #endif
 }
+#endif
 
 int proses_mod_cmd()	{
-	int hsl=0;
+	int hsl=0, cmd=0, jml=0, reg=0;
 	//pr_mod("\r\n>> BACA: ", sping, np);
+	printf("Jml CMD: %d -->", nSer2);
+	int i;
+	for (i=0; i<nSer2; i++)		{
+		printf(" %02x", strSer2[i]);
+	}
+	printf("\r\n");
 	hsl = cek_crc_mod(strSer2);
-	if (hsl==1)	{
+	
+	if (hsl==1 && nSer2>=8)	{				// 8: min panjang modbus REQUEST
 		//printf(" > LULUS < !!!\r\n");
-		if (parsing_mod(strSer2)==1)	{
+		struct t_env *p_env3;
+		p_env3 = (char *) ALMT_ENV;
+		
+		if (p_env3->almtSlave != strSer2[0])	{
+			return 0;
+		}
+		cmd = strSer2[1];
+		reg = (int) (strSer2[2]<<8 | strSer2[3]);
+		jml = (int) (strSer2[4]<<8 | strSer2[5]);
+		
+		//cmd = parsing_mod(strSer2);
+		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
 			respon_modbus();
-		}	
+		}
 	}
 }
 
@@ -223,7 +275,9 @@ void vAltStartCom2( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate 
 }
 
 void init_banner2()		{
-
+	printf("Task vComTask2 Init\r\n");
+	//printd2(10, "masuk task RS485_2\r\n");
+	//vSerialPutString2(xPort2, "vSerialPutString2\r\n", 6);
 }
 
 #endif

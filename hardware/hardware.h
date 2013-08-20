@@ -76,8 +76,8 @@ void rtcWrite(struct tm *newTime);
 			#define sRelay8()		FIO1SET = RLY_8
 
 			#define setup_relay()		do {	\
-						FIO1DIR  = FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
-						FIO1DIR  = FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
+						FIO1DIR   = FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
+						FIO1DIR  |= FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
 					} while(0)	
 		#endif
 		
@@ -201,7 +201,7 @@ void rtcWrite(struct tm *newTime);
 		#define iKonter_6		BIT(24)	// P024, konter_6
 		#define iKonter_7		BIT(25)	// P025
 		#define iKonter_8		BIT(26)	// P026
-		#define iKonter_9		BIT(28)	// P027
+		#define iKonter_9		BIT(27)	// P027
 		#define iKonter_10		BIT(28)	// P028
 
 	#endif

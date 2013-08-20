@@ -83,6 +83,6 @@ uint8_t _f_result ( uint8_t testnum, uint32_t result )
 uint8_t _f_poweron ( void )
 {
   f_delvolume();
-  return f_initvolume( ram_initfunc );
+  return f_initvolume( ram_initfunc );		//  #define f_initvolume fn_initvolume @volume.c:896
 }
 

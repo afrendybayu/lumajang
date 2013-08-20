@@ -65,6 +65,7 @@ char set_env(int argc, char **argv)	{
 		return 1;
 	}
 	
+	printf("\r\n");
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
@@ -75,7 +76,7 @@ char set_env(int argc, char **argv)	{
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
 	if (argc==3)	{
-		printf("\r\n");
+		
 		if (strcmp(argv[1], "SN") == 0)	{
 			printf(" set no seri \r\n");
 			if (strlen(argv[2]) > sizeof (st_env->SN))		{
@@ -140,6 +141,14 @@ char set_env(int argc, char **argv)	{
 				printf(" Nama board : %s\r\n", st_env->nama_board);
 			}
 		}
+		#ifdef MODBUS_RTU_SLAVE
+		else if (strcmp(argv[1], "idslave") == 0)	{
+			printf("  idSlave\r\n");
+			st_env->almtSlave = atoi( argv[2] );
+			printf("  Alamat ID Slave : %d\r\n", st_env->almtSlave);
+			
+		}
+		#endif
 		else if (strcmp(argv[1], "debug1") == 0)	{
 			printf("  Debug prio serial0\r\n");
 			st_env->prioDebug = atoi( argv[2] );
