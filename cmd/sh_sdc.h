@@ -2,7 +2,10 @@
 #ifndef __SH_SDC__
 #define __SH_SDC__
 
+
 #ifdef PAKAI_SDCARD
+
+#include "tinysh/tinysh.h"
 
 void sh_cek_status_sdc();
 void sh_cek_free_cluster();

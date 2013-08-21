@@ -6,7 +6,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#include "serial/tinysh.h"
+//#include "serial/tinysh.h"
 //#include "sh_serial.h"
 #include "monita.h"
 #include "sh_rtc.h"
@@ -157,7 +157,7 @@ void cek_rtc_irq_sh(int argc, char **argv) {
 
 }
 
-static tinysh_cmd_t cek_irq_rtc_cmd={0,"cek_irqrtc","cek status IRQ rtc", "help default ",cek_rtc_irq_sh,0,0,0};
+//static tinysh_cmd_t cek_irq_rtc_cmd={0,"cek_irqrtc","cek status IRQ rtc", "help default ",cek_rtc_irq_sh,0,0,0};
 
 void set_rtc_counter_irq_sh(int argc, char **argv) {
 	display_args(argc, argv);
@@ -176,7 +176,7 @@ void set_rtc_counter_irq_sh(int argc, char **argv) {
 	*(&MEM_RTC0+(100)) = almx;
 }
 
-static tinysh_cmd_t set_irq_rtcc_cmd={0,"set_irqrtc","set mode power", "help default ",set_rtc_counter_irq_sh,0,0,0};
+//static tinysh_cmd_t set_irq_rtcc_cmd={0,"set_irqrtc","set mode power", "help default ",set_rtc_counter_irq_sh,0,0,0};
 
 void set_rtc_alarm_irq_sh(int argc, char **argv) {
 	display_args(argc, argv);

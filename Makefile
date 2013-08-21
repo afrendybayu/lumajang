@@ -64,6 +64,7 @@ HW=hardware
 MODUL=modul
 CMD=cmd
 APP=app
+HSL=hasil
 
 GCC=../../../../../../atinom/modul/TOOLCHAIN/bin/
 OBJCOPY=$(GCC)arm-elf-objcopy
@@ -107,6 +108,7 @@ THUMB_SOURCE= \
 		$(HW)/syscalls.c		\
 		$(HW)/iap.c				\
 		$(CMD)/sh_data.c			\
+		$(HW)/spi_ssp.c		\
 		$(APP)/ap_rpm.c				\
 		$(APP)/ap_ambilcepat.c		\
 		$(RTOS_SOURCE_DIR)/list.c	\
@@ -122,6 +124,8 @@ THUMB_SOURCE= \
 		$(CMD)/manual.c				\
 		$(APP)/ap_utils.c			\
 		
+MODBUS_SOURCE=	\
+		$(MODUL)/modbus/mb.c			\
 
 SERIAL_SOURCE=	\
 		$(MODUL)/serial/serial.c 	\
@@ -131,6 +135,15 @@ SERIAL_SOURCE=	\
 
 SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\
+
+RTC_SOURCE= \
+		cmd/sh_rtc.c		\
+
+SDC_SOURCE=	\
+		$(MODUL)/ff/ff9b/src/diskio.c	\
+		$(MODUL)/ff/ff9b/src/ff.c		\
+		$(MODUL)/ff/sdc.c		\
+		$(CMD)/sh_sdc.c			\
 
 RELAY_SOURCE=	\
 		$(CMD)/sh_relay.c	\
@@ -150,6 +163,9 @@ ARM_OBJS = $(ARM_SOURCE:.c=.o)
 THUMB_SOURCE += $(SERIAL_SOURCE)
 THUMB_SOURCE += $(SERIAL2_SOURCE)
 THUMB_SOURCE += $(RELAY_SOURCE)
+THUMB_SOURCE += $(MODBUS_SOURCE)
+THUMB_SOURCE += $(SDC_SOURCE)
+THUMB_SOURCE += $(RTC_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 

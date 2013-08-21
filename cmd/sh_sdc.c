@@ -1,15 +1,15 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#include "serial/tinysh.h"
-#include "sh_serial.h"
+
+
 
 #ifdef PAKAI_SDCARD
 
-#include "sh_sdc.h"
 #include "monita.h"
 #include "ff/ff9b/src/ff.h"
 #include "ff/sdc.h"
+#include "sh_sdc.h"
 
 //extern FATFS *FatFs[];
 
@@ -23,8 +23,8 @@ void mount_disk(unsigned char disk)	{
 	char strFs[24];
 	unsigned char a;
 	//a = f_mount(disk, &xFatFs);
-	a = f_mount(disk, &xFatFs[0]);
-	ket_fs(a, &strFs);
+	//a = f_mount(disk, &xFatFs[0]);
+	//ket_fs(a, &strFs);
 	//qsprintf("a: %d-%s, xFatFs.drive: %d, size: %d\r\n", a, ket_fs(a), xFatFs[0].drv, xFatFs[0].csize);
 	qsprintf("a: %d-%s\r\n", a, strFs);
 }
@@ -41,8 +41,9 @@ void sh_cek_free_cluster()	{
     DWORD fre_clust, fre_sect, tot_sect;
 
     /* Get volume information and free clusters of drive 1 */
-    unsigned char res = f_getfree("0:", &fre_clust, &fs);
-    ket_fs(res, &ketfs);
+    unsigned char res;
+    //res = f_getfree("0:", &fre_clust, &fs);
+    //ket_fs(res, &ketfs);
     qsprintf("res: %d-%s\r\n", res, ketfs);
     if (res) {
 		return;

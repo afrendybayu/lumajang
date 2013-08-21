@@ -90,6 +90,8 @@
 #define printf 				printf0
 //#define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 #define PAKAI_TINYSH
+#define PAKAI_RTC
+
 
 #define ST_LED				3
 #define ST_SHELL			20
@@ -104,6 +106,11 @@
 	#define ST_SER2					10
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	#define MODBUS_RTU_SLAVE		
+#endif
+
+#define PAKAI_SPI_SSP0
+#ifdef  PAKAI_SPI_SSP0
+	#define PAKAI_SDCARD
 #endif
 
 /* Value to use on old rev '-' devices. */

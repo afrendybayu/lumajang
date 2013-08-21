@@ -9,11 +9,28 @@
 
 //
 
-//extern volatile float data_f[];
+extern volatile float data_f[];
 
 void cek_data(int argc, char **argv)	{
 	int i=0, j ;
 	struct t_data *st_data;
+	if (argc==2)	{
+		int smb = atoi(argv[1]);
+		if (smb==0)		{
+			printf("\r\n--> Sumber SALAH !!\r\n");
+			return;
+		}
+		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan |\r\n");
+		smb--;
+		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
+		for (j=0; j<PER_SUMBER; j++)	{
+			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+		}
+		return;
+	}
 	
 	uprintf("\r\n    Cek data input modul    \r\n****************************************\r\n");
 	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status |\r\n");
@@ -44,20 +61,22 @@ char set_data(int argc, char **argv)		{
 		}
 		else if (strcmp(argv[1], "idurut") == 0)	{
 			struct t_data *st_data;
-			st_data = pvPortMalloc( JML_SUMBER*PER_SUMBER * sizeof (struct t_data) );
+			
+			st_data = pvPortMalloc( PER_SUMBER * sizeof (struct t_data) );
 			if (st_data == NULL)	{
 				printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 				return 3;
 			}
 			//printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, p_sbr);
-			memcpy((char *) st_data, (char *) ALMT_DATA, (JML_SUMBER*PER_SUMBER * sizeof (struct t_data)));
-	
-			
+			memcpy((char *) st_data, (char *) ALMT_DATA, (PER_SUMBER * sizeof (struct t_data)));
+
 			printf("set_data dengan id urut dari kanal 1: %d !\r\n", st_data[0].id);
 			int i, awal = st_data[0].id;
-			for (i=1; i<(JML_SUMBER*PER_SUMBER); i++)		{
+			for (i=1; i<(PER_SUMBER); i++)		{
 				st_data[i].id = st_data[0].id + i;
 			}
+			
+			//simpan_st_rom(SEKTOR_DATA, lok, 1, (unsigned short *) st_data, 1);
 			vPortFree (st_data);
 		} else	{
 			data_kitab();

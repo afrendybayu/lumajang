@@ -11,7 +11,7 @@
 
 /* Demo program include files. */
 #include "serial.h"
-#include "ap_utils.h"
+#include "modbus/mb.h"
 #include "ap_serial2.h"
 //#include "sh_serial.h"
 //#include <stdarg.h>
@@ -23,15 +23,16 @@
 
 #ifdef PAKAI_SERIAL_2
 
-char strSer2[256];
-int nSer2;
+//char strSer2[256];
+//int nSer2;
 static xComPortHandle xPort2;
 extern volatile struct t_st_hw st_hw;
 
-void sedot_mod(int ch);
-int proses_mod_cmd();
+//void sedot_mod(int ch);
+//int proses_mod_cmd();
+int proses_mod(int mbn, char *mbstr);
 //int parsing_mod(unsigned char *x);
-int respon_modbus();
+
 
 #if 0
 static xQueueHandle xPrintQueue2;
@@ -73,6 +74,8 @@ portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
 int ch;
 char s[30];
+	char strmb[256];
+	int  nmb = 0;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
@@ -81,7 +84,7 @@ char s[30];
 	
 	vTaskDelay(500);
 	st_hw.init++;
-	nSer2 = 0;
+	//nSer2 = 0;
 	int loop2 = 0;
 	disTX2_485();
 		
@@ -92,82 +95,25 @@ char s[30];
 		if( xGotChar == pdTRUE )		{
 			//printd2("%02x ", (char) ch);
 			//printf("%c ", (char) ch);
-			sedot_mod(ch);
+			strmb[nmb] = (char) ch;
+			nmb++;
+			//strSer2[nmb+1] = '\0';
+			//sedot_mod(ch);
 			flag_ms=1;
 		}
 		else {
 			//printf("&");
-			if (flag_ms==1 && nSer2>0)	{
-				proses_mod_cmd();
+			//if (flag_ms==1 && nSer2>0)	{
+			if (flag_ms==1 && nmb>0)	{
+				proses_mod(nmb, strmb);
+				//proses_mod_cmd();
+				
 			}
+			nmb = 0;
 			flag_ms = 0;
-			nSer2=0;
+			//nSer2=0;
 		}
 	}
-}
-
-int respon_modbus(int cmd, int reg, int pjg)	{
-	if (cmd==READ_HOLDING_REG)		baca_reg_mb(reg, pjg);
-	
-	if (cmd==WRITE_MULTIPLE_REG)	tulis_reg_mb(reg, pjg);
-	
-	if (cmd==READ_FILE_NAME)		{
-		
-	}
-	
-	if (cmd==READ_FILE_CONTENT)		{
-		
-	}
-	
-	#if 0
-	struct t_setting *p_kfg;
-	p_kfg = (char *) ALMT_KONFIG;
-	int i, n=0, ix;
-	unsigned char dtmod[256];
-	unsigned short mbhcrc;
-	int jmlData = (sizeof(data_f)/sizeof(float));
-	unsigned char *w;
-	char fk=0;
-	
-	//printf("reg: %d\r\n", p_mod_sl.reg);
-	for (i=0; i<jmlData; i++)	{
-		if (p_mod_sl.reg == p_kfg[i].id)	{
-			n = i;
-			break;
-		}
-	}
-	#endif
-	return 0;
-}
-
-int cek_crc_mod(unsigned char *x)	{
-	unsigned char lo, hi;
-
-	unsigned int i, Crc = 0xFFFF;
-	for (i=0; i<(nSer2-2); i++) {
-		Crc = CRC16 (Crc, strSer2[i]);
-	}
-	hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
-	//printf("CRC Modbus: %04X\r\n", Crc);
-	
-	if (hi==strSer2[nSer2-1] && lo==strSer2[nSer2-2]) {
-		//printf("SIP crc\r\n");
-		return 1;
-	}
-	return 0;
-	
-#if 0
-	
-	mbhcrc = usMBCRC16((unsigned char *) x, 6, 0);
-	hi = ((mbhcrc&0xFF00)>>8);	lo = (mbhcrc&0xFF);
-	//printf(">>> %s hi: %02x, lo: %02x -->", __FUNCTION__, hi, lo);
-	
-	if (hi==sping[7] && lo==sping[6]) {
-		//printf("SIP crc\r\n");
-		return 1;
-	}
-	return 0;
-#endif
 }
 
 #if 0
@@ -197,6 +143,39 @@ int parsing_mod(unsigned char *x)	{
 }
 #endif
 
+int proses_mod(int mbn, char *mbstr)	{
+	int hsl=0, cmd=0, jml=0, reg=0;
+
+	printf("\r\nJml CMD: %d -->", mbn);
+	int i;
+	for (i=0; i<mbn; i++)		{
+		printf(" %02x", mbstr[i]);
+	}
+	printf("\r\n");
+	hsl = cek_crc_mod(mbn, mbstr);
+	
+	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
+		//printf(" > LULUS < !!!\r\n");
+		struct t_env *p_env3;
+		p_env3 = (char *) ALMT_ENV;
+		
+		if (p_env3->almtSlave != mbstr[0])	{
+			return 0;
+		}
+		cmd = mbstr[1];
+		reg = (int) (mbstr[2]<<8 | mbstr[3]);
+		jml = (int) (mbstr[4]<<8 | mbstr[5]);
+		
+		printf("++++ cmd: %02x, reg: %02x, jml: %d\r\n", cmd, reg, jml);
+		//cmd = parsing_mod(strSer2);
+		if (cmd>0)	{
+			//printf("__PROSES DATA KITA !!\r\n");
+			respon_modbus(cmd, reg, jml, mbstr);
+		}
+	}
+}
+
+#if 0
 int proses_mod_cmd()	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	//pr_mod("\r\n>> BACA: ", sping, np);
@@ -223,7 +202,7 @@ int proses_mod_cmd()	{
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
-			respon_modbus();
+			//respon_modbus();
 		}
 	}
 }
@@ -247,7 +226,7 @@ void sedot_mod(int ch)	{
 		printf("\r\n");
 		#endif
 
-		hsl = cek_crc_mod(strSer2);
+		//hsl = cek_crc_mod(strSer2);
 		if (hsl==1)	{
 			//printf(" > LULUS < !!!\r\n");
 			if (parsing_mod(sping)==1)	{
@@ -262,6 +241,7 @@ void sedot_mod(int ch)	{
 	}
 	#endif
 }
+#endif
 
 void vAltStartCom2( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate )		{
 //const unsigned portBASE_TYPE uxQueueSize = 10;

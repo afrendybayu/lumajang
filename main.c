@@ -94,7 +94,7 @@
 /* Demo app includes. */
 #include "monita.h"
 #include "hardware.h"
-
+#include "ff/ff9b/src/ff.h"
 
 /* Demo application definitions. */
 #define mainQUEUE_SIZE						( 3 )
@@ -250,7 +250,7 @@ void vLedTask( void *pvParameters )	{
 	char ss[6];
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 500;
-	//FATFS Fatfs[_VOLUMES];
+	FATFS Fatfs[_VOLUMES];
 	
 	//vTaskDelay(1000);
 	//printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
