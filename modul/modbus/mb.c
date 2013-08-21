@@ -1,6 +1,7 @@
 
 #include "FreeRTOS.h"
 #include "monita.h"
+#include "hardware.h"
 #include "mb.h"
 
 #ifdef PAKAI_MODBUS
@@ -56,16 +57,16 @@ int respon_modbus(int cmd, int reg, int jml, char *str)	{
 			}
 		}
 		i++;
-		if (i>4)	return 1;
+		if (i>4)	return 2;
 	} while (ketemu==0);
 	printf("Data index: %d\r\n", index);
 
 	
 	if (cmd==READ_HOLDING_REG)		{
-		baca_reg_mb(index, jml);
+		return baca_reg_mb(index, jml);
 	}
 	if (cmd==WRITE_MULTIPLE_REG)	{
-		tulis_reg_mb(reg, index, jml, str);
+		return tulis_reg_mb(reg, index, jml, str);
 	}
 	if (cmd==READ_FILE_NAME)		{
 		
@@ -74,14 +75,15 @@ int respon_modbus(int cmd, int reg, int jml, char *str)	{
 	if (cmd==READ_FILE_CONTENT)		{
 		
 	}
-	return 0;
+	return 10;
 }
 
 int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
-	int i, nX;
+	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	nX = jml_st_mb3H(jml);
+	njml = (int) (jml/2);
+	nX = jml_st_mb3H(njml);
 	respon = pvPortMalloc( nX );
 	
 	if (respon == NULL)	{
@@ -96,10 +98,10 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	respon[0] = st_env->almtSlave;
 	respon[1] = READ_HOLDING_REG;
-	respon[2] = jml*4;
+	respon[2] = njml*4;
 	
 	unsigned int *ifl;
-	for (i=0; i<jml; i++)	{
+	for (i=0; i<njml; i++)	{
 		if (1)	{		// almt ROM lintas struct (kelipatan 10)
 			
 		}
@@ -126,7 +128,15 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		// kirim Serial2 modbus
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
-	printf("\r\n");
+	printf("\r\n\r\n");
+	
+	enaTX2_485();
+	for (i=0; i<nX; i++)		{
+		j = xSerialPutChar2 (0, respon[i], 10);
+		//printf("j: %d\r\n", j);
+	}
+	vTaskDelay(10);
+	disTX2_485();
 	
 	vPortFree (respon);
 	return 0;

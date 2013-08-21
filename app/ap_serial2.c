@@ -75,7 +75,7 @@ portBASE_TYPE xGotChar;
 int ch;
 char s[30];
 	char strmb[256];
-	int  nmb = 0;
+	int  nmb = 0, balas = 1;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
@@ -93,7 +93,7 @@ char s[30];
 		//vSerialPutString2(xPort2, "tes2\r\n", 6);
 		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
-			//printd2("%02x ", (char) ch);
+			printf("%02x ", (char) ch);
 			//printf("%c ", (char) ch);
 			strmb[nmb] = (char) ch;
 			nmb++;
@@ -104,10 +104,9 @@ char s[30];
 		else {
 			//printf("&");
 			//if (flag_ms==1 && nSer2>0)	{
-			if (flag_ms==1 && nmb>0)	{
-				proses_mod(nmb, strmb);
-				//proses_mod_cmd();
-				
+			//if (balas == 0)		flag_ms = 0;
+			if (flag_ms==1 && nmb>4)	{
+				balas = proses_mod(nmb, strmb);
 			}
 			nmb = 0;
 			flag_ms = 0;
@@ -160,7 +159,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		p_env3 = (char *) ALMT_ENV;
 		
 		if (p_env3->almtSlave != mbstr[0])	{
-			return 0;
+			return 1;
 		}
 		cmd = mbstr[1];
 		reg = (int) (mbstr[2]<<8 | mbstr[3]);
@@ -170,9 +169,10 @@ int proses_mod(int mbn, char *mbstr)	{
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
-			respon_modbus(cmd, reg, jml, mbstr);
+			return respon_modbus(cmd, reg, jml, mbstr);
 		}
 	}
+	return 2;
 }
 
 #if 0

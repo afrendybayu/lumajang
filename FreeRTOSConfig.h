@@ -90,25 +90,25 @@
 #define printf 				printf0
 //#define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 #define PAKAI_TINYSH
-#define PAKAI_RTC
+//#define PAKAI_RTC
 
 
 #define ST_LED				3
 #define ST_SHELL			20
 #define ST_SANTER			10		//	10
 
-#define PAKAI_RELAY
+//#define PAKAI_RELAY
 
 #define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
-	#define PAKAI_SERIAL_2_P0		115200
-	//#define PAKAI_SERIAL_2_P0		9600
+	//#define PAKAI_SERIAL_2_P0		115200
+	#define PAKAI_SERIAL_2_P0		9600
 	#define ST_SER2					10
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	#define MODBUS_RTU_SLAVE		
 #endif
 
-#define PAKAI_SPI_SSP0
+//#define PAKAI_SPI_SSP0
 #ifdef  PAKAI_SPI_SSP0
 	#define PAKAI_SDCARD
 #endif

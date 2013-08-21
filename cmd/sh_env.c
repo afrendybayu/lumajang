@@ -39,7 +39,7 @@ void cek_env(int argc, char **argv)	{
 	#endif
 	#ifdef MODBUS_RTU_SLAVE
 	uprintf("  Konfigurasi Modbus RTU Slave\r\n");
-	uprintf("    ID Device: %d\r\n", st_env->almtSlave);
+	uprintf("    ID Device: %dd = %#02x\r\n", st_env->almtSlave, st_env->almtSlave);
 	uprintf("    BaudRate : %d\r\n", PAKAI_SERIAL_2_P0);
 	#endif
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
