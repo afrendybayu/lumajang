@@ -57,7 +57,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str)	{
 			}
 		}
 		i++;
-		if (i>4)	return 2;
+		if (i>JML_SUMBER)	return 2;
 	} while (ketemu==0);
 	printf("Data index: %d\r\n", index);
 
@@ -89,7 +89,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	if (respon == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		vPortFree (respon);
-		return 1;
+		return 0;
 	}
 	printf("Alok: %d @%#08x\r\n", nX, respon);
 	
@@ -122,31 +122,32 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	respon[nX-1] = ((Crc&0xFF00)>>8);	
 	respon[nX-2] = (Crc&0xFF);
 	
-	printf("===> Respon: ");
+	#if 1
+	printf("===> Respon[%d]: ", nX);
 	for (i=0; i<nX; i++)		{
 		printf(" %02x", respon[i]);
 		// kirim Serial2 modbus
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
+	#endif
 	printf("\r\n\r\n");
 	
 	enaTX2_485();
-	for (i=0; i<nX; i++)		{
-		j = xSerialPutChar2 (0, respon[i], 10);
-		//printf("j: %d\r\n", j);
-	}
-	vTaskDelay(10);
+	vSerialPutString2(0, respon, nX);
+	vTaskDelay(100);
 	disTX2_485();
 	
 	vPortFree (respon);
-	return 0;
+	return nX;
 }
 
 int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG: 16
-	int i, j, tmpFl;
+	int i, j, tmpFl, njml;
 	char *respon; 
 	
 	//************  PROSESS  ************//
+	// 32bit
+	njml = (int) (jml/2);
 	int nby, byte = str[6];
 	if (byte%4!=0)	{
 		printf("===> Data 32bit tidak VALID\r\n");
@@ -154,10 +155,10 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	}
 	
 	float *fl;
-	for (i=0; i<jml; i++)	{
+	for (i=0; i<njml; i++)	{
 		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		fl = (float *)&tmpFl;
-		printf("data[%d]: %.3f, %#08x\r\n", index+i, *fl, tmpFl);
+		printf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
 		data_f[index+i] = *fl;		
 	}
@@ -197,10 +198,19 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 		// kirim Serial2 modbus
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
-	printf("\r\n");
+	printf("\r\n\r\n");
+	
+	enaTX2_485();
+	//vSerialPutString2(0, respon, jml_st_mb10H);
+	for (i=0; i<jml_st_mb10H; i++)		{
+		xSerialPutChar2 (0, respon[i], 10);
+	}
+	vTaskDelay(50);
+	disTX2_485();
 	
 	vPortFree (respon);
 	return 0;
 }
+
 
 #endif

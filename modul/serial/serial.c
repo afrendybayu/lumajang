@@ -147,8 +147,8 @@ xComPortHandle xSerialPortInit2( unsigned portLONG ulWantedBaud, unsigned portBA
 	
 	/* The queues are used in the serial ISR routine, so are created from
 	serialISR.c (which is always compiled to ARM mode. */
-	vSerialISRCreateQueues2( uxQueueLength, &Qrx2, &Qtx2, &plTHREEmpty2 );
-
+	vSerialISRCreateQueues2( uxQueueLength*8, &Qrx2, &Qtx2, &plTHREEmpty2 );
+	
 	if(
 		( Qrx2 != serINVALID_QUEUE ) &&
 		( Qtx2 != serINVALID_QUEUE ) &&
@@ -222,7 +222,8 @@ void vSerialPutString2( xComPortHandle pxPort2, const signed char * const pcStri
 	pxNext = ( signed portCHAR * ) pcString;
 	while( *pxNext )
 	{	
-		xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
+		//xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
+		xSerialPutChar2 (pxPort2, *pxNext, 10);
 		//xSerialPutChar2( 1, *pxNext, 1000 );	// 100 OK
 		pxNext++;
 	}

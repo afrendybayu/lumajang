@@ -22,3 +22,4 @@ unsigned int CRC16(unsigned int crc, unsigned int data)	;
 int respon_modbus(int cmd, int reg, int jml, char *str);
 int tulis_reg_mb(int reg, int index, int pjg, char* str);
 int baca_reg_mb(int reg, int pjg);
+//int tulis_single_mb(int reg, int index, char* str);

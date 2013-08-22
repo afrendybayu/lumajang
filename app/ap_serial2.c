@@ -75,7 +75,7 @@ portBASE_TYPE xGotChar;
 int ch;
 char s[30];
 	char strmb[256];
-	int  nmb = 0, balas = 1;
+	int  nmb = 0, balas = 0;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
@@ -103,14 +103,27 @@ char s[30];
 		}
 		else {
 			//printf("&");
-			//if (flag_ms==1 && nSer2>0)	{
-			//if (balas == 0)		flag_ms = 0;
+			#if 1
+			//if (balas==nmb)	{
+			//	printf("\r\n--------->Reset MB1 !!!\r\n");
+			//}
+			if ( (balas==nmb) && (balas>0) )	{
+				//printf("Reset MB2 !!!\r\n");
+				nmb = 0;
+				flag_ms = 0;
+			}
+			#endif
 			if (flag_ms==1 && nmb>4)	{
 				balas = proses_mod(nmb, strmb);
+				//printf("--==> BALAS MB: %d\r\n", balas);
+				//flag_ms = 55;
+				nmb = 0;
 			}
-			nmb = 0;
-			flag_ms = 0;
-			//nSer2=0;
+			if (balas==0)	{
+				nmb = 0;
+			}
+			//
+			//flag_ms = 0;
 		}
 	}
 }
