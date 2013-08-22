@@ -69,7 +69,10 @@ int respon_modbus(int cmd, int reg, int jml, char *str)	{
 			}
 		}
 		i++;
-		if (i>JML_SUMBER)	return 2;
+		if (i>JML_SUMBER)	{
+			printf("===> ID tidak ditemukan !!\r\n");
+			return 0;
+		}
 	} while (ketemu==0);
 	printf("Data index: %d\r\n", index);
 
