@@ -204,7 +204,7 @@ LOAD modul/modbus/mb.o
 LOAD /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
 LOAD /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libm.a
-LOAD /tmp/ccMcuRLy.o
+LOAD /tmp/ccBx2Ko8.o
 START GROUP
 LOAD /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
@@ -214,9 +214,9 @@ END GROUP
 
 startup         0x00000000       0x44
  *(.startup)
- .startup       0x00000000       0x44 /tmp/ccMcuRLy.o
+ .startup       0x00000000       0x44 /tmp/ccBx2Ko8.o
 
-prog            0x00000044    0x130c8
+prog            0x00000044    0x13118
  *(.text)
  .text          0x00000044      0x280 ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
                 0x0000013c                vPreemptiveTick
@@ -416,320 +416,321 @@ prog            0x00000044    0x130c8
                 0x00008c58                tinysh_get_arg
                 0x00008c64                tinysh_atoxi
                 0x00007d80                strstart
- .text          0x00008d84      0x384 app/ap_serial2.o
-                0x00008f44                proses_mod
-                0x000090f4                init_banner2
-                0x00009098                vAltStartCom2
+ .text          0x00008d84      0x390 app/ap_serial2.o
+                0x00008f50                proses_mod
+                0x00009100                init_banner2
+                0x000090a4                vAltStartCom2
                 0x00008d84                printd2
- .text          0x00009108      0x86c modul/modbus/mb.o
-                0x00009108                cek_crc_mod
-                0x0000925c                respon_modbus
-                0x00009658                tulis_reg_mb
-                0x00009378                baca_reg_mb
-                0x000091d4                CRC16
- .text          0x00009974       0x20 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(atoi.o)
-                0x00009974                _atoi_r
-                0x00009984                atoi
- .text          0x00009994       0x64 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memcpy.o)
-                0x00009994                memcpy
- .text          0x000099f8       0x64 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memset.o)
-                0x000099f8                memset
- .text          0x00009a5c       0x5c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
-                0x00009a5c                _puts_r
-                0x00009aa4                puts
- .text          0x00009ab8       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(rand.o)
-                0x00009acc                rand
-                0x00009ab8                srand
- .text          0x00009b08       0x84 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sprintf.o)
-                0x00009b4c                _sprintf_r
-                0x00009b08                sprintf
- .text          0x00009b8c       0x7c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strchr.o)
-                0x00009b8c                strchr
- .text          0x00009c08       0x68 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcmp.o)
-                0x00009c08                strcmp
- .text          0x00009c70       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcpy.o)
-                0x00009c70                strcpy
- .text          0x00009cc0       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strlen.o)
-                0x00009cc0                strlen
- .text          0x00009d10       0x3c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strstr.o)
-                0x00009d10                strstr
- .text          0x00009d4c      0x168 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtol.o)
-                0x00009e94                strtol
-                0x00009d4c                _strtol_r
- .text          0x00009eb4     0x1a60 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
-                0x00009ed4                _vfprintf_r
-                0x0000b8f4                vfprintf
- .text          0x0000b914       0x74 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vsprintf.o)
-                0x0000b948                vsprintf
-                0x0000b914                _vsprintf_r
- .text          0x0000b988       0x54 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcrtomb.o)
-                0x0000b988                _wcrtomb_r
-                0x0000b9bc                wcrtomb
- .text          0x0000b9dc      0x10c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcsrtombs.o)
-                0x0000b9dc                _wcsrtombs_r
-                0x0000bac0                wcsrtombs
- .text          0x0000bae8      0x2b8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
-                0x0000bae8                _wctomb_r
- .text          0x0000bda0       0xa0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wsetup.o)
-                0x0000bda0                __swsetup
- .text          0x0000be40      0xf28 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
-                0x0000bf90                _dtoa_r
- .text          0x0000cd68       0x90 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fflush.o)
-                0x0000cd68                fflush
- .text          0x0000cdf8      0x1c4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(findfp.o)
-                0x0000ce40                __sinit
-                0x0000cef8                __sfmoreglue
-                0x0000cee4                _cleanup
-                0x0000ced4                _cleanup_r
-                0x0000cebc                __fp_lock_all
-                0x0000ce30                __sfp_lock_acquire
-                0x0000cf30                __sfp
-                0x0000ce3c                __sinit_lock_release
-                0x0000cea4                __fp_unlock_all
-                0x0000ce34                __sfp_lock_release
-                0x0000ce38                __sinit_lock_acquire
- .text          0x0000cfbc      0x268 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(freer.o)
-                0x0000d05c                _free_r
-                0x0000cfbc                _malloc_trim_r
- .text          0x0000d224      0x298 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fvwrite.o)
-                0x0000d224                __sfvwrite
- .text          0x0000d4bc       0xf0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fwalk.o)
-                0x0000d534                _fwalk
-                0x0000d4bc                _fwalk_reent
- .text          0x0000d5ac       0x88 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
-                0x0000d5d4                _setlocale_r
-                0x0000d5ac                __locale_charset
-                0x0000d5b8                _localeconv_r
-                0x0000d618                setlocale
-                0x0000d5c0                localeconv
- .text          0x0000d634       0xdc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(makebuf.o)
-                0x0000d634                __smakebuf
- .text          0x0000d710      0x538 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mallocr.o)
-                0x0000d710                _malloc_r
- .text          0x0000dc48       0xbc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memchr.o)
-                0x0000dc48                memchr
- .text          0x0000dd04       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memmove.o)
-                0x0000dd04                memmove
- .text          0x0000dd90        0x8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mlock.o)
-                0x0000dd94                __malloc_unlock
-                0x0000dd90                __malloc_lock
- .text          0x0000dd98      0x8c0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
-                0x0000e010                _mprec_log10
-                0x0000ddb0                _hi0bits
-                0x0000e050                _Balloc
-                0x0000e0ac                _d2b
-                0x0000e328                _multiply
-                0x0000dfbc                _ratio
-                0x0000e5c8                _s2b
-                0x0000e478                _i2b
-                0x0000ddf8                _lo0bits
-                0x0000de64                __mcmp
-                0x0000e52c                _pow5mult
-                0x0000dea4                _ulp
-                0x0000def4                _b2d
-                0x0000e490                _multadd
-                0x0000e194                __mdiff
-                0x0000e27c                _lshift
-                0x0000dd98                _Bfree
- .text          0x0000e658      0x3d8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(reallocr.o)
-                0x0000e658                _realloc_r
- .text          0x0000ea30       0x24 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isinf.o)
-                0x0000ea30                isinf
- .text          0x0000ea54       0x1c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isnan.o)
-                0x0000ea54                isnan
- .text          0x0000ea70       0xd8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(stdio.o)
-                0x0000ea88                __sseek
-                0x0000eb10                __sread
-                0x0000ea70                __sclose
-                0x0000eac8                __swrite
- .text          0x0000eb48      0x504 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
-                0x0000eb64                _getpid
-                0x0000ec58                initialise_monitor_handles
-                0x0000eb7c                isatty
-                0x0000ebe4                _fstat
-                0x0000ef78                _open
-                0x0000ebac                _sbrk
-                0x0000eb78                _raise
-                0x0000ece0                _times
-                0x0000ef8c                _stat
-                0x0000efc8                _lseek
-                0x0000eb68                _link
-                0x0000ed9c                _swiwrite
-                0x0000eb80                _rename
-                0x0000edc4                _swilseek
-                0x0000ed64                _swiclose
-                0x0000ee78                _swiopen
-                0x0000eb70                _unlink
-                0x0000ef04                _write
-                0x0000ed30                _kill
-                0x0000ed04                _gettimeofday
-                0x0000f000                _read
-                0x0000ed4c                _exit
-                0x0000eb94                _system
-                0x0000efd8                _swiread
-                0x0000ef68                _close
- .text          0x0000f04c       0x60 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(callocr.o)
-                0x0000f04c                _calloc_r
- .text          0x0000f0ac        0xc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(errno.o)
-                0x0000f0ac                __errno
- .text          0x0000f0b8       0xbc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fclose.o)
-                0x0000f0b8                _fclose_r
-                0x0000f15c                fclose
- .text          0x0000f174       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_udivsi3.o)
-                0x0000f174                __udivsi3
-                0x0000f174                __aeabi_uidiv
-                0x0000f1f0                __aeabi_uidivmod
- .text          0x0000f200       0xa4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_divsi3.o)
-                0x0000f200                __aeabi_idiv
-                0x0000f200                __divsi3
-                0x0000f294                __aeabi_idivmod
- .text          0x0000f2a4       0xc8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_umodsi3.o)
-                0x0000f2a4                __umodsi3
- .text          0x0000f36c       0xd8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_modsi3.o)
-                0x0000f36c                __modsi3
- .text          0x0000f444        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_dvmd_tls.o)
-                0x0000f444                __aeabi_ldiv0
-                0x0000f444                __div0
-                0x0000f444                __aeabi_idiv0
- .text          0x0000f448       0x84 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_muldi3.o)
-                0x0000f448                __muldi3
- .text          0x0000f4cc      0x234 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_sf.o)
-                0x0000f690                __subsf3
-                0x0000f6cc                __addsf3
- .text          0x0000f700      0x174 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_sf.o)
-                0x0000f738                __mulsf3
- .text          0x0000f874      0x11c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_sf.o)
-                0x0000f8ac                __divsf3
- .text          0x0000f990       0x70 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_sf.o)
-                0x0000f990                __floatsisf
- .text          0x0000fa00       0x30 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_df.o)
-                0x0000fa00                __extendsfdf2
- .text          0x0000fa30      0x328 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_df.o)
-                0x0000fd20                __adddf3
-                0x0000fce0                __subdf3
- .text          0x0000fd58      0x2ac /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_df.o)
-                0x0000fd90                __muldf3
- .text          0x00010004      0x1ac /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_df.o)
-                0x0001003c                __divdf3
- .text          0x000101b0       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_eq_df.o)
-                0x000101c0                __eqdf2
- .text          0x00010208       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ne_df.o)
-                0x00010218                __nedf2
- .text          0x00010260       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_gt_df.o)
-                0x00010270                __gtdf2
- .text          0x000102b8       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ge_df.o)
-                0x000102c8                __gedf2
- .text          0x00010310       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_lt_df.o)
-                0x00010320                __ltdf2
- .text          0x00010368       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_df.o)
-                0x00010368                __floatsidf
- .text          0x000103f4       0xb4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_si.o)
-                0x00010424                __fixdfsi
- .text          0x000104a8       0x28 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_df.o)
-                0x000104a8                __make_dp
- .text          0x000104d0      0x130 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_sf.o)
-                0x00010500                __pack_f
- .text          0x00010600       0x80 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_sf.o)
-                0x00010600                __unpack_f
- .text          0x00010680      0x290 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_df.o)
-                0x000106b0                __pack_d
- .text          0x00010910       0xc4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_df.o)
-                0x00010910                __unpack_d
- .text          0x000109d4       0xf0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x00010a04                __fpcmp_parts_d
- .text          0x00010ac4       0xc4 /tmp/ccMcuRLy.o
-                0x00010ac4                start
-                0x00010b6c                endless_loop
+ .text          0x00009114      0x890 modul/modbus/mb.o
+                0x00009114                cek_crc_mod
+                0x000092f0                respon_modbus
+                0x000096cc                tulis_reg_mb
+                0x00009268                kirim_respon_mb
+                0x0000940c                baca_reg_mb
+                0x000091e0                CRC16
+ .text          0x000099a4       0x20 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(atoi.o)
+                0x000099a4                _atoi_r
+                0x000099b4                atoi
+ .text          0x000099c4       0x64 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memcpy.o)
+                0x000099c4                memcpy
+ .text          0x00009a28       0x64 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memset.o)
+                0x00009a28                memset
+ .text          0x00009a8c       0x5c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
+                0x00009a8c                _puts_r
+                0x00009ad4                puts
+ .text          0x00009ae8       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(rand.o)
+                0x00009afc                rand
+                0x00009ae8                srand
+ .text          0x00009b38       0x84 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sprintf.o)
+                0x00009b7c                _sprintf_r
+                0x00009b38                sprintf
+ .text          0x00009bbc       0x7c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strchr.o)
+                0x00009bbc                strchr
+ .text          0x00009c38       0x68 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcmp.o)
+                0x00009c38                strcmp
+ .text          0x00009ca0       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcpy.o)
+                0x00009ca0                strcpy
+ .text          0x00009cf0       0x50 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strlen.o)
+                0x00009cf0                strlen
+ .text          0x00009d40       0x3c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strstr.o)
+                0x00009d40                strstr
+ .text          0x00009d7c      0x168 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtol.o)
+                0x00009ec4                strtol
+                0x00009d7c                _strtol_r
+ .text          0x00009ee4     0x1a60 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+                0x00009f04                _vfprintf_r
+                0x0000b924                vfprintf
+ .text          0x0000b944       0x74 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vsprintf.o)
+                0x0000b978                vsprintf
+                0x0000b944                _vsprintf_r
+ .text          0x0000b9b8       0x54 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcrtomb.o)
+                0x0000b9b8                _wcrtomb_r
+                0x0000b9ec                wcrtomb
+ .text          0x0000ba0c      0x10c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcsrtombs.o)
+                0x0000ba0c                _wcsrtombs_r
+                0x0000baf0                wcsrtombs
+ .text          0x0000bb18      0x2b8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
+                0x0000bb18                _wctomb_r
+ .text          0x0000bdd0       0xa0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wsetup.o)
+                0x0000bdd0                __swsetup
+ .text          0x0000be70      0xf28 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+                0x0000bfc0                _dtoa_r
+ .text          0x0000cd98       0x90 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fflush.o)
+                0x0000cd98                fflush
+ .text          0x0000ce28      0x1c4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(findfp.o)
+                0x0000ce70                __sinit
+                0x0000cf28                __sfmoreglue
+                0x0000cf14                _cleanup
+                0x0000cf04                _cleanup_r
+                0x0000ceec                __fp_lock_all
+                0x0000ce60                __sfp_lock_acquire
+                0x0000cf60                __sfp
+                0x0000ce6c                __sinit_lock_release
+                0x0000ced4                __fp_unlock_all
+                0x0000ce64                __sfp_lock_release
+                0x0000ce68                __sinit_lock_acquire
+ .text          0x0000cfec      0x268 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(freer.o)
+                0x0000d08c                _free_r
+                0x0000cfec                _malloc_trim_r
+ .text          0x0000d254      0x298 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fvwrite.o)
+                0x0000d254                __sfvwrite
+ .text          0x0000d4ec       0xf0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fwalk.o)
+                0x0000d564                _fwalk
+                0x0000d4ec                _fwalk_reent
+ .text          0x0000d5dc       0x88 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+                0x0000d604                _setlocale_r
+                0x0000d5dc                __locale_charset
+                0x0000d5e8                _localeconv_r
+                0x0000d648                setlocale
+                0x0000d5f0                localeconv
+ .text          0x0000d664       0xdc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(makebuf.o)
+                0x0000d664                __smakebuf
+ .text          0x0000d740      0x538 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mallocr.o)
+                0x0000d740                _malloc_r
+ .text          0x0000dc78       0xbc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memchr.o)
+                0x0000dc78                memchr
+ .text          0x0000dd34       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memmove.o)
+                0x0000dd34                memmove
+ .text          0x0000ddc0        0x8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mlock.o)
+                0x0000ddc4                __malloc_unlock
+                0x0000ddc0                __malloc_lock
+ .text          0x0000ddc8      0x8c0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
+                0x0000e040                _mprec_log10
+                0x0000dde0                _hi0bits
+                0x0000e080                _Balloc
+                0x0000e0dc                _d2b
+                0x0000e358                _multiply
+                0x0000dfec                _ratio
+                0x0000e5f8                _s2b
+                0x0000e4a8                _i2b
+                0x0000de28                _lo0bits
+                0x0000de94                __mcmp
+                0x0000e55c                _pow5mult
+                0x0000ded4                _ulp
+                0x0000df24                _b2d
+                0x0000e4c0                _multadd
+                0x0000e1c4                __mdiff
+                0x0000e2ac                _lshift
+                0x0000ddc8                _Bfree
+ .text          0x0000e688      0x3d8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(reallocr.o)
+                0x0000e688                _realloc_r
+ .text          0x0000ea60       0x24 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isinf.o)
+                0x0000ea60                isinf
+ .text          0x0000ea84       0x1c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isnan.o)
+                0x0000ea84                isnan
+ .text          0x0000eaa0       0xd8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(stdio.o)
+                0x0000eab8                __sseek
+                0x0000eb40                __sread
+                0x0000eaa0                __sclose
+                0x0000eaf8                __swrite
+ .text          0x0000eb78      0x504 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
+                0x0000eb94                _getpid
+                0x0000ec88                initialise_monitor_handles
+                0x0000ebac                isatty
+                0x0000ec14                _fstat
+                0x0000efa8                _open
+                0x0000ebdc                _sbrk
+                0x0000eba8                _raise
+                0x0000ed10                _times
+                0x0000efbc                _stat
+                0x0000eff8                _lseek
+                0x0000eb98                _link
+                0x0000edcc                _swiwrite
+                0x0000ebb0                _rename
+                0x0000edf4                _swilseek
+                0x0000ed94                _swiclose
+                0x0000eea8                _swiopen
+                0x0000eba0                _unlink
+                0x0000ef34                _write
+                0x0000ed60                _kill
+                0x0000ed34                _gettimeofday
+                0x0000f030                _read
+                0x0000ed7c                _exit
+                0x0000ebc4                _system
+                0x0000f008                _swiread
+                0x0000ef98                _close
+ .text          0x0000f07c       0x60 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(callocr.o)
+                0x0000f07c                _calloc_r
+ .text          0x0000f0dc        0xc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(errno.o)
+                0x0000f0dc                __errno
+ .text          0x0000f0e8       0xbc /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fclose.o)
+                0x0000f0e8                _fclose_r
+                0x0000f18c                fclose
+ .text          0x0000f1a4       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_udivsi3.o)
+                0x0000f1a4                __udivsi3
+                0x0000f1a4                __aeabi_uidiv
+                0x0000f220                __aeabi_uidivmod
+ .text          0x0000f230       0xa4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_divsi3.o)
+                0x0000f230                __aeabi_idiv
+                0x0000f230                __divsi3
+                0x0000f2c4                __aeabi_idivmod
+ .text          0x0000f2d4       0xc8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_umodsi3.o)
+                0x0000f2d4                __umodsi3
+ .text          0x0000f39c       0xd8 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_modsi3.o)
+                0x0000f39c                __modsi3
+ .text          0x0000f474        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_dvmd_tls.o)
+                0x0000f474                __aeabi_ldiv0
+                0x0000f474                __div0
+                0x0000f474                __aeabi_idiv0
+ .text          0x0000f478       0x84 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_muldi3.o)
+                0x0000f478                __muldi3
+ .text          0x0000f4fc      0x234 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_sf.o)
+                0x0000f6c0                __subsf3
+                0x0000f6fc                __addsf3
+ .text          0x0000f730      0x174 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_sf.o)
+                0x0000f768                __mulsf3
+ .text          0x0000f8a4      0x11c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_sf.o)
+                0x0000f8dc                __divsf3
+ .text          0x0000f9c0       0x70 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_sf.o)
+                0x0000f9c0                __floatsisf
+ .text          0x0000fa30       0x30 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_df.o)
+                0x0000fa30                __extendsfdf2
+ .text          0x0000fa60      0x328 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_df.o)
+                0x0000fd50                __adddf3
+                0x0000fd10                __subdf3
+ .text          0x0000fd88      0x2ac /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_df.o)
+                0x0000fdc0                __muldf3
+ .text          0x00010034      0x1ac /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_df.o)
+                0x0001006c                __divdf3
+ .text          0x000101e0       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_eq_df.o)
+                0x000101f0                __eqdf2
+ .text          0x00010238       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ne_df.o)
+                0x00010248                __nedf2
+ .text          0x00010290       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_gt_df.o)
+                0x000102a0                __gtdf2
+ .text          0x000102e8       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ge_df.o)
+                0x000102f8                __gedf2
+ .text          0x00010340       0x58 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_lt_df.o)
+                0x00010350                __ltdf2
+ .text          0x00010398       0x8c /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_df.o)
+                0x00010398                __floatsidf
+ .text          0x00010424       0xb4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_si.o)
+                0x00010454                __fixdfsi
+ .text          0x000104d8       0x28 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_df.o)
+                0x000104d8                __make_dp
+ .text          0x00010500      0x130 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_sf.o)
+                0x00010530                __pack_f
+ .text          0x00010630       0x80 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_sf.o)
+                0x00010630                __unpack_f
+ .text          0x000106b0      0x290 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_df.o)
+                0x000106e0                __pack_d
+ .text          0x00010940       0xc4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_df.o)
+                0x00010940                __unpack_d
+ .text          0x00010a04       0xf0 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x00010a34                __fpcmp_parts_d
+ .text          0x00010af4       0xc4 /tmp/ccBx2Ko8.o
+                0x00010af4                start
+                0x00010b9c                endless_loop
  *(.rodata)
- .rodata        0x00010b88        0x4 main.o
- .rodata        0x00010b8c       0x18 hardware/cpu_setup.o
- .rodata        0x00010ba4      0x180 hardware/iap.o
- .rodata        0x00010d24      0x4f0 cmd/sh_data.o
- .rodata        0x00011214       0x10 hardware/spi_ssp.o
- .rodata        0x00011224        0x8 app/ap_ambilcepat.o
- .rodata        0x0001122c       0x1c ../../../Source/tasks.o
- .rodata        0x00011248        0x2 ../../../Source/portable/MemMang/heap_2.o
- *fill*         0x0001124a        0x2 00
- .rodata        0x0001124c       0xb8 cmd/sh_rtos.o
- .rodata        0x00011304      0x414 cmd/sh_hardware.o
- .rodata        0x00011718      0x3b4 cmd/sh_env.o
- .rodata        0x00011acc       0xb0 cmd/sh_utils.o
- .rodata        0x00011b7c      0x2e0 cmd/sh_sumber.o
- .rodata        0x00011e5c      0x744 cmd/manual.o
- .rodata        0x000125a0      0x330 app/ap_serial.o
- .rodata        0x000128d0      0x180 modul/tinysh/tinysh.o
- .rodata        0x00012a50       0x70 app/ap_serial2.o
- .rodata        0x00012ac0      0x108 modul/modbus/mb.o
- .rodata        0x00012bc8      0x184 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
- .rodata        0x00012d4c      0x101 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ctype_.o)
-                0x00012d4c                _ctype_
- *fill*         0x00012e4d        0x3 00
- .rodata        0x00012e50       0x18 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
- .rodata        0x00012e68        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
-                0x00012e68                _global_impure_ptr
- .rodata        0x00012e6c       0x34 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
- .rodata        0x00012ea0      0x124 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
-                0x00012f90                __mprec_tinytens
-                0x00012ea0                __mprec_tens
-                0x00012f68                __mprec_bigtens
- .rodata        0x00012fc4       0x10 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_sf.o)
-                0x00012fc4                __thenan_sf
- .rodata        0x00012fd4       0x14 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_df.o)
-                0x00012fd4                __thenan_df
+ .rodata        0x00010bb8        0x4 main.o
+ .rodata        0x00010bbc       0x18 hardware/cpu_setup.o
+ .rodata        0x00010bd4      0x180 hardware/iap.o
+ .rodata        0x00010d54      0x4f0 cmd/sh_data.o
+ .rodata        0x00011244       0x10 hardware/spi_ssp.o
+ .rodata        0x00011254        0x8 app/ap_ambilcepat.o
+ .rodata        0x0001125c       0x1c ../../../Source/tasks.o
+ .rodata        0x00011278        0x2 ../../../Source/portable/MemMang/heap_2.o
+ *fill*         0x0001127a        0x2 00
+ .rodata        0x0001127c       0xb8 cmd/sh_rtos.o
+ .rodata        0x00011334      0x414 cmd/sh_hardware.o
+ .rodata        0x00011748      0x3b4 cmd/sh_env.o
+ .rodata        0x00011afc       0xb0 cmd/sh_utils.o
+ .rodata        0x00011bac      0x2e0 cmd/sh_sumber.o
+ .rodata        0x00011e8c      0x744 cmd/manual.o
+ .rodata        0x000125d0      0x330 app/ap_serial.o
+ .rodata        0x00012900      0x180 modul/tinysh/tinysh.o
+ .rodata        0x00012a80       0x90 app/ap_serial2.o
+ .rodata        0x00012b10      0x108 modul/modbus/mb.o
+ .rodata        0x00012c18      0x184 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+ .rodata        0x00012d9c      0x101 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ctype_.o)
+                0x00012d9c                _ctype_
+ *fill*         0x00012e9d        0x3 00
+ .rodata        0x00012ea0       0x18 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+ .rodata        0x00012eb8        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
+                0x00012eb8                _global_impure_ptr
+ .rodata        0x00012ebc       0x34 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+ .rodata        0x00012ef0      0x124 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
+                0x00012fe0                __mprec_tinytens
+                0x00012ef0                __mprec_tens
+                0x00012fb8                __mprec_bigtens
+ .rodata        0x00013014       0x10 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_sf.o)
+                0x00013014                __thenan_sf
+ .rodata        0x00013024       0x14 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_df.o)
+                0x00013024                __thenan_df
  *(.rodata*)
  .rodata.str1.4
-                0x00012fe8        0x2 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
+                0x00013038        0x2 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
                                   0x4 (size before relaxing)
- *fill*         0x00012fea        0x2 00
+ *fill*         0x0001303a        0x2 00
  .rodata.str1.4
-                0x00012fec       0x63 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+                0x0001303c       0x63 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
                                  0x64 (size before relaxing)
- *fill*         0x0001304f        0x1 00
+ *fill*         0x0001309f        0x1 00
  .rodata.str1.4
-                0x00013050       0x1e /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
+                0x000130a0       0x1e /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
                                  0x20 (size before relaxing)
- *fill*         0x0001306e        0x2 00
+ *fill*         0x000130be        0x2 00
  .rodata.str1.4
-                0x00013070       0x10 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+                0x000130c0       0x10 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
-                0x00013080        0x2 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
+                0x000130d0        0x2 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
                                   0x4 (size before relaxing)
- *fill*         0x00013082        0x2 00
+ *fill*         0x000130d2        0x2 00
  .rodata.str1.4
-                0x00013084        0xb /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+                0x000130d4        0xb /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
                                  0x18 (size before relaxing)
- *fill*         0x0001308f        0x1 00
+ *fill*         0x000130df        0x1 00
  .rodata.str1.4
-                0x00013090        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
+                0x000130e0        0x4 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
  *(.glue_7)
- .glue_7        0x00013094       0x48 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x000130d0                __main_from_arm
-                0x000130c4                __xQueueGenericSendFromISR_from_arm
-                0x000130a0                __xTaskIncrementTick_from_arm
-                0x000130ac                __xQueueGenericCreate_from_arm
-                0x000130b8                __xQueueReceiveFromISR_from_arm
-                0x00013094                __vTaskSwitchContext_from_arm
+ .glue_7        0x000130e4       0x48 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x00013120                __main_from_arm
+                0x00013114                __xQueueGenericSendFromISR_from_arm
+                0x000130f0                __xTaskIncrementTick_from_arm
+                0x000130fc                __xQueueGenericCreate_from_arm
+                0x00013108                __xQueueReceiveFromISR_from_arm
+                0x000130e4                __vTaskSwitchContext_from_arm
  *(.glue_7t)
- .glue_7t       0x000130dc       0x30 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x000130e0                __vPortEnterCritical_change_to_arm
-                0x00013104                __vSerialISRCreateQueues_from_thumb
-                0x00013108                __vSerialISRCreateQueues_change_to_arm
-                0x000130e8                __vPortExitCritical_change_to_arm
-                0x000130f4                __vPortISRStartFirstTask_from_thumb
-                0x000130ec                __vPortDisableInterruptsFromThumb_from_thumb
-                0x000130e4                __vPortExitCritical_from_thumb
-                0x000130fc                __vSerialISRCreateQueues2_from_thumb
-                0x00013100                __vSerialISRCreateQueues2_change_to_arm
-                0x000130dc                __vPortEnterCritical_from_thumb
-                0x000130f8                __vPortISRStartFirstTask_change_to_arm
-                0x000130f0                __vPortDisableInterruptsFromThumb_change_to_arm
+ .glue_7t       0x0001312c       0x30 /home/afrendy/projdb/koding/atinom/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x00013130                __vPortEnterCritical_change_to_arm
+                0x00013154                __vSerialISRCreateQueues_from_thumb
+                0x00013158                __vSerialISRCreateQueues_change_to_arm
+                0x00013138                __vPortExitCritical_change_to_arm
+                0x00013144                __vPortISRStartFirstTask_from_thumb
+                0x0001313c                __vPortDisableInterruptsFromThumb_from_thumb
+                0x00013134                __vPortExitCritical_from_thumb
+                0x0001314c                __vSerialISRCreateQueues2_from_thumb
+                0x00013150                __vSerialISRCreateQueues2_change_to_arm
+                0x0001312c                __vPortEnterCritical_from_thumb
+                0x00013148                __vPortISRStartFirstTask_change_to_arm
+                0x00013140                __vPortDisableInterruptsFromThumb_change_to_arm
  *(.eh_frame)
-                0x0001310c                __end_of_text__ = .
+                0x0001315c                __end_of_text__ = .
 
-.data           0x40000000      0xd30 load address 0x0001310c
+.data           0x40000000      0xd30 load address 0x0001315c
                 0x40000000                __data_beg__ = .
-                0x0001310c                __data_beg_src__ = __end_of_text__
+                0x0001315c                __data_beg_src__ = __end_of_text__
  *(.data)
  .data          0x40000000        0x4 ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
                 0x40000000                ulCriticalNesting

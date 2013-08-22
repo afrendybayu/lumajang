@@ -93,7 +93,7 @@ char s[30];
 		//vSerialPutString2(xPort2, "tes2\r\n", 6);
 		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
-			printf("%02x ", (char) ch);
+			//printf("%02x ", (char) ch);
 			//printf("%c ", (char) ch);
 			strmb[nmb] = (char) ch;
 			nmb++;
@@ -102,20 +102,20 @@ char s[30];
 			flag_ms=1;
 		}
 		else {
-			//printf("&");
 			#if 1
 			//if (balas==nmb)	{
 			//	printf("\r\n--------->Reset MB1 !!!\r\n");
 			//}
 			if ( (balas==nmb) && (balas>0) )	{
-				//printf("Reset MB2 !!!\r\n");
+				printf("Reset MB2 !!!\r\n");
 				nmb = 0;
 				flag_ms = 0;
+				balas = 0;
 			}
 			#endif
 			if (flag_ms==1 && nmb>4)	{
 				balas = proses_mod(nmb, strmb);
-				//printf("--==> BALAS MB: %d\r\n", balas);
+				printf("--==> BALAS MB: %d\r\n", balas);
 				//flag_ms = 55;
 				nmb = 0;
 			}
@@ -164,16 +164,19 @@ int proses_mod(int mbn, char *mbstr)	{
 		printf(" %02x", mbstr[i]);
 	}
 	printf("\r\n");
+	
+	struct t_env *p_env3;
+	p_env3 = (char *) ALMT_ENV;
+		
+	if (p_env3->almtSlave != mbstr[0])	{
+		return 1;
+	}
+	
 	hsl = cek_crc_mod(mbn, mbstr);
 	
 	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
 		//printf(" > LULUS < !!!\r\n");
-		struct t_env *p_env3;
-		p_env3 = (char *) ALMT_ENV;
 		
-		if (p_env3->almtSlave != mbstr[0])	{
-			return 1;
-		}
 		cmd = mbstr[1];
 		reg = (int) (mbstr[2]<<8 | mbstr[3]);
 		jml = (int) (mbstr[4]<<8 | mbstr[5]);

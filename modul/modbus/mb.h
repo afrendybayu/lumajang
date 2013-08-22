@@ -16,7 +16,7 @@
 #define READ_FILE_CONTENT		25
 
 
-
+int kirim_respon_mb(int jml, char *s, int timeout)	;
 int cek_crc_mod(int nstr, unsigned char *x);
 unsigned int CRC16(unsigned int crc, unsigned int data)	;
 int respon_modbus(int cmd, int reg, int jml, char *str);

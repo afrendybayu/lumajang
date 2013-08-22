@@ -38,6 +38,18 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	return(crc);
 }
 
+int kirim_respon_mb(int jml, char *s, int timeout)		{
+	int i, k=0;
+	
+	enaTX2_485();
+	for (i=0; i<jml; i++)	{
+		k += xSerialPutChar2 (0, s[i], 10);
+	}
+	vTaskDelay(timeout);
+	disTX2_485();
+	return k;
+}
+
 int respon_modbus(int cmd, int reg, int jml, char *str)	{
 	//printf("-->%s, cmd: %02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	int i=0, j, index=0;
@@ -132,10 +144,14 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	#endif
 	printf("\r\n\r\n");
 	
+	kirim_respon_mb(nX, respon, 100);
+	
+	#if 0
 	enaTX2_485();
 	vSerialPutString2(0, respon, nX);
 	vTaskDelay(100);
 	disTX2_485();
+	#endif
 	
 	vPortFree (respon);
 	return nX;
@@ -192,6 +208,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	respon[jml_st_mb10H-1] = ((Crc&0xFF00)>>8);	
 	respon[jml_st_mb10H-2] = (Crc&0xFF);
 	
+	#if 1
 	printf("===> Respon: ");
 	for (i=0; i<jml_st_mb10H; i++)		{
 		printf(" %02x", respon[i]);
@@ -199,7 +216,11 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
 	printf("\r\n\r\n");
+	#endif
 	
+	kirim_respon_mb(jml_st_mb10H, respon, 100);
+	
+	#if 0
 	enaTX2_485();
 	//vSerialPutString2(0, respon, jml_st_mb10H);
 	for (i=0; i<jml_st_mb10H; i++)		{
@@ -207,9 +228,10 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	}
 	vTaskDelay(50);
 	disTX2_485();
+	#endif
 	
 	vPortFree (respon);
-	return 0;
+	return jml_st_mb10H;
 }
 
 
