@@ -223,7 +223,7 @@ void vSerialPutString2( xComPortHandle pxPort2, const signed char * const pcStri
 	while( *pxNext )
 	{	
 		//xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
-		xSerialPutChar2 (pxPort2, *pxNext, 10);
+		xSerialPutChar2 (pxPort2, *pxNext, 256);
 		//xSerialPutChar2( 1, *pxNext, 1000 );	// 100 OK
 		pxNext++;
 	}
@@ -263,7 +263,7 @@ signed portBASE_TYPE xSerialPutChar2( xComPortHandle pxPort2, signed portCHAR cO
 				printf2("%s(): masih penuh\r\n", __FUNCTION__);
 			*/
 			
-			#if 0
+			#if 1
 			/* Depending on queue sizing and task prioritisation:  While we
 			were blocked waiting to post interrupts were not disabled.  It is
 			possible that the serial ISR has emptied the Tx queue, in which

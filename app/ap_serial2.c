@@ -23,8 +23,6 @@
 
 #ifdef PAKAI_SERIAL_2
 
-//char strSer2[256];
-//int nSer2;
 static xComPortHandle xPort2;
 extern volatile struct t_st_hw st_hw;
 
@@ -102,58 +100,30 @@ char s[30];
 			flag_ms=1;
 		}
 		else {
-			#if 1
-			//if (balas==nmb)	{
-			//	printf("\r\n--------->Reset MB1 !!!\r\n");
-			//}
-			if ( (balas==nmb) && (balas>0) )	{
-				printf("Reset MB2 !!!\r\n");
+			// sedot data respon (sendiri), clear buffer
+			if ( (balas==nmb) && (balas>0) )	{			
+				//printf("Reset MB2 !!!\r\n");
 				nmb = 0;
 				flag_ms = 0;
 				balas = 0;
 			}
-			#endif
+			
 			if (flag_ms==1 && nmb>4)	{
 				balas = proses_mod(nmb, strmb);
-				printf("--==> BALAS MB: %d\r\n", balas);
-				//flag_ms = 55;
+				//printf("--==> BALAS MB: %d\r\n", balas);
 				nmb = 0;
 			}
 			if (balas==0)	{
 				nmb = 0;
 			}
 			//
-			//flag_ms = 0;
+			#if 0
+			flag_ms = 0;
+			nmb = 0;
+			#endif
 		}
 	}
 }
-
-#if 0
-int parsing_mod(unsigned char *x)	{
-	struct t_env *p_env3;
-	p_env3 = (char *) ALMT_ENV;
-	
-	if (p_env3->almtSlave != x[0])	{
-		return 0;
-	}
-	return  x[1];
-	
-#if 0
-	
-	
-	p_mod_sl.almt = x[0];
-	p_mod_sl.cmd  = x[1];
-	p_mod_sl.reg  = (x[2] << 8) + x[3]; 
-	p_mod_sl.jml  = ((x[4]<<8)+x[5])/4;
-	//printf("al: %d, cmd: %d, reg: %d, jml: %d\r\n", p_mod_sl.almt, p_mod_sl.cmd, p_mod_sl.reg, p_mod_sl.jml);
-	
-	if (p_mod_sl.almt==p_env3->almtSlave)	{		// untuk sendiri
-		return 1;
-	}
-	return 0;
-#endif
-}
-#endif
 
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
@@ -191,73 +161,6 @@ int proses_mod(int mbn, char *mbstr)	{
 	return 2;
 }
 
-#if 0
-int proses_mod_cmd()	{
-	int hsl=0, cmd=0, jml=0, reg=0;
-	//pr_mod("\r\n>> BACA: ", sping, np);
-	printf("Jml CMD: %d -->", nSer2);
-	int i;
-	for (i=0; i<nSer2; i++)		{
-		printf(" %02x", strSer2[i]);
-	}
-	printf("\r\n");
-	hsl = cek_crc_mod(strSer2);
-	
-	if (hsl==1 && nSer2>=8)	{				// 8: min panjang modbus REQUEST
-		//printf(" > LULUS < !!!\r\n");
-		struct t_env *p_env3;
-		p_env3 = (char *) ALMT_ENV;
-		
-		if (p_env3->almtSlave != strSer2[0])	{
-			return 0;
-		}
-		cmd = strSer2[1];
-		reg = (int) (strSer2[2]<<8 | strSer2[3]);
-		jml = (int) (strSer2[4]<<8 | strSer2[5]);
-		
-		//cmd = parsing_mod(strSer2);
-		if (cmd>0)	{
-			//printf("__PROSES DATA KITA !!\r\n");
-			//respon_modbus();
-		}
-	}
-}
-
-void sedot_mod(int ch)	{
-	char x = (char) ch;
-	int hsl=0, r;
-	//char stmp[50];
-	
-	strSer2[nSer2] = x;
-	strSer2[nSer2+1] = '\0';
-	
-	nSer2++;
-	#if 0
-	if (nSer2>7)	{
-		#if 1
-		printf("#### : ");
-		for (r=0; r<nSer2; r++)	{
-			printf("%02x ", strSer2[r]);
-		}
-		printf("\r\n");
-		#endif
-
-		//hsl = cek_crc_mod(strSer2);
-		if (hsl==1)	{
-			//printf(" > LULUS < !!!\r\n");
-			if (parsing_mod(sping)==1)	{
-				//printf("__PROSES DATA KITA !!\r\n");
-				respon_modbus();
-			}
-			
-		}
-		
-		//printf("######## : %s--\r\n", sping);
-		np=0;
-	}
-	#endif
-}
-#endif
 
 void vAltStartCom2( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate )		{
 //const unsigned portBASE_TYPE uxQueueSize = 10;
