@@ -22,13 +22,14 @@ int ch;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
 	vTaskDelay(200);
-	//uprintf("  task : %s\r\n", __FUNCTION__);
+	uprintf("  task : %s\r\n", __FUNCTION__);
 	
 	reset_konter();
 
 	#ifdef PAKAI_SDCARD
 		st_hw.sdc = 0;
-		
+		disk_initialize(SDC);
+		#if 0
 		if (cek_ins_sdc())	{
 			disk_initialize(SDC);
 			//ch = init_sdc();
@@ -36,6 +37,7 @@ int ch;
 		} else {
 			uprintf("___TIDAK ada SD Card !____\r\n");
 		}
+		#endif
 		//vTaskDelay(10); ---> malah error tidak dikenali
 	#endif
 	

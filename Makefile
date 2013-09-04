@@ -123,7 +123,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
 		$(APP)/ap_utils.c			\
-		
+
 MODBUS_SOURCE=	\
 		$(MODUL)/modbus/mb.c			\
 
@@ -140,8 +140,8 @@ RTC_SOURCE= \
 		cmd/sh_rtc.c		\
 
 SDC_SOURCE=	\
-		$(MODUL)/ff/ff9b/src/diskio.c	\
 		$(MODUL)/ff/ff9b/src/ff.c		\
+		$(MODUL)/ff/ff9b/src/diskio.c	\
 		$(MODUL)/ff/sdc.c		\
 		$(CMD)/sh_sdc.c			\
 
@@ -161,11 +161,11 @@ THUMB_OBJS = $(THUMB_SOURCE:.c=.o)
 ARM_OBJS = $(ARM_SOURCE:.c=.o)
 
 THUMB_SOURCE += $(SERIAL_SOURCE)
-THUMB_SOURCE += $(SERIAL2_SOURCE)
+#THUMB_SOURCE += $(SERIAL2_SOURCE)
 THUMB_SOURCE += $(RELAY_SOURCE)
 THUMB_SOURCE += $(MODBUS_SOURCE)
-#THUMB_SOURCE += $(SDC_SOURCE)
-#THUMB_SOURCE += $(RTC_SOURCE)
+THUMB_SOURCE += $(RTC_SOURCE)
+THUMB_SOURCE += $(SDC_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 

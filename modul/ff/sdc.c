@@ -7,17 +7,20 @@
 ****************************/
 
 #include "FreeRTOS.h"
-#include "sdc.h"
-#include "monita.h"
-#include "hardware.h"
-#include "spi_ssp.h"
-#include "ff/ff9b/src/diskio.h"
-//#include "ff/ff9b/src/ff.h"
 
 #ifdef PAKAI_SDCARD
 
 
-//#define DEBUG_SDC
+#include "sdc.h"
+#include "monita.h"
+#include "hardware.h"
+#include "spi_ssp.h"
+#include "ff/ff9b/src/ff.h"
+#include "ff/ff9b/src/diskio.h"
+
+
+
+#define DEBUG_SDC
 
 extern volatile struct t_st_hw st_hw;
 
@@ -213,7 +216,8 @@ uchr sdc_init()	{
 		unsigned char CMD0_GO_IDLE_STATE[] = { 0x00,0x00,0x00,0x00,0x00,0x95 };
 		status = SD_WriteCmd(CMD0_GO_IDLE_STATE);
 		vTaskDelay(1);
-		if (i++ > 25)	{
+		//if (i++ > 25)	{
+		if (i++ > 10000)	{
 			return 1;
 		}
 	} while( status != 0x01 );
@@ -227,7 +231,7 @@ uchr sdc_init()	{
 	status = respon_SDcmd( strRsp, R7_RESPONSE_SIZE );
 	iRsp =  (strRsp[0] << 24) + (strRsp[1] << 16) + (strRsp[2] << 8) + strRsp[3];
 	
-	//uprintf("\r\nhasil respon : %04x : %02x %02x %02x %02x\r\n", iRsp, strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
+	uprintf("\r\nhasil respon : %04x : %02x %02x %02x %02x\r\n", iRsp, strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
 	
 	unsigned char CMD55_APP_CMD[] = {55,0x00,0x00,0x00,0x00,0xFF};
 	if ((iRsp & 0xFFF) == 0x1AA)	{
@@ -310,7 +314,7 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	unsigned short crc;
 	unsigned short resp;
 	unsigned char cmd, rspn;
-	unsigned char hsl[512];
+	//unsigned char hsl[512];
 	int a,b;
 	
 	if (len < 1 || len > 127) return 1;	/* Check parameter */
@@ -329,33 +333,40 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	//uprintf("-------------\r\n");
 	#endif
 	
-	#if 1
-	hsl[0] = rspn;
+	//hsl[0] = rspn;
+	data[0] = rspn;
 	rspn = SSP0byte(0xff);
 	for(a=1; a<512; a++)	{
 		rspn = SSP0byte(0xff);
-		hsl[a] = rspn;
+		//hsl[a] = rspn;
+		data[a] = rspn;
+	}
+	#if 0
+	int i=0;
+	while (i<512)	  {
+		data[i] = hsl[i];
+		i++;
 	}
 	#endif
-
-	#if 1
+	#if 0
 	for (a=0; a<32; a++)	{
-		for (b=0; b<16; b++)	{
+		
+		#if 0
+		for (b=0; b<1; b++)	{
 			uprintf("%02x ", hsl[a*16+b]);
 			if (b==7) uprintf("  ");
 		}
-		uprintf("  ");
-		for (b=0; b<16; b++)	{
-			uprintf("%c ", hsl[a*16+b]);
-			if (b==7) uprintf("  ");
-		}
-		uprintf("\r\n");
+		uprintf("%02x ", hsl[a]);
+		//uprintf("\r\n");
+		#endif
 	}
 	#endif
 	
 	flush_ssp_spi(); 
 
-	memcpy(data, hsl, 512);
+	
+	//printf("------------> seleasai baca sdc %02x %02x == %02x %02x\r\n", hsl[510], hsl[511], data[510], data[511]);
+	
 	#if 0
 	if (send_cmd(cmd, sector, 1, &resp)		/* Start to read */
 		&& !(resp & 0xC0580000)) {
@@ -494,7 +505,7 @@ unsigned char SD_WriteCmd(unsigned char* cmd)	{
 	cmd[5] |= (1<<0);
 	
 	#ifdef DEBUG_SDC
-	uprintf("%02x %02x %02x %02x %02x %02x\r\n", cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
+	uprintf("CMD: %02x %02x %02x %02x %02x %02x\r\n", cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
 	#endif
 	
 	for(i = 0; i < 6; ++i)	{
@@ -518,9 +529,9 @@ unsigned char SD_WriteCmd(unsigned char* cmd)	{
 		i++;
 	} while(response == 0xFF);
 	
-	//#ifdef DEBUG_SDC
+	#ifdef DEBUG_SDC
 	uprintf("respon[%d]: %02x\r\n", i, response);
-	//#endif
+	#endif
 	// Following any command, the SD Card needs 8 clocks to finish up its work.
 	// (from SanDisk SD Card Product Manual v1.9 section 5.1.8)
 	//SPIWrite(0xFF); 
@@ -667,6 +678,7 @@ unsigned char init_sdc(void)		{
 		//status = Microsd_SendCmd( CMD0, 0x00000000);
 		// fail and return
 		if (i++ > 25)	{
+		//if (i++ > 10000)	{
 			return 1;
 		}
 	} while( status != 0x01 );

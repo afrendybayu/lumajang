@@ -252,8 +252,8 @@ void vLedTask( void *pvParameters )	{
 	const portTickType xFrequency = 500;
 	FATFS Fatfs[_VOLUMES];
 	
-	//vTaskDelay(1000);
-	//printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
+	vTaskDelay(1000);
+	printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
 	
 	st_hw.init++;
 	do	{

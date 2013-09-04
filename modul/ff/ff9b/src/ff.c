@@ -96,6 +96,9 @@
 / Jan 24,'13 R0.09b Added f_setlabel() and f_getlabel(). (_USE_LABEL = 1)
 /---------------------------------------------------------------------------*/
 
+#include "FreeRTOS.h"
+
+
 #ifdef PAKAI_SDCARD
 
 #include "ff.h"			/* FatFs configurations and declarations */
@@ -2068,27 +2071,13 @@ BYTE check_fs (	/* 0:FAT-VBR, 1:Any BR but not FAT, 2:Not a BR, 3:Disk error */
 				__FUNCTION__, fs->drv, fs->win, sect);
 	if (disk_read(fs->drv, fs->win, sect, 1) != RES_OK)	/* Load boot record */
 		return 3;
-	
-	#if 0
-	int a,b;
-	for (a=0; a<32; a++)	{
-		for (b=0; b<16; b++)	{
-			uprintf("%02x ", fs->win[a*16+b]);
-			if (b==7) uprintf("  ");
-		}
-		uprintf("  ");
-		for (b=0; b<16; b++)	{
-			uprintf("%c ", fs->win[a*16+b]);
-			if (b==7) uprintf("  ");
-		}
-		uprintf("\r\n");
-	}
-	#endif
+	printf("+++++++++++++++++++++ ADA DISINI +++++++++++++++++==\r\n");
 	
 	uprintf("LD_WORD(&fs->win[BS_55AA]: %04X\r\n", LD_WORD(&fs->win[BS_55AA]) );
-	if (LD_WORD(&fs->win[BS_55AA]) != 0xAA55)		/* Check record signature (always placed at offset 510 even if the sector size is >512) */
+	if (LD_WORD(&fs->win[BS_55AA]) != 0xAA55)	{	/* Check record signature (always placed at offset 510 even if the sector size is >512) */
+		uprintf("----> masuk sini 0 !!\r\n");
 		return 2;
-
+	}
 	uprintf("LD_DWORD(&fs->win[BS_FilSysType]): %03X\r\n", LD_DWORD(&fs->win[BS_FilSysType]) );
 	if ((LD_DWORD(&fs->win[BS_FilSysType]) & 0xFFFFFF) == 0x544146)		{/* Check "FAT" string */
 		uprintf("----> masuk sini 1 !!\r\n");
@@ -2169,13 +2158,13 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	fs->drv = LD2PD(vol);				/* Bind the logical drive and a physical drive */
 	uprintf("---> %s() vol: %d, fs->drv: %d\r\n", __FUNCTION__, vol, fs->drv);
 	stat = disk_initialize(fs->drv);	/* Initialize the physical drive */
-	qsprintf("---> %s() stat: %d, initdisk\r\n", __FUNCTION__, stat);
+	uprintf("---> %s() stat: %d, initdisk\r\n", __FUNCTION__, stat);
 	if (stat & STA_NOINIT)		{		/* Check if the initialization succeeded */
-		qsprintf("--------> %s NOT READY\r\n", __FUNCTION__);
+		uprintf("--------> %s NOT READY\r\n", __FUNCTION__);
 		return FR_NOT_READY;			/* Failed to initialize due to no medium or hard error */
 	}
 	if (!_FS_READONLY && wmode && (stat & STA_PROTECT))	{	/* Check disk write protection if needed */
-		qsprintf("--------> %s FR_WRITE_PROTECTED\r\n", __FUNCTION__);
+		uprintf("--------> %s FR_WRITE_PROTECTED\r\n", __FUNCTION__);
 		return FR_WRITE_PROTECTED;
 	}
 	uprintf("---> %s() _MAX_SS: %d != 512\r\n", __FUNCTION__, _MAX_SS);
@@ -2187,8 +2176,12 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	uprintf("---> %s() mau cek_fs\r\n", __FUNCTION__);
 	fmt = check_fs(fs, bsect = 0);		/* Load sector 0 and check if it is an FAT-VBR (in SFD) */
 	uprintf("---> %s() cek_fs: %d != 512\r\n", __FUNCTION__, fmt);
+	
+	//return 1000;			// STOP SINI DULU !!!
 	if (LD2PT(vol) && !fmt) fmt = 1;	/* Force non-SFD if the volume is forced partition */
+	uprintf("+++++++++++++++++++++++====> %s() fmt: %d\r\n", __FUNCTION__, fmt);
 	if (fmt == 1) {						/* Not an FAT-VBR, the physical drive can be partitioned */
+		
 		/* Check the partition listed in the partition table */
 		pi = LD2PT(vol);
 		if (pi) pi--;
@@ -2344,7 +2337,7 @@ FRESULT f_mount (
 	if (vol >= _VOLUMES)		/* Check if the drive number is valid */
 		return FR_INVALID_DRIVE;
 	rfs = FatFs[vol];			/* Get current fs object */
-	//uprintf("---> %s() vol: %d\r\n", __FUNCTION__, vol);
+	uprintf("---> %s() vol: %d\r\n", __FUNCTION__, vol);
 	if (rfs) {
 #if _FS_LOCK
 		clear_lock(rfs);
@@ -2354,7 +2347,7 @@ FRESULT f_mount (
 #endif
 		rfs->fs_type = 0;		/* Clear old fs object */
 	}
-	//uprintf("---> %s() lanjut 1\r\n", __FUNCTION__);
+	uprintf("---> %s() lanjut 1\r\n", __FUNCTION__);
 	if (fs) {
 		fs->fs_type = 0;		/* Clear new fs object */
 #if _FS_REENTRANT				/* Create sync object for the new volume */
@@ -2362,7 +2355,7 @@ FRESULT f_mount (
 #endif
 	}
 	FatFs[vol] = fs;			/* Register new fs object */
-	//uprintf("---> %s() lanjut 3\r\n", __FUNCTION__);
+	uprintf("---> %s() lanjut 3 %d\r\n", __FUNCTION__, FR_OK);
 	return FR_OK;
 }
 
@@ -3238,6 +3231,7 @@ FRESULT f_getfree (
 	/* Get drive number */
 	res = chk_mounted(&path, fatfs, 0);
 	uprintf("---> %s cek mounted res: %d/%d\r\n", __FUNCTION__, res, FR_OK);
+	//return;			// STOP SINI DULU !!!
 	fs = *fatfs;
 	if (res == FR_OK) {
 		/* If free_clust is valid, return it without full cluster scan */

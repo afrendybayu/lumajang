@@ -306,7 +306,7 @@ char s[30];
 	
 	init_banner();
 	//set_env_default();
-	baca_konfig_rom();
+	baca_konfig_rom();					// hardware/iap.c
 	
 	cmd_shell();
 	st_hw.init++;
