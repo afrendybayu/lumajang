@@ -250,10 +250,10 @@ void vLedTask( void *pvParameters )	{
 	char ss[6];
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 500;
-	FATFS Fatfs[_VOLUMES];
+	//FATFS Fatfs[_VOLUMES];
 	
-	vTaskDelay(1000);
-	printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
+	vTaskDelay(1500);
+	//printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
 	
 	st_hw.init++;
 	do	{
@@ -275,10 +275,7 @@ void vLedTask( void *pvParameters )	{
 		#ifdef PAKAI_ADC_7708
 		data_adc();
 		#endif
-		
-		#ifdef PAKAI_SDCARD
-		// simpan_sdcard();		// simpan ke SDcard
-		#endif
+	
 		
 		i = 1-i;
 		if (i)	{

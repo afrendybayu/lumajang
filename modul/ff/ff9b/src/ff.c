@@ -2205,24 +2205,24 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	fs->fsize = fasize;
 
 	fs->n_fats = b = fs->win[BPB_NumFATs];				/* Number of FAT copies */
-	uprintf("%s() --> jml kopi FAT: %d\r\n", __FUNCTION__, fs->n_fats);
+	//uprintf("%s() --> jml kopi FAT: %d\r\n", __FUNCTION__, fs->n_fats);
 	if (b != 1 && b != 2) return FR_NO_FILESYSTEM;		/* (Must be 1 or 2) */
 	fasize *= b;										/* Number of sectors for FAT area */
 
 	fs->csize = b = fs->win[BPB_SecPerClus];			/* Number of sectors per cluster */
-	uprintf("%s() --> jml sector/cluster: %d\r\n", __FUNCTION__, fs->csize);
+	//uprintf("%s() --> jml sector/cluster: %d\r\n", __FUNCTION__, fs->csize);
 	if (!b || (b & (b - 1))) return FR_NO_FILESYSTEM;	/* (Must be power of 2) */
 
 	fs->n_rootdir = LD_WORD(fs->win+BPB_RootEntCnt);	/* Number of root directory entries */
-	uprintf("%s() --> jml nrootdir: %d\r\n", __FUNCTION__, fs->n_rootdir);
+	//uprintf("%s() --> jml nrootdir: %d\r\n", __FUNCTION__, fs->n_rootdir);
 	if (fs->n_rootdir % (SS(fs) / SZ_DIR)) return FR_NO_FILESYSTEM;	/* (BPB_RootEntCnt must be sector aligned) */
 
 	tsect = LD_WORD(fs->win+BPB_TotSec16);				/* Number of sectors on the volume */
-	uprintf("%s() --> jml tsect: %d\r\n", __FUNCTION__, tsect);
+	//uprintf("%s() --> jml tsect: %d\r\n", __FUNCTION__, tsect);
 	if (!tsect) tsect = LD_DWORD(fs->win+BPB_TotSec32);
 
 	nrsv = LD_WORD(fs->win+BPB_RsvdSecCnt);				/* Number of reserved sectors */
-	uprintf("%s() --> jml nrsv: %d\r\n", __FUNCTION__, nrsv);
+	//uprintf("%s() --> jml nrsv: %d\r\n", __FUNCTION__, nrsv);
 	if (!nrsv) return FR_NO_FILESYSTEM;					/* (BPB_RsvdSecCnt must not be 0) */
 
 	/* Determine the FAT sub type */
@@ -2337,7 +2337,7 @@ FRESULT f_mount (
 	if (vol >= _VOLUMES)		/* Check if the drive number is valid */
 		return FR_INVALID_DRIVE;
 	rfs = FatFs[vol];			/* Get current fs object */
-	uprintf("---> %s() vol: %d\r\n", __FUNCTION__, vol);
+	//uprintf("---> %s() vol: %d\r\n", __FUNCTION__, vol);
 	if (rfs) {
 #if _FS_LOCK
 		clear_lock(rfs);
@@ -2347,7 +2347,7 @@ FRESULT f_mount (
 #endif
 		rfs->fs_type = 0;		/* Clear old fs object */
 	}
-	uprintf("---> %s() lanjut 1\r\n", __FUNCTION__);
+	//uprintf("---> %s() lanjut 1\r\n", __FUNCTION__);
 	if (fs) {
 		fs->fs_type = 0;		/* Clear new fs object */
 #if _FS_REENTRANT				/* Create sync object for the new volume */
@@ -2355,7 +2355,7 @@ FRESULT f_mount (
 #endif
 	}
 	FatFs[vol] = fs;			/* Register new fs object */
-	uprintf("---> %s() lanjut 3 %d\r\n", __FUNCTION__, FR_OK);
+	//uprintf("---> %s() lanjut 3 %d\r\n", __FUNCTION__, FR_OK);
 	return FR_OK;
 }
 

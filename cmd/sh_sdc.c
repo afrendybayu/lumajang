@@ -9,6 +9,7 @@
 #include "ff/ff9b/src/ff.h"
 #include "ff/sdc.h"
 #include "sh_sdc.h"
+#include "ff/sdc_cmd.h"
 
 //extern FATFS *FatFs[];
 
@@ -35,28 +36,11 @@ void sh_cek_read_sdc(void)	{
 }
 
 void sh_cek_free_cluster()	{
-	FATFS *fs;
-	char ketfs[25];
-    DWORD fre_clust, fre_sect, tot_sect;
+	cek_free_cluster();
+}
 
-    /* Get volume information and free clusters of drive 1 */
-    unsigned char res;
-    res = f_getfree("0:", &fre_clust, &fs);
-    //ket_fs(res, &ketfs);
-    //uprintf("res: %d-%s\r\n", res, ketfs);
-    if (res) {
-		uprintf();
-		return;
-		//die(res);
-	}
-
-    /* Get total sectors and free sectors */
-    tot_sect = (fs->n_fatent - 2) * fs->csize;
-    fre_sect = fre_clust * fs->csize;
-
-    /* Print free space in unit of KiB (assuming 512 bytes/sector) */
-	uprintf("\r\n  %lu KB total drive space.\r\n  %lu KB available.\r\n",
-           tot_sect / 2, fre_sect / 2);
+void sh_ls(int argc, char **argv)		{
+	scan_files ( "0:/", 0);
 }
 
 void sh_cek_pwd()	{

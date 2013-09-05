@@ -142,8 +142,10 @@ RTC_SOURCE= \
 SDC_SOURCE=	\
 		$(MODUL)/ff/ff9b/src/ff.c		\
 		$(MODUL)/ff/ff9b/src/diskio.c	\
-		$(MODUL)/ff/sdc.c		\
-		$(CMD)/sh_sdc.c			\
+		$(MODUL)/ff/sdc.c			\
+		$(MODUL)/ff/sdc_cmd.c		\
+		$(CMD)/sh_sdc.c				\
+		
 
 RELAY_SOURCE=	\
 		$(CMD)/sh_relay.c	\

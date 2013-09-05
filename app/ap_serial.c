@@ -221,6 +221,7 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_read_cmd);
 	//tinysh_add_command(&cek_read_sektor_cmd);
 	tinysh_add_command(&cek_pwd_cmd);
+	tinysh_add_command(&cek_ls_cmd);
 	#endif
 #endif
 }
@@ -327,6 +328,11 @@ char s[30];
 		vTaskDelay(100);
 	} while (st_hw.init != uxTaskGetNumberOfTasks());
 	
+	vTaskDelay(100);
+	#ifdef PAKAI_SDCARD
+	uprintf("Cek Cluster SDCARD:\r\n");
+	sh_cek_free_cluster();
+	#endif
 	vTaskDelay(100);
 	sprintf(s, "%s$ ", PROMPT);
 	
