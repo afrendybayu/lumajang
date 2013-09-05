@@ -322,6 +322,7 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	
 	cmd = (len > 1) ? CMD18 : CMD17;		// Transfer type: Single block or Multiple block //
 	//cmd = CMD17;
+	almt *= 512;
 	rspn = Microsd_SendCmd( cmd, almt );
 	uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
 	

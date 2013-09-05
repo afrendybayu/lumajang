@@ -3231,7 +3231,7 @@ FRESULT f_getfree (
 	/* Get drive number */
 	res = chk_mounted(&path, fatfs, 0);
 	uprintf("---> %s cek mounted res: %d/%d\r\n", __FUNCTION__, res, FR_OK);
-	//return;			// STOP SINI DULU !!!
+
 	fs = *fatfs;
 	if (res == FR_OK) {
 		/* If free_clust is valid, return it without full cluster scan */
