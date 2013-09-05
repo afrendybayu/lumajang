@@ -219,7 +219,8 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_sdc_cmd);
 	tinysh_add_command(&cek_free_cluster_cmd);
 	tinysh_add_command(&cek_read_cmd);
-	tinysh_add_command(&cek_read_sektor_cmd);
+	//tinysh_add_command(&cek_read_sektor_cmd);
+	tinysh_add_command(&cek_pwd_cmd);
 	#endif
 #endif
 }
@@ -310,6 +311,13 @@ char s[30];
 	
 	cmd_shell();
 	st_hw.init++;
+	
+	#ifdef PAKAI_SDCARD
+		mount_disk(0);		// 0: SDCARD
+		//vTaskDelay(50);
+		//sh_cek_free_cluster();
+		//vTaskDelay(10);
+	#endif
 	
 	#ifdef configUSE_IDLE_HOOK
 		st_hw.init++;

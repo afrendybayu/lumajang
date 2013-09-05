@@ -120,8 +120,8 @@ void sdc_ket()		{
 	cInfo.year = 2000 + ((CardInfo[16+13] & 0x0f) << 4) | (CardInfo[16+14] >> 4);	// Product Date - year
 	cInfo.month = (CardInfo[16+14] & 0x0f);					// Product Date - month
 	cInfo.serial = (CardInfo[16+9] << 24) | (CardInfo[16+10] << 16) | (CardInfo[16+11] << 8) | CardInfo[16+12]; // Serial Number
-	uprintf("CID --> MID: %d, Nama: %s, Rev%d, SN: 0x%08X, ManDate: %02d-%d, oem: 0x%04X\r\n", \
-		cInfo.manid, cInfo.name, cInfo.rev, cInfo.serial, cInfo.month, cInfo.year, cInfo.oem);
+	//uprintf("CID --> MID: %d, Nama: %s, Rev%d, SN: 0x%08X, ManDate: %02d-%d, oem: 0x%04X\r\n", \
+	//	cInfo.manid, cInfo.name, cInfo.rev, cInfo.serial, cInfo.month, cInfo.year, cInfo.oem);
 		
 	cInfo.speed = CardInfo[3];
 	cInfo.nblock = 1 << (CardInfo[5] & 0x0F);
@@ -136,8 +136,8 @@ void sdc_ket()		{
 		cInfo.blocks  = ((C_Size + 1) * (1 << (C_Size_Mult + 2)) * (1 << Read_Bl_Len)) / 512;
 	}
 
-	uprintf("CSD --> Speed: 0x%02xh: %s MHz, CardType: 0x%02Xh, nBlock: %d, C_Size: %d, Total cap: %ld\r\n", \
-		cInfo.speed, (cInfo.speed==0x32)?"25":"-", cInfo.CardType, cInfo.nblock, cInfo.blocks, (unsigned long) sdc_cap);	// 
+	//uprintf("CSD --> Speed: 0x%02xh: %s MHz, CardType: 0x%02Xh, nBlock: %d, C_Size: %d, Total cap: %ld\r\n", \
+	//	cInfo.speed, (cInfo.speed==0x32)?"25":"-", cInfo.CardType, cInfo.nblock, cInfo.blocks, (unsigned long) sdc_cap);	// 
 	
 	
 }
@@ -222,7 +222,7 @@ uchr sdc_init()	{
 		}
 	} while( status != 0x01 );
 	#ifdef DEBUG_SDC
-	uprintf("---> CMD0_GO_IDLE_STATE status[%d] : %d\r\n", i, status);
+	//uprintf("---> CMD0_GO_IDLE_STATE status[%d] : %d\r\n", i, status);
 	#endif
 	flush_ssp_spi();
 	
@@ -231,26 +231,28 @@ uchr sdc_init()	{
 	status = respon_SDcmd( strRsp, R7_RESPONSE_SIZE );
 	iRsp =  (strRsp[0] << 24) + (strRsp[1] << 16) + (strRsp[2] << 8) + strRsp[3];
 	
-	uprintf("\r\nhasil respon : %04x : %02x %02x %02x %02x\r\n", iRsp, strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
+	//uprintf("\r\nhasil respon : %04x : %02x %02x %02x %02x\r\n", iRsp, strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
 	
 	unsigned char CMD55_APP_CMD[] = {55,0x00,0x00,0x00,0x00,0xFF};
 	if ((iRsp & 0xFFF) == 0x1AA)	{
 		//uprintf("masuk cek versi 2 !!\r\n");
 		i=0;
 		do	{
-			if (i++ > 20)	return 2;
-			vTaskDelay(50);
+			if (i++ > 100)	return 2;
+			
 			if (SD_WriteCmd(CMD55_APP_CMD)==0x01)	{
 				// SDHC & SDXC supported, sdxc power saving, use current signal voltage
 				status = Microsd_SendCmd( CMD41, 0x40FF8000 );	// 4000000000
 				respon_SDcmd( strRsp, R3_RESPONSE_SIZE );
 				#ifdef DEBUG_SDC
-				uprintf("---> CMD41_SD_SEND_OP_COND status[%d] : %02x\r\n", i, status);
-				uprintf("respon v2 : %02x %02x %02x %02x\r\n", strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
+				//uprintf("---> CMD41_SD_SEND_OP_COND status[%d] : %02x\r\n", i, status);
+				//uprintf("respon v2 : %02x %02x %02x %02x\r\n", strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
 				#endif
 			}
+			vTaskDelay(50);
 		} while (status==0x01);
 		
+		vTaskDelay(50);
 		status = Microsd_SendCmd( CMD58, 0x00000000 );
 		respon_SDcmd( strRsp, R3_RESPONSE_SIZE );
 		ty = (strRsp[0] & 0x40) ? CT_SD2|CT_BLOCK : CT_SD2;		// Check CCS bit in the OCR 0x04 | 0x08  : 0x04;
@@ -324,7 +326,7 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	//cmd = CMD17;
 	almt *= 512;
 	rspn = Microsd_SendCmd( cmd, almt );
-	uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
+	//uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
 	
 	#if 1
 	do	{
@@ -505,10 +507,14 @@ unsigned char SD_WriteCmd(unsigned char* cmd)	{
 	cmd[0]  = (cmd[0] & 0x3F) | 0x40;
 	cmd[5] |= (1<<0);
 	
-	#ifdef DEBUG_SDC
-	uprintf("CMD: %02x %02x %02x %02x %02x %02x\r\n", cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
-	#endif
 	
+
+	#ifdef DEBUG_SDC
+	vTaskDelay(1);
+	//uprintf(".");
+	//uprintf("CMD: %02x %02x %02x %02x %02x %02x\r\n", cmd[0],cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);
+	#endif
+		
 	for(i = 0; i < 6; ++i)	{
 		SSP0Send(*cmd, 1);
 		//uprintf("%02x ", *cmd);
@@ -531,7 +537,7 @@ unsigned char SD_WriteCmd(unsigned char* cmd)	{
 	} while(response == 0xFF);
 	
 	#ifdef DEBUG_SDC
-	uprintf("respon[%d]: %02x\r\n", i, response);
+	//uprintf("respon[%d]: %02x\r\n", i, response);
 	#endif
 	// Following any command, the SD Card needs 8 clocks to finish up its work.
 	// (from SanDisk SD Card Product Manual v1.9 section 5.1.8)
@@ -546,12 +552,12 @@ unsigned char SD_WriteCmd(unsigned char* cmd)	{
 void flush_ssp_spi()	{
 	int i;
 	unsigned char rsp;
-	uprintf("\r\nFlush !!! : ");
+	//uprintf("\r\nFlush !!! : ");
 	for(i=0; i<8; i++)	{
 		rsp = SSP0byte(0xff);
-		uprintf("%02x ", rsp);
+		//uprintf("%02x ", rsp);
 	}
-	uprintf("\r\n");
+	//uprintf("\r\n");
 }
 
 void sdc_infox()		{

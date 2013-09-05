@@ -42,9 +42,10 @@ void sh_cek_free_cluster()	{
     /* Get volume information and free clusters of drive 1 */
     unsigned char res;
     res = f_getfree("0:", &fre_clust, &fs);
-    ket_fs(res, &ketfs);
-    uprintf("res: %d-%s\r\n", res, ketfs);
+    //ket_fs(res, &ketfs);
+    //uprintf("res: %d-%s\r\n", res, ketfs);
     if (res) {
+		uprintf();
 		return;
 		//die(res);
 	}
@@ -54,8 +55,15 @@ void sh_cek_free_cluster()	{
     fre_sect = fre_clust * fs->csize;
 
     /* Print free space in unit of KiB (assuming 512 bytes/sector) */
-	uprintf("%lu KB total drive space.\n%lu KB available.\n",
+	uprintf("\r\n  %lu KB total drive space.\r\n  %lu KB available.\r\n",
            tot_sect / 2, fre_sect / 2);
+}
+
+void sh_cek_pwd()	{
+	char buff[60];
+	
+	f_getcwd (buff, 60);     /* [IN] The length of the buffer */
+	printf("\r\npwd: %s\r\n", buff);
 }
 
 void sh_baca_sektor(int argc, char **argv)		{

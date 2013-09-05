@@ -782,13 +782,13 @@ FRESULT move_window (
 	DWORD sector	/* Sector number to make appearance in the fs->win[] */
 )
 {
-	uprintf("%s --> sect: %d/%d\r\n", __FUNCTION__, sector, fs->winsect);
+	//uprintf("%s --> sect: %d/%d\r\n", __FUNCTION__, sector, fs->winsect);
 	if (sector != fs->winsect) {	/* Changed current window */
 #if !_FS_READONLY
 		if (sync_window(fs) != FR_OK)
 			return FR_DISK_ERR;
 #endif
-		uprintf("%s --> disk: %d, sect: %d\r\n", __FUNCTION__, fs->drv, sector);
+		//uprintf("%s --> disk: %d, sect: %d\r\n", __FUNCTION__, fs->drv, sector);
 		if (disk_read(fs->drv, fs->win, sector, 1) != RES_OK)
 			return FR_DISK_ERR;
 		fs->winsect = sector;
@@ -2067,26 +2067,26 @@ BYTE check_fs (	/* 0:FAT-VBR, 1:Any BR but not FAT, 2:Not a BR, 3:Disk error */
 	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
 )
 {
-	uprintf("===> %s() fs->drv: %d, fs->win: %d, sect: %d\r\n", \
-				__FUNCTION__, fs->drv, fs->win, sect);
+	//uprintf("===> %s() fs->drv: %d, fs->win: %d, sect: %d\r\n", \
+	//			__FUNCTION__, fs->drv, fs->win, sect);
 	if (disk_read(fs->drv, fs->win, sect, 1) != RES_OK)	/* Load boot record */
 		return 3;
-	printf("+++++++++++++++++++++ ADA DISINI +++++++++++++++++==\r\n");
+	//printf("+++++++++++++++++++++ ADA DISINI +++++++++++++++++==\r\n");
 	
-	uprintf("LD_WORD(&fs->win[BS_55AA]: %04X\r\n", LD_WORD(&fs->win[BS_55AA]) );
+	//uprintf("LD_WORD(&fs->win[BS_55AA]: %04X\r\n", LD_WORD(&fs->win[BS_55AA]) );
 	if (LD_WORD(&fs->win[BS_55AA]) != 0xAA55)	{	/* Check record signature (always placed at offset 510 even if the sector size is >512) */
-		uprintf("----> masuk sini 0 !!\r\n");
+		//uprintf("----> masuk sini 0 !!\r\n");
 		return 2;
 	}
-	uprintf("LD_DWORD(&fs->win[BS_FilSysType]): %03X\r\n", LD_DWORD(&fs->win[BS_FilSysType]) );
+	//uprintf("LD_DWORD(&fs->win[BS_FilSysType]): %03X\r\n", LD_DWORD(&fs->win[BS_FilSysType]) );
 	if ((LD_DWORD(&fs->win[BS_FilSysType]) & 0xFFFFFF) == 0x544146)		{/* Check "FAT" string */
-		uprintf("----> masuk sini 1 !!\r\n");
+		//uprintf("----> masuk sini 1 !!\r\n");
 		return 0;
 	}
 	
-	uprintf("LD_DWORD(&fs->win[BS_FilSysType32]): %03X\r\n", LD_DWORD(&fs->win[BS_FilSysType32]) );
+	//uprintf("LD_DWORD(&fs->win[BS_FilSysType32]): %03X\r\n", LD_DWORD(&fs->win[BS_FilSysType32]) );
 	if ((LD_DWORD(&fs->win[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)	{
-		uprintf("----> masuk sini 2 !!\r\n");
+		//uprintf("----> masuk sini 2 !!\r\n");
 		return 0;
 	}
 	return 1;
@@ -2132,54 +2132,54 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	if (vol >= _VOLUMES) 				/* Is the drive number valid? */
 		return FR_INVALID_DRIVE;
 	fs = FatFs[vol];					/* Get corresponding file system object */
-	uprintf("---> %s fs: %d, vol: %d\r\n", __FUNCTION__, fs, vol);
+	//uprintf("---> %s fs: %d, vol: %d\r\n", __FUNCTION__, fs, vol);
 	if (!fs) return FR_NOT_ENABLED;		/* Is the file system object available? */
-	uprintf("---> %s FSobjek ADA\r\n", __FUNCTION__);
+	//uprintf("---> %s FSobjek ADA\r\n", __FUNCTION__);
 	ENTER_FF(fs);						/* Lock volume */
-	uprintf("---> %s fs.tipe: %d, fs.drv: %d, fs.size: %d\r\n", __FUNCTION__, fs->fs_type, fs->drv, fs->csize);
+	//uprintf("---> %s fs.tipe: %d, fs.drv: %d, fs.size: %d\r\n", __FUNCTION__, fs->fs_type, fs->drv, fs->csize);
 	*rfs = fs;							/* Return pointer to the corresponding file system object */
 	if (fs->fs_type) {					/* If the volume has been mounted */
 		stat = disk_status(fs->drv);
-		uprintf("---> %s stat: %d\r\n", __FUNCTION__, stat);
+		//uprintf("---> %s stat: %d\r\n", __FUNCTION__, stat);
 		if (!(stat & STA_NOINIT)) {		/* and the physical drive is kept initialized (has not been changed), */
-			uprintf("---> %s lolos init\r\n", __FUNCTION__);
+			//uprintf("---> %s lolos init\r\n", __FUNCTION__);
 			if (!_FS_READONLY && wmode && (stat & STA_PROTECT))	{	/* Check write protection if needed */
-				uprintf("---> %s write protect\r\n", __FUNCTION__);
+				//uprintf("---> %s write protect\r\n", __FUNCTION__);
 				return FR_WRITE_PROTECTED;
 			}
 			return FR_OK;				/* The file system object is valid */
 		}
 	}
-	uprintf("---> %s lanjut dimari .. init dulu\r\n", __FUNCTION__);
+	//uprintf("---> %s lanjut dimari .. init dulu\r\n", __FUNCTION__);
 	/* The file system object is not valid. */
 	/* Following code attempts to mount the volume. (analyze BPB and initialize the fs object) */
 
 	fs->fs_type = 0;					/* Clear the file system object */
 	fs->drv = LD2PD(vol);				/* Bind the logical drive and a physical drive */
-	uprintf("---> %s() vol: %d, fs->drv: %d\r\n", __FUNCTION__, vol, fs->drv);
+	//uprintf("---> %s() vol: %d, fs->drv: %d\r\n", __FUNCTION__, vol, fs->drv);
 	stat = disk_initialize(fs->drv);	/* Initialize the physical drive */
-	uprintf("---> %s() stat: %d, initdisk\r\n", __FUNCTION__, stat);
+	//uprintf("---> %s() stat: %d, initdisk\r\n", __FUNCTION__, stat);
 	if (stat & STA_NOINIT)		{		/* Check if the initialization succeeded */
-		uprintf("--------> %s NOT READY\r\n", __FUNCTION__);
+		//uprintf("--------> %s NOT READY\r\n", __FUNCTION__);
 		return FR_NOT_READY;			/* Failed to initialize due to no medium or hard error */
 	}
 	if (!_FS_READONLY && wmode && (stat & STA_PROTECT))	{	/* Check disk write protection if needed */
-		uprintf("--------> %s FR_WRITE_PROTECTED\r\n", __FUNCTION__);
+		//uprintf("--------> %s FR_WRITE_PROTECTED\r\n", __FUNCTION__);
 		return FR_WRITE_PROTECTED;
 	}
-	uprintf("---> %s() _MAX_SS: %d != 512\r\n", __FUNCTION__, _MAX_SS);
+	//uprintf("---> %s() _MAX_SS: %d != 512\r\n", __FUNCTION__, _MAX_SS);
 #if _MAX_SS != 512						/* Get disk sector size (variable sector size cfg only) */
 	if (disk_ioctl(fs->drv, GET_SECTOR_SIZE, &fs->ssize) != RES_OK)
 		return FR_DISK_ERR;
 #endif
 	/* Search FAT partition on the drive. Supports only generic partitions, FDISK and SFD. */
-	uprintf("---> %s() mau cek_fs\r\n", __FUNCTION__);
+	//uprintf("---> %s() mau cek_fs\r\n", __FUNCTION__);
 	fmt = check_fs(fs, bsect = 0);		/* Load sector 0 and check if it is an FAT-VBR (in SFD) */
-	uprintf("---> %s() cek_fs: %d != 512\r\n", __FUNCTION__, fmt);
+	//uprintf("---> %s() cek_fs: %d != 512\r\n", __FUNCTION__, fmt);
 	
 	//return 1000;			// STOP SINI DULU !!!
 	if (LD2PT(vol) && !fmt) fmt = 1;	/* Force non-SFD if the volume is forced partition */
-	uprintf("+++++++++++++++++++++++====> %s() fmt: %d\r\n", __FUNCTION__, fmt);
+	//uprintf("+++++++++++++++++++++++====> %s() fmt: %d\r\n", __FUNCTION__, fmt);
 	if (fmt == 1) {						/* Not an FAT-VBR, the physical drive can be partitioned */
 		
 		/* Check the partition listed in the partition table */
@@ -2195,12 +2195,12 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	if (fmt) return FR_NO_FILESYSTEM;		/* No FAT volume is found */
 
 	/* An FAT volume is found. Following code initializes the file system object */
-	uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);
+	//uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);
 	if (LD_WORD(fs->win+BPB_BytsPerSec) != SS(fs))		/* (BPB_BytsPerSec must be equal to the physical sector size) */
 		return FR_NO_FILESYSTEM;
 
 	fasize = LD_WORD(fs->win+BPB_FATSz16);				/* Number of sectors per FAT */
-	uprintf("%s() --> jml Sektor/FAT: %d\r\n", __FUNCTION__, fasize);
+	//uprintf("%s() --> jml Sektor/FAT: %d\r\n", __FUNCTION__, fasize);
 	if (!fasize) fasize = LD_DWORD(fs->win+BPB_FATSz32);
 	fs->fsize = fasize;
 
@@ -3230,7 +3230,7 @@ FRESULT f_getfree (
 
 	/* Get drive number */
 	res = chk_mounted(&path, fatfs, 0);
-	uprintf("---> %s cek mounted res: %d/%d\r\n", __FUNCTION__, res, FR_OK);
+	//uprintf("---> %s cek mounted res: %d/%d\r\n", __FUNCTION__, res, FR_OK);
 
 	fs = *fatfs;
 	if (res == FR_OK) {
@@ -3240,7 +3240,7 @@ FRESULT f_getfree (
 		} else {
 			/* Get number of free clusters */
 			fat = fs->fs_type;
-			uprintf("%s --> fat: %d\r\n", __FUNCTION__, fat);
+			//uprintf("%s --> fat: %d\r\n", __FUNCTION__, fat);
 			n = 0;
 			if (fat == FS_FAT12) {
 				clst = 2;
@@ -3254,11 +3254,11 @@ FRESULT f_getfree (
 				clst = fs->n_fatent;
 				sect = fs->fatbase;
 				i = 0; p = 0;
-				uprintf("%s --> clst: %d, sect: %d\r\n", __FUNCTION__, clst, sect);
+				//uprintf("%s --> clst: %d, sect: %d\r\n", __FUNCTION__, clst, sect);
 				do {
 					if (!i) {
 						res = move_window(fs, sect++);
-						uprintf("%s move window clst: %d, sect: %d, res: %d\r\n", __FUNCTION__, clst, sect, res);
+						//uprintf("%s move window clst: %d, sect: %d, res: %d\r\n", __FUNCTION__, clst, sect, res);
 						if (res != FR_OK) break;
 						p = fs->win;
 						i = SS(fs);
@@ -3273,14 +3273,14 @@ FRESULT f_getfree (
 				} while (--clst);
 			}
 			fs->free_clust = n;
-			uprintf("%s --> free_clust: %d\r\n", __FUNCTION__, fs->free_clust);
+			//uprintf("%s --> free_clust: %d\r\n", __FUNCTION__, fs->free_clust);
 			if (fat == FS_FAT32) fs->fsi_flag = 1;
 			*nclst = n;
 		}
 	}
-	uprintf("%s --> sblm LEAVE_FF\r\n", __FUNCTION__);
+	//uprintf("%s --> sblm LEAVE_FF\r\n", __FUNCTION__);
 	LEAVE_FF(fs, res);
-	uprintf("%s ==> akhir\r\n", __FUNCTION__);
+	//uprintf("%s ==> akhir\r\n", __FUNCTION__);
 }
 
 

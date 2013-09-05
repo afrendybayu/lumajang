@@ -260,11 +260,7 @@ void vLedTask( void *pvParameters )	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 
-	#ifdef PAKAI_SDCARD
-	//f_mount(0, &Fatfs[0]);
 	
-	mount_disk(0);
-	#endif
 	
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
