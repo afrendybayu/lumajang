@@ -22,13 +22,13 @@ int ch;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
 	vTaskDelay(200);
-	uprintf("  task : %s\r\n", __FUNCTION__);
+	//uprintf("  task : %s\r\n", __FUNCTION__);
 	
 	reset_konter();
 
 	#ifdef PAKAI_SDCARD
-		st_hw.sdc = 0;
-		disk_initialize(SDC);
+		//st_hw.sdc = 0;
+		//disk_initialize(SDC);
 		#if 0
 		if (cek_ins_sdc())	{
 			disk_initialize(SDC);

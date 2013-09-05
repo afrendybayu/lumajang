@@ -314,10 +314,12 @@ char s[30];
 	st_hw.init++;
 	
 	#ifdef PAKAI_SDCARD
+		st_hw.sdc = 0;
+		disk_initialize(SDC);
 		mount_disk(0);		// 0: SDCARD
-		//vTaskDelay(50);
-		//sh_cek_free_cluster();
-		//vTaskDelay(10);
+		uprintf("Cek Memori SDCARD: ...");
+		cek_free_cluster();
+		st_hw.sdc = 1;
 	#endif
 	
 	#ifdef configUSE_IDLE_HOOK
@@ -328,10 +330,10 @@ char s[30];
 		vTaskDelay(100);
 	} while (st_hw.init != uxTaskGetNumberOfTasks());
 	
-	vTaskDelay(100);
+	//vTaskDelay(100);
 	#ifdef PAKAI_SDCARD
-	uprintf("Cek Cluster SDCARD:\r\n");
-	sh_cek_free_cluster();
+	//uprintf("Cek Memori SDCARD: ...");
+	//cek_free_cluster();
 	#endif
 	vTaskDelay(100);
 	sprintf(s, "%s$ ", PROMPT);

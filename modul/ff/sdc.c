@@ -172,29 +172,43 @@ uchr sdc_info()	{
 	j++;
 	//flush_ssp_spi();
 	memcpy(&CardInfo[0], &cid[j], 16);
-	uprintf("CSD: %02x ", cid[j-1]);	for(k=0; k<16; k++)		uprintf("%02x ", CardInfo[k]);	uprintf("\r\n");
+	//uprintf("CSD: %02x ", cid[j-1]);	for(k=0; k<16; k++)		uprintf("%02x ", CardInfo[k]);	uprintf("\r\n");
 
 	vTaskDelay(1);
 	unsigned char CMD55_APP_CMD[] = {55,0x00,0x00,0x00,0x00,0xFF};
 	status = SD_WriteCmd(CMD55_APP_CMD);
 	
+	
 	if (status==0x00)	{
+		do {
+			j=0;
+			vTaskDelay(1);
+			status = Microsd_SendCmd( SCR, 0x00000000 );	// SCR
+			respon_SDcmd( cid, 20 );
+			//uprintf("===> SCR: ");	for(k=0; k<20; k++)		uprintf("%02x ", cid[k]);	uprintf("\r\n");
+			while ( (cid[j] != START_TOKEN) && (j>19) ) {
+				j++;
+			}
+			//printf("j: %d\r\n", j);
+		} while (j==19);
 		
+		#if 0
 		status = Microsd_SendCmd( SCR, 0x00000000 );	// SCR
 		respon_SDcmd( cid, 20 );
-		uprintf("===> SCR: ");	for(k=0; k<20; k++)		uprintf("%02x ", cid[k]);	uprintf("\r\n");
+		//uprintf("===> SCR: ");	for(k=0; k<20; k++)		uprintf("%02x ", cid[k]);	uprintf("\r\n");
 		while (cid[j] != START_TOKEN) {
 			j++;
 		}
 		j++;
+		#endif
 		//flush_ssp_spi();
 		memcpy(&CardInfo[36], &cid[j], 4);
-		for(k=0; k<4; k++)		uprintf("%02x ", CardInfo[36+k]);	uprintf("\r\n");
+		//for(k=0; k<4; k++)		uprintf("%02x ", CardInfo[36+k]);	uprintf("\r\n");
 	}
 
 	vTaskDelay(10);
 	sdc_ket();
-	printf("info selesai\r\n");
+	//printf("info selesai\r\n");
 }
 
 uchr sdc_init()	{
@@ -241,11 +255,11 @@ uchr sdc_init()	{
 		i=0;
 		do	{
 			if (i++ > 100)	return 2;
-			vTaskDelay(10);
+			vTaskDelay(5);
 			//printf("---> cek_APP_CMD\r\n");
 			if (SD_WriteCmd(CMD55_APP_CMD)==0x01)	{
 				// SDHC & SDXC supported, sdxc power saving, use current signal voltage
-				vTaskDelay(10);
+				vTaskDelay(5);
 				status = Microsd_SendCmd( CMD41, 0x40FF8000 );	// 4000000000
 				
 				respon_SDcmd( strRsp, R3_RESPONSE_SIZE );
@@ -267,7 +281,7 @@ uchr sdc_init()	{
 		ty = (strRsp[0] & 0x40) ? CT_SD2|CT_BLOCK : CT_SD2;		// Check CCS bit in the OCR 0x04 | 0x08  : 0x04;
 		cInfo.version = CARD_VERSD_20;
 		//printf("---> memcpy ocr\r\n");
-		vTaskDelay(50);
+		vTaskDelay(5);
 		
 		memcpy(cInfo.ocr, &strRsp[0], 4);
 		//uprintf("---> OCR[%d] tipe: %02x, respon : %02x %02x %02x %02x\r\n", i, ty, strRsp[0], strRsp[1], strRsp[2], strRsp[3]);
@@ -312,18 +326,14 @@ uchr sdc_init()	{
 		}
 
 	}
-	//printf("---> flush dulu\r\n");
+
 	flush_ssp_spi();
-	vTaskDelay(100);
-	//printf("---> GANTI CLOCK\r\n");
+	vTaskDelay(5);
 	init_ssp0(SCK_KILAT);
 	st_hw.sdc = 1;
-	//printf("---> SDcard masuk\r\n");
-	vTaskDelay(50);
+	vTaskDelay(5);
 	cInfo.CardType = ty;
-	//printf("---> init SDcard selesai\r\n");
 	sdc_info();	
-	printf("---> lihat SDcard selesai\r\n");
 	return 0;
 }
 

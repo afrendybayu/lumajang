@@ -2233,7 +2233,7 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	fmt = FS_FAT12;
 	if (nclst >= MIN_FAT16) fmt = FS_FAT16;
 	if (nclst >= MIN_FAT32) fmt = FS_FAT32;
-	uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);	// 2: FAT16, 3: FAT32
+	//uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);	// 2: FAT16, 3: FAT32
 	/* Boundaries and Limits */
 	fs->n_fatent = nclst + 2;							/* Number of FAT entries */
 	fs->volbase = bsect;								/* Volume start sector */
