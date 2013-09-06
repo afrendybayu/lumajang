@@ -5,7 +5,7 @@ Archive member included because of file (symbol)
 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memcpy.o)
                               hardware/iap.o (memcpy)
 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memset.o)
-                              ../../../Source/tasks.o (memset)
+                              modul/FreeRTOSv5.2/tasks.o (memset)
 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
                               cmd/manual.o (puts)
 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(rand.o)
@@ -213,7 +213,7 @@ rtcram           0xe0084000         0x00000400
 
 Linker script and memory map
 
-LOAD ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
+LOAD modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/portISR.o
 LOAD modul/serial/serialISR.o
 LOAD main.o
 LOAD hardware/hardware.o
@@ -224,11 +224,11 @@ LOAD cmd/sh_data.o
 LOAD hardware/spi_ssp.o
 LOAD app/ap_rpm.o
 LOAD app/ap_ambilcepat.o
-LOAD ../../../Source/list.o
-LOAD ../../../Source/queue.o
-LOAD ../../../Source/tasks.o
-LOAD ../../../Source/portable/GCC/ARM7_LPC23xx/port.o
-LOAD ../../../Source/portable/MemMang/heap_2.o
+LOAD modul/FreeRTOSv5.2/list.o
+LOAD modul/FreeRTOSv5.2/queue.o
+LOAD modul/FreeRTOSv5.2/tasks.o
+LOAD modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/port.o
+LOAD modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
 LOAD cmd/sh_rtos.o
 LOAD cmd/sh_hardware.o
 LOAD cmd/sh_env.o
@@ -250,7 +250,7 @@ LOAD cmd/sh_sdc.o
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libm.a
-LOAD /tmp/cctIHIw4.o
+LOAD /tmp/ccX55Un8.o
 START GROUP
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
@@ -260,11 +260,11 @@ END GROUP
 
 startup         0x00000000       0x44
  *(.startup)
- .startup       0x00000000       0x44 /tmp/cctIHIw4.o
+ .startup       0x00000000       0x44 /tmp/ccX55Un8.o
 
-prog            0x00000044    0x1be84
+prog            0x00000044    0x1bef4
  *(.text)
- .text          0x00000044      0x280 ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
+ .text          0x00000044      0x280 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/portISR.o
                 0x0000013c                vPreemptiveTick
                 0x0000026c                vPortExitCritical
                 0x00000090                vPortYieldProcessor
@@ -342,13 +342,13 @@ prog            0x00000044    0x1be84
                 0x00002bc4                hitung_rpm
  .text          0x00002d6c       0x74 app/ap_ambilcepat.o
                 0x00002d6c                init_ambilCepatTasks
- .text          0x00002de0      0x1b8 ../../../Source/list.o
+ .text          0x00002de0      0x1b8 modul/FreeRTOSv5.2/list.o
                 0x00002e3c                vListInsertEnd
                 0x00002e28                vListInitialiseItem
                 0x00002de0                vListInitialise
                 0x00002f30                uxListRemove
                 0x00002e98                vListInsert
- .text          0x00002f98      0xab0 ../../../Source/queue.o
+ .text          0x00002f98      0xab0 modul/FreeRTOSv5.2/queue.o
                 0x00003314                xQueueGenericSendFromISR
                 0x00003630                xQueuePeekFromISR
                 0x000036d8                vQueueDelete
@@ -365,7 +365,7 @@ prog            0x00000044    0x1be84
                 0x000036bc                uxQueueMessagesWaitingFromISR
                 0x000039b4                xQueueIsQueueEmptyFromISR
                 0x00003110                xQueueCreateMutex
- .text          0x00003a48     0x148c ../../../Source/tasks.o
+ .text          0x00003a48     0x148c modul/FreeRTOSv5.2/tasks.o
                 0x00004004                vTaskEndScheduler
                 0x00004534                vTaskPlaceOnEventList
                 0x00003a48                xTaskGenericCreate
@@ -394,11 +394,11 @@ prog            0x00000044    0x1be84
                 0x000042c4                xTaskIncrementTick
                 0x00003ca8                vTaskDelay
                 0x00004668                vTaskSetTimeOutState
- .text          0x00004ed4      0x258 ../../../Source/portable/GCC/ARM7_LPC23xx/port.o
+ .text          0x00004ed4      0x258 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/port.o
                 0x00005094                xPortStartScheduler
                 0x000050a8                vPortEndScheduler
                 0x00004ed4                pxPortInitialiseStack
- .text          0x0000512c      0x298 ../../../Source/portable/MemMang/heap_2.o
+ .text          0x0000512c      0x298 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
                 0x0000535c                xPortGetFreeHeapSize
                 0x000052bc                vPortFree
                 0x0000512c                pvPortMalloc
@@ -462,432 +462,432 @@ prog            0x00000044    0x1be84
                 0x000089a8                set_date_kitab
                 0x00008b90                cek_flag_RTC_sh
                 0x00008b94                init_RTC_sh
- .text          0x00008cd8     0x4aa0 modul/ff/ff9b/src/ff.o
-                0x00009268                get_fat
-                0x0000c164                f_getcwd
-                0x0000d540                f_rename
-                0x0000c0bc                f_chdir
-                0x0000ccec                f_truncate
-                0x0000ce64                f_unlink
-                0x0000c08c                f_chdrive
-                0x0000c058                f_close
-                0x0000b5d8                f_read
-                0x0000c91c                f_readdir
-                0x0000d344                f_chmod
-                0x0000be60                f_sync
-                0x0000b224                f_mount
-                0x0000c7c4                f_opendir
-                0x00009450                put_fat
-                0x0000c3c8                f_lseek
-                0x0000ca5c                f_stat
-                0x0000921c                clust2sect
-                0x0000d43c                f_utime
-                0x0000b9dc                f_write
-                0x0000b28c                f_open
-                0x0000d00c                f_mkdir
-                0x0000cad0                f_getfree
+ .text          0x00008cd8     0x4ad8 modul/ff/ff9b/src/ff.o
+                0x000092a0                get_fat
+                0x0000c19c                f_getcwd
+                0x0000d578                f_rename
+                0x0000c0f4                f_chdir
+                0x0000cd24                f_truncate
+                0x0000ce9c                f_unlink
+                0x0000c0c4                f_chdrive
+                0x0000c090                f_close
+                0x0000b610                f_read
+                0x0000c954                f_readdir
+                0x0000d37c                f_chmod
+                0x0000be98                f_sync
+                0x0000b25c                f_mount
+                0x0000c7fc                f_opendir
+                0x00009488                put_fat
+                0x0000c400                f_lseek
+                0x0000ca94                f_stat
+                0x00009254                clust2sect
+                0x0000d474                f_utime
+                0x0000ba14                f_write
+                0x0000b2c4                f_open
+                0x0000d044                f_mkdir
+                0x0000cb08                f_getfree
                 0x00008cd8                ket_fs
- .text          0x0000d778      0x23c modul/ff/ff9b/src/diskio.o
-                0x0000d778                disk_initialize
-                0x0000d7bc                disk_status
-                0x0000d87c                disk_ioctl
-                0x0000d8c8                get_fattime
-                0x0000d854                disk_write
-                0x0000d7f4                disk_read
- .text          0x0000d9b4     0x1ad4 modul/ff/sdc.o
-                0x0000da1c                respon_SDcmd
-                0x0000de2c                sdc_info
-                0x0000daa0                SDC_ioctl
-                0x0000e424                sdc_read
-                0x0000e7d0                SD_WriteCmd
-                0x0000ee3c                init_sdc
-                0x0000e510                tulis_block_sdc
-                0x0000d9b4                cek_ins_sdc
-                0x0000d9dc                SD_kirimCmd
-                0x0000dc60                sdc_ket
-                0x0000e8d8                sdc_infox
-                0x0000f218                Microsd_crc16
-                0x0000e010                sdc_init
-                0x0000f30c                Microsd_SendCmd
-                0x0000f15c                Microsd_crc7
-                0x0000e6c8                cek_versi2_sdc
-                0x0000e8a4                flush_ssp_spi
-                0x0000f3b4                Microsd_SendCmd_nocrc
-                0x0000edec                cek_status_sdc
- .text          0x0000f488      0x1bc modul/ff/sdc_cmd.o
-                0x0000f488                cek_free_cluster
-                0x0000f500                scan_files
- .text          0x0000f644      0x1a0 cmd/sh_sdc.o
-                0x0000f6c4                sh_cek_read_sdc
-                0x0000f678                mount_disk
-                0x0000f740                sh_baca_sektor
-                0x0000f6fc                sh_ls
-                0x0000f644                sh_cek_status_sdc
-                0x0000f71c                sh_cek_pwd
-                0x0000f6f0                sh_cek_free_cluster
- .text          0x0000f7e4       0x20 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(atoi.o)
-                0x0000f7e4                _atoi_r
-                0x0000f7f4                atoi
- .text          0x0000f804       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memcpy.o)
-                0x0000f804                memcpy
- .text          0x0000f868       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memset.o)
-                0x0000f868                memset
- .text          0x0000f8cc       0x5c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
-                0x0000f8cc                _puts_r
-                0x0000f914                puts
- .text          0x0000f928       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(rand.o)
-                0x0000f93c                rand
-                0x0000f928                srand
- .text          0x0000f978       0x84 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sprintf.o)
-                0x0000f9bc                _sprintf_r
-                0x0000f978                sprintf
- .text          0x0000f9fc       0xac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sscanf.o)
-                0x0000fa58                sscanf
-                0x0000fa00                _sscanf_r
- .text          0x0000faa8       0x7c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strchr.o)
-                0x0000faa8                strchr
- .text          0x0000fb24       0x68 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcmp.o)
-                0x0000fb24                strcmp
- .text          0x0000fb8c       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcpy.o)
-                0x0000fb8c                strcpy
- .text          0x0000fbdc       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strlen.o)
-                0x0000fbdc                strlen
- .text          0x0000fc2c       0x3c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strstr.o)
-                0x0000fc2c                strstr
- .text          0x0000fc68      0x168 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtol.o)
-                0x0000fdb0                strtol
-                0x0000fc68                _strtol_r
- .text          0x0000fdd0     0x1a60 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
-                0x0000fdf0                _vfprintf_r
-                0x00011810                vfprintf
- .text          0x00011830      0xc6c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
-                0x00012418                __svfscanf
-                0x00012438                _vfscanf_r
-                0x00012464                vfscanf
-                0x00011830                __svfscanf_r
- .text          0x0001249c       0x74 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vsprintf.o)
-                0x000124d0                vsprintf
-                0x0001249c                _vsprintf_r
- .text          0x00012510       0x54 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcrtomb.o)
-                0x00012510                _wcrtomb_r
-                0x00012544                wcrtomb
- .text          0x00012564      0x10c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcsrtombs.o)
-                0x00012564                _wcsrtombs_r
-                0x00012648                wcsrtombs
- .text          0x00012670      0x2b8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
-                0x00012670                _wctomb_r
- .text          0x00012928       0xa0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wsetup.o)
-                0x00012928                __swsetup
- .text          0x000129c8      0xf28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
-                0x00012b18                _dtoa_r
- .text          0x000138f0       0x90 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fflush.o)
-                0x000138f0                fflush
- .text          0x00013980      0x1c4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(findfp.o)
-                0x000139c8                __sinit
-                0x00013a80                __sfmoreglue
-                0x00013a6c                _cleanup
-                0x00013a5c                _cleanup_r
-                0x00013a44                __fp_lock_all
-                0x000139b8                __sfp_lock_acquire
-                0x00013ab8                __sfp
-                0x000139c4                __sinit_lock_release
-                0x00013a2c                __fp_unlock_all
-                0x000139bc                __sfp_lock_release
-                0x000139c0                __sinit_lock_acquire
- .text          0x00013b44      0x148 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fread.o)
-                0x00013b44                fread
- .text          0x00013c8c      0x268 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(freer.o)
-                0x00013d2c                _free_r
-                0x00013c8c                _malloc_trim_r
- .text          0x00013ef4      0x298 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fvwrite.o)
-                0x00013ef4                __sfvwrite
- .text          0x0001418c       0xf0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fwalk.o)
-                0x00014204                _fwalk
-                0x0001418c                _fwalk_reent
- .text          0x0001427c       0x1c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(iswspace.o)
-                0x0001427c                iswspace
- .text          0x00014298       0x88 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
-                0x000142c0                _setlocale_r
-                0x00014298                __locale_charset
-                0x000142a4                _localeconv_r
-                0x00014304                setlocale
-                0x000142ac                localeconv
- .text          0x00014320       0xdc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(makebuf.o)
-                0x00014320                __smakebuf
- .text          0x000143fc      0x538 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mallocr.o)
-                0x000143fc                _malloc_r
- .text          0x00014934       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbrtowc.o)
-                0x00014970                mbrtowc
-                0x00014934                _mbrtowc_r
- .text          0x00014998       0x38 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbtowc_r.o)
-                0x00014998                _mbtowc_r
- .text          0x000149d0       0xbc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memchr.o)
-                0x000149d0                memchr
- .text          0x00014a8c       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memmove.o)
-                0x00014a8c                memmove
- .text          0x00014b18        0x8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mlock.o)
-                0x00014b1c                __malloc_unlock
-                0x00014b18                __malloc_lock
- .text          0x00014b20      0x8c0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
-                0x00014d98                _mprec_log10
-                0x00014b38                _hi0bits
-                0x00014dd8                _Balloc
-                0x00014e34                _d2b
-                0x000150b0                _multiply
-                0x00014d44                _ratio
-                0x00015350                _s2b
-                0x00015200                _i2b
-                0x00014b80                _lo0bits
-                0x00014bec                __mcmp
-                0x000152b4                _pow5mult
-                0x00014c2c                _ulp
-                0x00014c7c                _b2d
-                0x00015218                _multadd
-                0x00014f1c                __mdiff
-                0x00015004                _lshift
-                0x00014b20                _Bfree
- .text          0x000153e0      0x3d8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(reallocr.o)
-                0x000153e0                _realloc_r
- .text          0x000157b8      0x114 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(refill.o)
-                0x000157d0                __srefill
- .text          0x000158cc       0x24 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isinf.o)
-                0x000158cc                isinf
- .text          0x000158f0       0x1c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isnan.o)
-                0x000158f0                isnan
- .text          0x0001590c       0x7c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sccl.o)
-                0x0001590c                __sccl
- .text          0x00015988        0x8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sf_nan.o)
-                0x00015988                nanf
- .text          0x00015990       0xd8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(stdio.o)
-                0x000159a8                __sseek
-                0x00015a30                __sread
-                0x00015990                __sclose
-                0x000159e8                __swrite
- .text          0x00015a68      0xbe8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtod.o)
-                0x00015a68                _strtod_r
-                0x00016634                strtod
-                0x000165fc                strtof
- .text          0x00016650      0x16c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtoul.o)
-                0x0001679c                strtoul
-                0x00016650                _strtoul_r
- .text          0x000167bc      0x504 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
-                0x000167d8                _getpid
-                0x000168cc                initialise_monitor_handles
-                0x000167f0                isatty
-                0x00016858                _fstat
-                0x00016bec                _open
-                0x00016820                _sbrk
-                0x000167ec                _raise
-                0x00016954                _times
-                0x00016c00                _stat
-                0x00016c3c                _lseek
-                0x000167dc                _link
-                0x00016a10                _swiwrite
-                0x000167f4                _rename
-                0x00016a38                _swilseek
-                0x000169d8                _swiclose
-                0x00016aec                _swiopen
-                0x000167e4                _unlink
-                0x00016b78                _write
-                0x000169a4                _kill
-                0x00016978                _gettimeofday
-                0x00016c74                _read
-                0x000169c0                _exit
-                0x00016808                _system
-                0x00016c4c                _swiread
-                0x00016bdc                _close
- .text          0x00016cc0      0x16c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ungetc.o)
-                0x00016e10                ungetc
-                0x00016cc0                __submore
-                0x00016d3c                _ungetc_r
- .text          0x00016e2c       0x60 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(callocr.o)
-                0x00016e2c                _calloc_r
- .text          0x00016e8c        0xc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(errno.o)
-                0x00016e8c                __errno
- .text          0x00016e98       0xbc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fclose.o)
-                0x00016e98                _fclose_r
-                0x00016f3c                fclose
- .text          0x00016f54       0x14 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_nan.o)
-                0x00016f54                nan
- .text          0x00016f68       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_udivsi3.o)
-                0x00016f68                __udivsi3
-                0x00016f68                __aeabi_uidiv
-                0x00016fe4                __aeabi_uidivmod
- .text          0x00016ff4       0xa4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_divsi3.o)
-                0x00016ff4                __aeabi_idiv
-                0x00016ff4                __divsi3
-                0x00017088                __aeabi_idivmod
- .text          0x00017098       0xc8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_umodsi3.o)
-                0x00017098                __umodsi3
- .text          0x00017160       0xd8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_modsi3.o)
-                0x00017160                __modsi3
- .text          0x00017238        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_dvmd_tls.o)
-                0x00017238                __aeabi_ldiv0
-                0x00017238                __div0
-                0x00017238                __aeabi_idiv0
- .text          0x0001723c       0x84 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_muldi3.o)
-                0x0001723c                __muldi3
- .text          0x000172c0      0x234 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_sf.o)
-                0x00017484                __subsf3
-                0x000174c0                __addsf3
- .text          0x000174f4      0x174 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_sf.o)
-                0x0001752c                __mulsf3
- .text          0x00017668      0x11c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_sf.o)
-                0x000176a0                __divsf3
- .text          0x00017784       0x70 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_sf.o)
-                0x00017784                __floatsisf
- .text          0x000177f4       0x98 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_si.o)
-                0x00017824                __fixsfsi
- .text          0x0001788c       0x30 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_df.o)
-                0x0001788c                __extendsfdf2
- .text          0x000178bc      0x328 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_df.o)
-                0x00017bac                __adddf3
-                0x00017b6c                __subdf3
- .text          0x00017be4      0x2ac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_df.o)
-                0x00017c1c                __muldf3
- .text          0x00017e90      0x1ac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_df.o)
-                0x00017ec8                __divdf3
- .text          0x0001803c       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_eq_df.o)
-                0x0001804c                __eqdf2
- .text          0x00018094       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ne_df.o)
-                0x000180a4                __nedf2
- .text          0x000180ec       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_gt_df.o)
-                0x000180fc                __gtdf2
- .text          0x00018144       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ge_df.o)
-                0x00018154                __gedf2
- .text          0x0001819c       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_lt_df.o)
-                0x000181ac                __ltdf2
- .text          0x000181f4       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_le_df.o)
-                0x00018204                __ledf2
- .text          0x0001824c       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_df.o)
-                0x0001824c                __floatsidf
- .text          0x000182d8       0xb4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_si.o)
-                0x00018308                __fixdfsi
- .text          0x0001838c       0x28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_df.o)
-                0x0001838c                __make_dp
- .text          0x000183b4       0x44 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_sf.o)
-                0x000183b4                __truncdfsf2
- .text          0x000183f8      0x130 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_sf.o)
-                0x00018428                __pack_f
- .text          0x00018528       0x80 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_sf.o)
-                0x00018528                __unpack_f
- .text          0x000185a8       0x18 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_sf.o)
-                0x000185a8                __make_fp
- .text          0x000185c0      0x290 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_df.o)
-                0x000185f0                __pack_d
- .text          0x00018850       0xc4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_df.o)
-                0x00018850                __unpack_d
- .text          0x00018914       0xf0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x00018944                __fpcmp_parts_d
- .text          0x00018a04       0xc4 /tmp/cctIHIw4.o
-                0x00018a04                start
-                0x00018aac                endless_loop
+ .text          0x0000d7b0      0x23c modul/ff/ff9b/src/diskio.o
+                0x0000d7b0                disk_initialize
+                0x0000d7f4                disk_status
+                0x0000d8b4                disk_ioctl
+                0x0000d900                get_fattime
+                0x0000d88c                disk_write
+                0x0000d82c                disk_read
+ .text          0x0000d9ec     0x1ad4 modul/ff/sdc.o
+                0x0000da54                respon_SDcmd
+                0x0000de64                sdc_info
+                0x0000dad8                SDC_ioctl
+                0x0000e45c                sdc_read
+                0x0000e808                SD_WriteCmd
+                0x0000ee74                init_sdc
+                0x0000e548                tulis_block_sdc
+                0x0000d9ec                cek_ins_sdc
+                0x0000da14                SD_kirimCmd
+                0x0000dc98                sdc_ket
+                0x0000e910                sdc_infox
+                0x0000f250                Microsd_crc16
+                0x0000e048                sdc_init
+                0x0000f344                Microsd_SendCmd
+                0x0000f194                Microsd_crc7
+                0x0000e700                cek_versi2_sdc
+                0x0000e8dc                flush_ssp_spi
+                0x0000f3ec                Microsd_SendCmd_nocrc
+                0x0000ee24                cek_status_sdc
+ .text          0x0000f4c0      0x1bc modul/ff/sdc_cmd.o
+                0x0000f4c0                cek_free_cluster
+                0x0000f538                scan_files
+ .text          0x0000f67c      0x1a0 cmd/sh_sdc.o
+                0x0000f6fc                sh_cek_read_sdc
+                0x0000f6b0                mount_disk
+                0x0000f778                sh_baca_sektor
+                0x0000f734                sh_ls
+                0x0000f67c                sh_cek_status_sdc
+                0x0000f754                sh_cek_pwd
+                0x0000f728                sh_cek_free_cluster
+ .text          0x0000f81c       0x20 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(atoi.o)
+                0x0000f81c                _atoi_r
+                0x0000f82c                atoi
+ .text          0x0000f83c       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memcpy.o)
+                0x0000f83c                memcpy
+ .text          0x0000f8a0       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memset.o)
+                0x0000f8a0                memset
+ .text          0x0000f904       0x5c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
+                0x0000f904                _puts_r
+                0x0000f94c                puts
+ .text          0x0000f960       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(rand.o)
+                0x0000f974                rand
+                0x0000f960                srand
+ .text          0x0000f9b0       0x84 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sprintf.o)
+                0x0000f9f4                _sprintf_r
+                0x0000f9b0                sprintf
+ .text          0x0000fa34       0xac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sscanf.o)
+                0x0000fa90                sscanf
+                0x0000fa38                _sscanf_r
+ .text          0x0000fae0       0x7c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strchr.o)
+                0x0000fae0                strchr
+ .text          0x0000fb5c       0x68 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcmp.o)
+                0x0000fb5c                strcmp
+ .text          0x0000fbc4       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strcpy.o)
+                0x0000fbc4                strcpy
+ .text          0x0000fc14       0x50 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strlen.o)
+                0x0000fc14                strlen
+ .text          0x0000fc64       0x3c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strstr.o)
+                0x0000fc64                strstr
+ .text          0x0000fca0      0x168 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtol.o)
+                0x0000fde8                strtol
+                0x0000fca0                _strtol_r
+ .text          0x0000fe08     0x1a60 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+                0x0000fe28                _vfprintf_r
+                0x00011848                vfprintf
+ .text          0x00011868      0xc6c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
+                0x00012450                __svfscanf
+                0x00012470                _vfscanf_r
+                0x0001249c                vfscanf
+                0x00011868                __svfscanf_r
+ .text          0x000124d4       0x74 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vsprintf.o)
+                0x00012508                vsprintf
+                0x000124d4                _vsprintf_r
+ .text          0x00012548       0x54 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcrtomb.o)
+                0x00012548                _wcrtomb_r
+                0x0001257c                wcrtomb
+ .text          0x0001259c      0x10c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wcsrtombs.o)
+                0x0001259c                _wcsrtombs_r
+                0x00012680                wcsrtombs
+ .text          0x000126a8      0x2b8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
+                0x000126a8                _wctomb_r
+ .text          0x00012960       0xa0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wsetup.o)
+                0x00012960                __swsetup
+ .text          0x00012a00      0xf28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+                0x00012b50                _dtoa_r
+ .text          0x00013928       0x90 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fflush.o)
+                0x00013928                fflush
+ .text          0x000139b8      0x1c4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(findfp.o)
+                0x00013a00                __sinit
+                0x00013ab8                __sfmoreglue
+                0x00013aa4                _cleanup
+                0x00013a94                _cleanup_r
+                0x00013a7c                __fp_lock_all
+                0x000139f0                __sfp_lock_acquire
+                0x00013af0                __sfp
+                0x000139fc                __sinit_lock_release
+                0x00013a64                __fp_unlock_all
+                0x000139f4                __sfp_lock_release
+                0x000139f8                __sinit_lock_acquire
+ .text          0x00013b7c      0x148 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fread.o)
+                0x00013b7c                fread
+ .text          0x00013cc4      0x268 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(freer.o)
+                0x00013d64                _free_r
+                0x00013cc4                _malloc_trim_r
+ .text          0x00013f2c      0x298 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fvwrite.o)
+                0x00013f2c                __sfvwrite
+ .text          0x000141c4       0xf0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fwalk.o)
+                0x0001423c                _fwalk
+                0x000141c4                _fwalk_reent
+ .text          0x000142b4       0x1c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(iswspace.o)
+                0x000142b4                iswspace
+ .text          0x000142d0       0x88 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+                0x000142f8                _setlocale_r
+                0x000142d0                __locale_charset
+                0x000142dc                _localeconv_r
+                0x0001433c                setlocale
+                0x000142e4                localeconv
+ .text          0x00014358       0xdc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(makebuf.o)
+                0x00014358                __smakebuf
+ .text          0x00014434      0x538 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mallocr.o)
+                0x00014434                _malloc_r
+ .text          0x0001496c       0x64 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbrtowc.o)
+                0x000149a8                mbrtowc
+                0x0001496c                _mbrtowc_r
+ .text          0x000149d0       0x38 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbtowc_r.o)
+                0x000149d0                _mbtowc_r
+ .text          0x00014a08       0xbc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memchr.o)
+                0x00014a08                memchr
+ .text          0x00014ac4       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(memmove.o)
+                0x00014ac4                memmove
+ .text          0x00014b50        0x8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mlock.o)
+                0x00014b54                __malloc_unlock
+                0x00014b50                __malloc_lock
+ .text          0x00014b58      0x8c0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
+                0x00014dd0                _mprec_log10
+                0x00014b70                _hi0bits
+                0x00014e10                _Balloc
+                0x00014e6c                _d2b
+                0x000150e8                _multiply
+                0x00014d7c                _ratio
+                0x00015388                _s2b
+                0x00015238                _i2b
+                0x00014bb8                _lo0bits
+                0x00014c24                __mcmp
+                0x000152ec                _pow5mult
+                0x00014c64                _ulp
+                0x00014cb4                _b2d
+                0x00015250                _multadd
+                0x00014f54                __mdiff
+                0x0001503c                _lshift
+                0x00014b58                _Bfree
+ .text          0x00015418      0x3d8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(reallocr.o)
+                0x00015418                _realloc_r
+ .text          0x000157f0      0x114 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(refill.o)
+                0x00015808                __srefill
+ .text          0x00015904       0x24 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isinf.o)
+                0x00015904                isinf
+ .text          0x00015928       0x1c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_isnan.o)
+                0x00015928                isnan
+ .text          0x00015944       0x7c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sccl.o)
+                0x00015944                __sccl
+ .text          0x000159c0        0x8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(sf_nan.o)
+                0x000159c0                nanf
+ .text          0x000159c8       0xd8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(stdio.o)
+                0x000159e0                __sseek
+                0x00015a68                __sread
+                0x000159c8                __sclose
+                0x00015a20                __swrite
+ .text          0x00015aa0      0xbe8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtod.o)
+                0x00015aa0                _strtod_r
+                0x0001666c                strtod
+                0x00016634                strtof
+ .text          0x00016688      0x16c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtoul.o)
+                0x000167d4                strtoul
+                0x00016688                _strtoul_r
+ .text          0x000167f4      0x504 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
+                0x00016810                _getpid
+                0x00016904                initialise_monitor_handles
+                0x00016828                isatty
+                0x00016890                _fstat
+                0x00016c24                _open
+                0x00016858                _sbrk
+                0x00016824                _raise
+                0x0001698c                _times
+                0x00016c38                _stat
+                0x00016c74                _lseek
+                0x00016814                _link
+                0x00016a48                _swiwrite
+                0x0001682c                _rename
+                0x00016a70                _swilseek
+                0x00016a10                _swiclose
+                0x00016b24                _swiopen
+                0x0001681c                _unlink
+                0x00016bb0                _write
+                0x000169dc                _kill
+                0x000169b0                _gettimeofday
+                0x00016cac                _read
+                0x000169f8                _exit
+                0x00016840                _system
+                0x00016c84                _swiread
+                0x00016c14                _close
+ .text          0x00016cf8      0x16c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ungetc.o)
+                0x00016e48                ungetc
+                0x00016cf8                __submore
+                0x00016d74                _ungetc_r
+ .text          0x00016e64       0x60 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(callocr.o)
+                0x00016e64                _calloc_r
+ .text          0x00016ec4        0xc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(errno.o)
+                0x00016ec4                __errno
+ .text          0x00016ed0       0xbc /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(fclose.o)
+                0x00016ed0                _fclose_r
+                0x00016f74                fclose
+ .text          0x00016f8c       0x14 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(s_nan.o)
+                0x00016f8c                nan
+ .text          0x00016fa0       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_udivsi3.o)
+                0x00016fa0                __udivsi3
+                0x00016fa0                __aeabi_uidiv
+                0x0001701c                __aeabi_uidivmod
+ .text          0x0001702c       0xa4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_divsi3.o)
+                0x0001702c                __aeabi_idiv
+                0x0001702c                __divsi3
+                0x000170c0                __aeabi_idivmod
+ .text          0x000170d0       0xc8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_umodsi3.o)
+                0x000170d0                __umodsi3
+ .text          0x00017198       0xd8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_modsi3.o)
+                0x00017198                __modsi3
+ .text          0x00017270        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_dvmd_tls.o)
+                0x00017270                __aeabi_ldiv0
+                0x00017270                __div0
+                0x00017270                __aeabi_idiv0
+ .text          0x00017274       0x84 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_muldi3.o)
+                0x00017274                __muldi3
+ .text          0x000172f8      0x234 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_sf.o)
+                0x000174bc                __subsf3
+                0x000174f8                __addsf3
+ .text          0x0001752c      0x174 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_sf.o)
+                0x00017564                __mulsf3
+ .text          0x000176a0      0x11c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_sf.o)
+                0x000176d8                __divsf3
+ .text          0x000177bc       0x70 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_sf.o)
+                0x000177bc                __floatsisf
+ .text          0x0001782c       0x98 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_si.o)
+                0x0001785c                __fixsfsi
+ .text          0x000178c4       0x30 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_sf_to_df.o)
+                0x000178c4                __extendsfdf2
+ .text          0x000178f4      0x328 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_addsub_df.o)
+                0x00017be4                __adddf3
+                0x00017ba4                __subdf3
+ .text          0x00017c1c      0x2ac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_mul_df.o)
+                0x00017c54                __muldf3
+ .text          0x00017ec8      0x1ac /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_div_df.o)
+                0x00017f00                __divdf3
+ .text          0x00018074       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_eq_df.o)
+                0x00018084                __eqdf2
+ .text          0x000180cc       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ne_df.o)
+                0x000180dc                __nedf2
+ .text          0x00018124       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_gt_df.o)
+                0x00018134                __gtdf2
+ .text          0x0001817c       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_ge_df.o)
+                0x0001818c                __gedf2
+ .text          0x000181d4       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_lt_df.o)
+                0x000181e4                __ltdf2
+ .text          0x0001822c       0x58 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_le_df.o)
+                0x0001823c                __ledf2
+ .text          0x00018284       0x8c /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_si_to_df.o)
+                0x00018284                __floatsidf
+ .text          0x00018310       0xb4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_si.o)
+                0x00018340                __fixdfsi
+ .text          0x000183c4       0x28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_df.o)
+                0x000183c4                __make_dp
+ .text          0x000183ec       0x44 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_df_to_sf.o)
+                0x000183ec                __truncdfsf2
+ .text          0x00018430      0x130 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_sf.o)
+                0x00018460                __pack_f
+ .text          0x00018560       0x80 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_sf.o)
+                0x00018560                __unpack_f
+ .text          0x000185e0       0x18 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_make_sf.o)
+                0x000185e0                __make_fp
+ .text          0x000185f8      0x290 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_pack_df.o)
+                0x00018628                __pack_d
+ .text          0x00018888       0xc4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_unpack_df.o)
+                0x00018888                __unpack_d
+ .text          0x0001894c       0xf0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x0001897c                __fpcmp_parts_d
+ .text          0x00018a3c       0xc4 /tmp/ccX55Un8.o
+                0x00018a3c                start
+                0x00018ae4                endless_loop
  *(.rodata)
- .rodata        0x00018ac8        0x4 main.o
- .rodata        0x00018acc       0x18 hardware/cpu_setup.o
- .rodata        0x00018ae4      0x180 hardware/iap.o
- .rodata        0x00018c64      0x4f0 cmd/sh_data.o
- .rodata        0x00019154       0x10 hardware/spi_ssp.o
- .rodata        0x00019164        0x8 app/ap_ambilcepat.o
- .rodata        0x0001916c       0x1c ../../../Source/tasks.o
- .rodata        0x00019188        0x2 ../../../Source/portable/MemMang/heap_2.o
- *fill*         0x0001918a        0x2 00
- .rodata        0x0001918c       0xb8 cmd/sh_rtos.o
- .rodata        0x00019244      0x414 cmd/sh_hardware.o
- .rodata        0x00019658      0x32c cmd/sh_env.o
- .rodata        0x00019984       0xb0 cmd/sh_utils.o
- .rodata        0x00019a34      0x2e0 cmd/sh_sumber.o
- .rodata        0x00019d14      0x744 cmd/manual.o
- .rodata        0x0001a458      0x404 app/ap_serial.o
- .rodata        0x0001a85c      0x180 modul/tinysh/tinysh.o
- .rodata        0x0001a9dc      0x28c cmd/sh_rtc.o
- .rodata        0x0001ac68      0x288 modul/ff/ff9b/src/ff.o
- .rodata        0x0001aef0      0x3c0 modul/ff/sdc.o
- .rodata        0x0001b2b0       0xa0 modul/ff/sdc_cmd.o
- .rodata        0x0001b350      0x118 cmd/sh_sdc.o
- .rodata        0x0001b468      0x184 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
- .rodata        0x0001b5ec      0x464 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
- .rodata        0x0001ba50      0x101 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ctype_.o)
-                0x0001ba50                _ctype_
- *fill*         0x0001bb51        0x3 00
- .rodata        0x0001bb54       0x18 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
- .rodata        0x0001bb6c        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
-                0x0001bb6c                _global_impure_ptr
- .rodata        0x0001bb70       0x34 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
- .rodata        0x0001bba4      0x124 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
-                0x0001bc94                __mprec_tinytens
-                0x0001bba4                __mprec_tens
-                0x0001bc6c                __mprec_bigtens
- .rodata        0x0001bcc8       0xb8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtod.o)
- .rodata        0x0001bd80       0x10 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_sf.o)
-                0x0001bd80                __thenan_sf
- .rodata        0x0001bd90       0x14 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_df.o)
-                0x0001bd90                __thenan_df
+ .rodata        0x00018b00        0x4 main.o
+ .rodata        0x00018b04       0x18 hardware/cpu_setup.o
+ .rodata        0x00018b1c      0x180 hardware/iap.o
+ .rodata        0x00018c9c      0x4f0 cmd/sh_data.o
+ .rodata        0x0001918c       0x10 hardware/spi_ssp.o
+ .rodata        0x0001919c        0x8 app/ap_ambilcepat.o
+ .rodata        0x000191a4       0x1c modul/FreeRTOSv5.2/tasks.o
+ .rodata        0x000191c0        0x2 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
+ *fill*         0x000191c2        0x2 00
+ .rodata        0x000191c4       0xb8 cmd/sh_rtos.o
+ .rodata        0x0001927c      0x414 cmd/sh_hardware.o
+ .rodata        0x00019690      0x32c cmd/sh_env.o
+ .rodata        0x000199bc       0xb0 cmd/sh_utils.o
+ .rodata        0x00019a6c      0x2e0 cmd/sh_sumber.o
+ .rodata        0x00019d4c      0x744 cmd/manual.o
+ .rodata        0x0001a490      0x404 app/ap_serial.o
+ .rodata        0x0001a894      0x180 modul/tinysh/tinysh.o
+ .rodata        0x0001aa14      0x28c cmd/sh_rtc.o
+ .rodata        0x0001aca0      0x2c0 modul/ff/ff9b/src/ff.o
+ .rodata        0x0001af60      0x3c0 modul/ff/sdc.o
+ .rodata        0x0001b320       0xa0 modul/ff/sdc_cmd.o
+ .rodata        0x0001b3c0      0x118 cmd/sh_sdc.o
+ .rodata        0x0001b4d8      0x184 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+ .rodata        0x0001b65c      0x464 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
+ .rodata        0x0001bac0      0x101 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(ctype_.o)
+                0x0001bac0                _ctype_
+ *fill*         0x0001bbc1        0x3 00
+ .rodata        0x0001bbc4       0x18 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+ .rodata        0x0001bbdc        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
+                0x0001bbdc                _global_impure_ptr
+ .rodata        0x0001bbe0       0x34 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+ .rodata        0x0001bc14      0x124 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mprec.o)
+                0x0001bd04                __mprec_tinytens
+                0x0001bc14                __mprec_tens
+                0x0001bcdc                __mprec_bigtens
+ .rodata        0x0001bd38       0xb8 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(strtod.o)
+ .rodata        0x0001bdf0       0x10 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_sf.o)
+                0x0001bdf0                __thenan_sf
+ .rodata        0x0001be00       0x14 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_thenan_df.o)
+                0x0001be00                __thenan_df
  *(.rodata*)
  .rodata.str1.4
-                0x0001bda4        0x2 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
+                0x0001be14        0x2 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(puts.o)
                                   0x4 (size before relaxing)
- *fill*         0x0001bda6        0x2 00
+ *fill*         0x0001be16        0x2 00
  .rodata.str1.4
-                0x0001bda8       0x63 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
+                0x0001be18       0x63 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfprintf.o)
                                  0x64 (size before relaxing)
- *fill*         0x0001be0b        0x1 00
+ *fill*         0x0001be7b        0x1 00
  .rodata.str1.4
-                0x0001be0c        0x5 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
+                0x0001be7c        0x5 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(vfscanf.o)
                                   0x8 (size before relaxing)
- *fill*         0x0001be11        0x3 00
+ *fill*         0x0001be81        0x3 00
  .rodata.str1.4
-                0x0001be14       0x1e /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
+                0x0001be84       0x1e /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(wctomb_r.o)
                                  0x20 (size before relaxing)
- *fill*         0x0001be32        0x2 00
+ *fill*         0x0001bea2        0x2 00
  .rodata.str1.4
-                0x0001be34       0x10 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
+                0x0001bea4       0x10 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(dtoa.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
-                0x0001be44        0x2 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
+                0x0001beb4        0x2 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(impure.o)
                                   0x4 (size before relaxing)
- *fill*         0x0001be46        0x2 00
+ *fill*         0x0001beb6        0x2 00
  .rodata.str1.4
-                0x0001be48        0xb /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
+                0x0001beb8        0xb /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(locale.o)
                                  0x18 (size before relaxing)
  .rodata.str1.4
-                0x0001be53        0x0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbrtowc.o)
+                0x0001bec3        0x0 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(mbrtowc.o)
                                   0x4 (size before relaxing)
- *fill*         0x0001be53        0x1 00
+ *fill*         0x0001bec3        0x1 00
  .rodata.str1.4
-                0x0001be54        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
+                0x0001bec4        0x4 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a(syscalls.o)
  *(.glue_7)
- .glue_7        0x0001be58       0x48 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x0001be94                __main_from_arm
-                0x0001be88                __xQueueGenericSendFromISR_from_arm
-                0x0001be64                __xTaskIncrementTick_from_arm
-                0x0001be70                __xQueueGenericCreate_from_arm
-                0x0001be7c                __xQueueReceiveFromISR_from_arm
-                0x0001be58                __vTaskSwitchContext_from_arm
+ .glue_7        0x0001bec8       0x48 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x0001bf04                __main_from_arm
+                0x0001bef8                __xQueueGenericSendFromISR_from_arm
+                0x0001bed4                __xTaskIncrementTick_from_arm
+                0x0001bee0                __xQueueGenericCreate_from_arm
+                0x0001beec                __xQueueReceiveFromISR_from_arm
+                0x0001bec8                __vTaskSwitchContext_from_arm
  *(.glue_7t)
- .glue_7t       0x0001bea0       0x28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
-                0x0001bea4                __vPortEnterCritical_change_to_arm
-                0x0001bec0                __vSerialISRCreateQueues_from_thumb
-                0x0001bec4                __vSerialISRCreateQueues_change_to_arm
-                0x0001beac                __vPortExitCritical_change_to_arm
-                0x0001beb8                __vPortISRStartFirstTask_from_thumb
-                0x0001beb0                __vPortDisableInterruptsFromThumb_from_thumb
-                0x0001bea8                __vPortExitCritical_from_thumb
-                0x0001bea0                __vPortEnterCritical_from_thumb
-                0x0001bebc                __vPortISRStartFirstTask_change_to_arm
-                0x0001beb4                __vPortDisableInterruptsFromThumb_change_to_arm
+ .glue_7t       0x0001bf10       0x28 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a(_fpcmp_parts_df.o)
+                0x0001bf14                __vPortEnterCritical_change_to_arm
+                0x0001bf30                __vSerialISRCreateQueues_from_thumb
+                0x0001bf34                __vSerialISRCreateQueues_change_to_arm
+                0x0001bf1c                __vPortExitCritical_change_to_arm
+                0x0001bf28                __vPortISRStartFirstTask_from_thumb
+                0x0001bf20                __vPortDisableInterruptsFromThumb_from_thumb
+                0x0001bf18                __vPortExitCritical_from_thumb
+                0x0001bf10                __vPortEnterCritical_from_thumb
+                0x0001bf2c                __vPortISRStartFirstTask_change_to_arm
+                0x0001bf24                __vPortDisableInterruptsFromThumb_change_to_arm
  *(.eh_frame)
-                0x0001bec8                __end_of_text__ = .
+                0x0001bf38                __end_of_text__ = .
 
-.data           0x40000000      0xf70 load address 0x0001bec8
+.data           0x40000000      0xf70 load address 0x0001bf38
                 0x40000000                __data_beg__ = .
-                0x0001bec8                __data_beg_src__ = __end_of_text__
+                0x0001bf38                __data_beg_src__ = __end_of_text__
  *(.data)
- .data          0x40000000        0x4 ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
+ .data          0x40000000        0x4 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/portISR.o
                 0x40000000                ulCriticalNesting
  .data          0x40000004       0x60 cmd/sh_data.o
- .data          0x40000064        0x4 ../../../Source/tasks.o
- .data          0x40000068        0x4 ../../../Source/portable/MemMang/heap_2.o
+ .data          0x40000064        0x4 modul/FreeRTOSv5.2/tasks.o
+ .data          0x40000068        0x4 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
  .data          0x4000006c       0x40 cmd/sh_rtos.o
  .data          0x400000ac      0x120 cmd/sh_hardware.o
  .data          0x400001cc       0x60 cmd/sh_env.o
@@ -917,9 +917,9 @@ prog            0x00000044    0x1be84
  .bss           0x40000f7c        0x4 main.o
                 0x40000f7c                xSemSer0
  .bss           0x40000f80        0x4 hardware/syscalls.o
- .bss           0x40000f84       0xd0 ../../../Source/tasks.o
+ .bss           0x40000f84       0xd0 modul/FreeRTOSv5.2/tasks.o
                 0x40000f84                pxCurrentTCB
- .bss           0x40001054     0x7814 ../../../Source/portable/MemMang/heap_2.o
+ .bss           0x40001054     0x7814 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
  .bss           0x40008868      0x200 cmd/sh_rtos.o
  .bss           0x40008a68        0xc modul/serial/serial.o
  .bss           0x40008a74        0x8 app/ap_serial.o
@@ -983,7 +983,7 @@ prog            0x00000044    0x1be84
 OUTPUT(santer.elf elf32-littlearm)
 
 .comment        0x00000000      0x828
- .comment       0x00000000       0x12 ../../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
+ .comment       0x00000000       0x12 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/portISR.o
  .comment       0x00000012       0x12 modul/serial/serialISR.o
  .comment       0x00000024       0x12 main.o
  .comment       0x00000036       0x12 hardware/hardware.o
@@ -994,11 +994,11 @@ OUTPUT(santer.elf elf32-littlearm)
  .comment       0x00000090       0x12 hardware/spi_ssp.o
  .comment       0x000000a2       0x12 app/ap_rpm.o
  .comment       0x000000b4       0x12 app/ap_ambilcepat.o
- .comment       0x000000c6       0x12 ../../../Source/list.o
- .comment       0x000000d8       0x12 ../../../Source/queue.o
- .comment       0x000000ea       0x12 ../../../Source/tasks.o
- .comment       0x000000fc       0x12 ../../../Source/portable/GCC/ARM7_LPC23xx/port.o
- .comment       0x0000010e       0x12 ../../../Source/portable/MemMang/heap_2.o
+ .comment       0x000000c6       0x12 modul/FreeRTOSv5.2/list.o
+ .comment       0x000000d8       0x12 modul/FreeRTOSv5.2/queue.o
+ .comment       0x000000ea       0x12 modul/FreeRTOSv5.2/tasks.o
+ .comment       0x000000fc       0x12 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/port.o
+ .comment       0x0000010e       0x12 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
  .comment       0x00000120       0x12 cmd/sh_rtos.o
  .comment       0x00000132       0x12 cmd/sh_hardware.o
  .comment       0x00000144       0x12 cmd/sh_env.o

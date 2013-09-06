@@ -788,9 +788,10 @@ FRESULT move_window (
 		if (sync_window(fs) != FR_OK)
 			return FR_DISK_ERR;
 #endif
-		//uprintf("%s --> disk: %d, sect: %d\r\n", __FUNCTION__, fs->drv, sector);
+		uprintf("%s --> disk: %d, sect: %d\r\n", __FUNCTION__, fs->drv, sector);
 		if (disk_read(fs->drv, fs->win, sector, 1) != RES_OK)
 			return FR_DISK_ERR;
+		uprintf("%s --> OK %d\r\n", __FUNCTION__, sector);
 		fs->winsect = sector;
 	}
 

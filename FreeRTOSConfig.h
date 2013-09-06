@@ -93,7 +93,7 @@
 #define PAKAI_RTC
 
 
-#define ST_LED				10
+#define ST_LED				3
 #define ST_SHELL			20
 #define ST_SANTER			10		//	10
 
