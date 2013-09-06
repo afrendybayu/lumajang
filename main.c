@@ -250,11 +250,10 @@ void vLedTask( void *pvParameters )	{
 	char ss[6];
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 500;
-	//FATFS Fatfs[_VOLUMES];
-	
-	vTaskDelay(1500);
+		
+	vTaskDelay(100);
 	//printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
-	
+
 	st_hw.init++;
 	do	{
 		init_led();

@@ -24,9 +24,9 @@ void mount_disk(unsigned char disk)	{
 	unsigned char a;
 	a = f_mount(disk, &xFatFs);
 	//a = f_mount(disk, &xFatFs[0]);
-	ket_fs(a, &strFs);
+	//ket_fs(a, &strFs);
 	//qsprintf("a: %d-%s, xFatFs.drive: %d, size: %d\r\n", a, ket_fs(a), xFatFs[0].drv, xFatFs[0].csize);
-	qsprintf("a: %d-%s\r\n", a, strFs);
+	//qsprintf("a: %d-%s\r\n", a, strFs);
 }
 
 void sh_cek_read_sdc(void)	{
@@ -40,7 +40,7 @@ void sh_cek_free_cluster()	{
 }
 
 void sh_ls(int argc, char **argv)		{
-	scan_files ( "0:/", 0);
+	scan_files ("0:/", 0);
 }
 
 void sh_cek_pwd()	{

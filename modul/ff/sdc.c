@@ -353,7 +353,7 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	//cmd = CMD17;
 	almt *= 512;
 	rspn = Microsd_SendCmd( cmd, almt );
-	//uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
+	uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
 	
 	#if 1
 	do	{
@@ -380,15 +380,12 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	#endif
 	#if 0
 	for (a=0; a<32; a++)	{
-		
-		#if 0
-		for (b=0; b<1; b++)	{
-			uprintf("%02x ", hsl[a*16+b]);
+		for (b=0; b<16; b++)	{
+			uprintf("%02x ", data[a*16+b]);
 			if (b==7) uprintf("  ");
 		}
-		uprintf("%02x ", hsl[a]);
-		//uprintf("\r\n");
-		#endif
+		//uprintf("%02x ", hsl[a]);
+		uprintf("\r\n");
 	}
 	#endif
 	
