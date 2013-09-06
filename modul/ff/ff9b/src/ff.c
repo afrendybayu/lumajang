@@ -1121,6 +1121,8 @@ FRESULT dir_sdi (
 
 	dj->index = idx;
 	clst = dj->sclust;
+	uprintf("dj index: %d, cluster: %d\r\n", dj->index, clst);
+	
 	if (clst == 1 || clst >= dj->fs->n_fatent)	/* Check start cluster range */
 		return FR_INT_ERR;
 	if (!clst && dj->fs->fs_type == FS_FAT32)	/* Replace cluster# 0 with root cluster# if in FAT32 */
@@ -1146,6 +1148,7 @@ FRESULT dir_sdi (
 	}
 
 	dj->dir = dj->fs->win + (idx % (SS(dj->fs) / SZ_DIR)) * SZ_DIR;	/* Ptr to the entry in the sector */
+	printf("dj->dir: %d, dj->clust: %d, dj->sect: %d\r\n", dj->dir, dj->clust, dj->sect);
 
 	return FR_OK;	/* Seek succeeded */
 }
