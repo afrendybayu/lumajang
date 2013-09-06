@@ -66,7 +66,8 @@ CMD=cmd
 APP=app
 HSL=hasil
 
-GCC=../../../../../../atinom/modul/TOOLCHAIN/bin/
+#GCC=../../../../../../atinom/modul/TOOLCHAIN/bin/
+GCC=modul/TOOLCHAIN/bin/
 OBJCOPY=$(GCC)arm-elf-objcopy
 CC=$(GCC)arm-elf-gcc
 UKURAN=$(GCC)arm-elf-size

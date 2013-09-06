@@ -1537,10 +1537,11 @@ FRESULT dir_read (
 #if _USE_LFN
 	BYTE ord = 0xFF, sum = 0xFF;
 #endif
-
+	uprintf("--> 1 %s() sektor: %d\r\n", __FUNCTION__, dj->sect);
 	res = FR_NO_FILE;
 	while (dj->sect) {
 		res = move_window(dj->fs, dj->sect);
+		uprintf("--> 2 %s() , res: %d\r\n", __FUNCTION__, res);
 		if (res != FR_OK) break;
 		dir = dj->dir;					/* Ptr to the directory entry of current index */
 		c = dir[DIR_Name];
@@ -3108,9 +3109,11 @@ FRESULT f_opendir (
 	res = chk_mounted(&path, &dj->fs, 0);
 	fs = dj->fs;
 	if (res == FR_OK) {
+		uprintf("--> 1 %s(). res: %d\r\n", __FUNCTION__, res);
 		INIT_BUF(*dj);
 		res = follow_path(dj, path);			/* Follow the path to the directory */
 		FREE_BUF();
+		uprintf("--> 2 %s(). res: %d\r\n", __FUNCTION__, res);
 		if (res == FR_OK) {						/* Follow completed */
 			if (dj->dir) {						/* It is not the root dir */
 				if (dj->dir[DIR_Attr] & AM_DIR) {	/* The object is a directory */
@@ -3124,12 +3127,13 @@ FRESULT f_opendir (
 				res = dir_sdi(dj, 0);			/* Rewind dir */
 			}
 		}
+		uprintf("--> %s(). res: %d\r\n", __FUNCTION__, res);
 		if (res == FR_NO_FILE) res = FR_NO_PATH;
 		if (res != FR_OK) dj->fs = 0;			/* Invalidate the dir object if function faild */
 	} else {
 		dj->fs = 0;
 	}
-
+	uprintf("--> %s() sebelum LEAVE_FF\r\n", __FUNCTION__);
 	LEAVE_FF(fs, res);
 }
 
@@ -3148,14 +3152,19 @@ FRESULT f_readdir (
 	FRESULT res;
 	DEF_NAMEBUF;
 
-
+	uprintf("--> 1 %s() masuk\r\n", __FUNCTION__);
 	res = validate(dj);						/* Check validity of the object */
+	uprintf("--> 2 %s(). res: %d\r\n", __FUNCTION__, res);
 	if (res == FR_OK) {
+		
 		if (!fno) {
 			res = dir_sdi(dj, 0);			/* Rewind the directory object */
+			uprintf("--> 3 %s(). res: %d\r\n", __FUNCTION__, res);
 		} else {
+			uprintf("--> 4 %s() masuk\r\n", __FUNCTION__);
 			INIT_BUF(*dj);
 			res = dir_read(dj, 0);			/* Read an item */
+			uprintf("--> 5 %s() res: %d\r\n", __FUNCTION__, res);
 			if (res == FR_NO_FILE) {		/* Reached end of dir */
 				dj->sect = 0;
 				res = FR_OK;
@@ -3163,6 +3172,7 @@ FRESULT f_readdir (
 			if (res == FR_OK) {				/* A valid entry is found */
 				get_fileinfo(dj, fno);		/* Get the object information */
 				res = dir_next(dj, 0);		/* Increment index for next */
+				uprintf("--> 6 %s() res: %d\r\n", __FUNCTION__, res);
 				if (res == FR_NO_FILE) {
 					dj->sect = 0;
 					res = FR_OK;
@@ -3171,7 +3181,7 @@ FRESULT f_readdir (
 			FREE_BUF();
 		}
 	}
-
+	uprintf("--> %s() sebelum LEAVE_FF\r\n", __FUNCTION__);
 	LEAVE_FF(dj->fs, res);
 }
 
