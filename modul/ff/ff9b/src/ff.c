@@ -2138,7 +2138,7 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	if (!fs) return FR_NOT_ENABLED;		/* Is the file system object available? */
 	//uprintf("---> %s FSobjek ADA\r\n", __FUNCTION__);
 	ENTER_FF(fs);						/* Lock volume */
-	//uprintf("---> %s fs.tipe: %d, fs.drv: %d, fs.size: %d\r\n", __FUNCTION__, fs->fs_type, fs->drv, fs->csize);
+	uprintf("---> %s fs.tipe: %d, fs.drv: %d, fs.size: %d\r\n", __FUNCTION__, fs->fs_type, fs->drv, fs->csize);
 	*rfs = fs;							/* Return pointer to the corresponding file system object */
 	if (fs->fs_type) {					/* If the volume has been mounted */
 		stat = disk_status(fs->drv);
@@ -2202,17 +2202,17 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 		return FR_NO_FILESYSTEM;
 
 	fasize = LD_WORD(fs->win+BPB_FATSz16);				/* Number of sectors per FAT */
-	//uprintf("%s() --> jml Sektor/FAT: %d\r\n", __FUNCTION__, fasize);
+	uprintf("%s() --> jml Sektor/FAT: %d\r\n", __FUNCTION__, fasize);
 	if (!fasize) fasize = LD_DWORD(fs->win+BPB_FATSz32);
 	fs->fsize = fasize;
 
 	fs->n_fats = b = fs->win[BPB_NumFATs];				/* Number of FAT copies */
-	//uprintf("%s() --> jml kopi FAT: %d\r\n", __FUNCTION__, fs->n_fats);
+	uprintf("%s() --> jml kopi FAT: %d\r\n", __FUNCTION__, fs->n_fats);
 	if (b != 1 && b != 2) return FR_NO_FILESYSTEM;		/* (Must be 1 or 2) */
 	fasize *= b;										/* Number of sectors for FAT area */
 
 	fs->csize = b = fs->win[BPB_SecPerClus];			/* Number of sectors per cluster */
-	//uprintf("%s() --> jml sector/cluster: %d\r\n", __FUNCTION__, fs->csize);
+	uprintf("%s() --> jml sector/cluster: %d\r\n", __FUNCTION__, fs->csize);
 	if (!b || (b & (b - 1))) return FR_NO_FILESYSTEM;	/* (Must be power of 2) */
 
 	fs->n_rootdir = LD_WORD(fs->win+BPB_RootEntCnt);	/* Number of root directory entries */
@@ -2235,7 +2235,7 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	fmt = FS_FAT12;
 	if (nclst >= MIN_FAT16) fmt = FS_FAT16;
 	if (nclst >= MIN_FAT32) fmt = FS_FAT32;
-	//uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);	// 2: FAT16, 3: FAT32
+	uprintf("%s() --> fmt: %d\r\n", __FUNCTION__, fmt);	// 2: FAT16, 3: FAT32
 	/* Boundaries and Limits */
 	fs->n_fatent = nclst + 2;							/* Number of FAT entries */
 	fs->volbase = bsect;								/* Volume start sector */

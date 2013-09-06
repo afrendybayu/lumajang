@@ -55,8 +55,8 @@
 
 NAMA_FILE=santer
 #RTOS_SOURCE_DIR=../../../Source
-DEMO_COMMON_DIR=../../Common/Minimal
-DEMO_INCLUDE_DIR=../../Common/include
+#DEMO_COMMON_DIR=../../Common/Minimal
+#DEMO_INCLUDE_DIR=../../Common/include
 
 RTOS_SOURCE_DIR=modul/FreeRTOSv5.2
 
@@ -95,7 +95,6 @@ CFLAGS= $(DEBUG) \
 		-I ./$(APP)/	\
 		-I $(RTOS_SOURCE_DIR)/include \
 		-I $(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx \
-		-I $(DEMO_INCLUDE_DIR) \
 		-D ROWLEY_LPC23xx \
 		-D THUMB_INTERWORK \
 		-mcpu=arm7tdmi \
@@ -103,7 +102,8 @@ CFLAGS= $(DEBUG) \
 		-D ALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\) \
 		-fomit-frame-pointer \
 		-mthumb-interwork \
-
+#		-I $(DEMO_INCLUDE_DIR) \
+#		-I ./$(MODUL)/serial	\
 		
 THUMB_SOURCE= \
 		main.c \

@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 /* Demo program include files. */
-#include "serial.h"
+#include "serial/serial.h"
 
 #ifdef PAKAI_TINYSH
 #include "tinysh/tinysh.h"
