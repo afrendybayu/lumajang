@@ -120,8 +120,8 @@ void sdc_ket()		{
 	cInfo.year = 2000 + ((CardInfo[16+13] & 0x0f) << 4) | (CardInfo[16+14] >> 4);	// Product Date - year
 	cInfo.month = (CardInfo[16+14] & 0x0f);					// Product Date - month
 	cInfo.serial = (CardInfo[16+9] << 24) | (CardInfo[16+10] << 16) | (CardInfo[16+11] << 8) | CardInfo[16+12]; // Serial Number
-	//uprintf("CID --> MID: %d, Nama: %s, Rev%d, SN: 0x%08X, ManDate: %02d-%d, oem: 0x%04X\r\n", \
-	//	cInfo.manid, cInfo.name, cInfo.rev, cInfo.serial, cInfo.month, cInfo.year, cInfo.oem);
+	uprintf("CID --> MID: %d, Nama: %s, Rev%d, SN: 0x%08X, ManDate: %02d-%d, oem: 0x%04X\r\n", \
+		cInfo.manid, cInfo.name, cInfo.rev, cInfo.serial, cInfo.month, cInfo.year, cInfo.oem);
 		
 	cInfo.speed = CardInfo[3];
 	cInfo.nblock = 1 << (CardInfo[5] & 0x0F);
@@ -136,8 +136,8 @@ void sdc_ket()		{
 		cInfo.blocks  = ((C_Size + 1) * (1 << (C_Size_Mult + 2)) * (1 << Read_Bl_Len)) / 512;
 	}
 
-	//uprintf("CSD --> Speed: 0x%02xh: %s MHz, CardType: 0x%02Xh, nBlock: %d, C_Size: %d, Total cap: %ld\r\n", \
-	//	cInfo.speed, (cInfo.speed==0x32)?"25":"-", cInfo.CardType, cInfo.nblock, cInfo.blocks, (unsigned long) sdc_cap);	// 
+	uprintf("CSD --> Speed: 0x%02xh: %s MHz, CardType: 0x%02Xh, nBlock: %d, C_Size: %d, Total cap: %ld\r\n", \
+		cInfo.speed, (cInfo.speed==0x32)?"25":"-", cInfo.CardType, cInfo.nblock, cInfo.blocks, (unsigned long) sdc_cap);	// 
 	
 	
 }
@@ -353,7 +353,7 @@ unsigned char sdc_read(unsigned char *data, unsigned int almt, int len)	{
 	//cmd = CMD17;
 	almt *= 512;
 	rspn = Microsd_SendCmd( cmd, almt );
-	uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
+	//uprintf("CMD: %d, almt: %d, len: %d, status %02x\r\n", cmd, almt, len, rspn);
 	
 	#if 1
 	do	{

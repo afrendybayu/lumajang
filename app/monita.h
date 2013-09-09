@@ -6,6 +6,12 @@
 #define IAP_ADDRESS 		0x7FFFFFF1
 typedef void (*IAP)(unsigned int [],unsigned int[]);
 
+#ifdef PAKAI_SDCARD
+#include "ff/ff9b/src/ff.h"
+//FATFS xFatFs[2];
+FATFS Fatfs[1];
+#endif
+
 
 typedef struct	{
   unsigned int ReturnCode;

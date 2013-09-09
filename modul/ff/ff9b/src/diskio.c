@@ -287,7 +287,8 @@ DRESULT disk_ioctl (
 #endif
 
 
-unsigned int get_fattime (void)	{
+//unsigned int get_fattime (void)	{
+DWORD get_fattime (void)	{
 	unsigned int tw;
 	struct rtc_time waktu;
 	

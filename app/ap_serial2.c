@@ -10,7 +10,7 @@
 #include "task.h"
 
 /* Demo program include files. */
-#include "serial.h"
+#include "serial/serial.h"
 #include "modbus/mb.h"
 #include "ap_serial2.h"
 //#include "sh_serial.h"

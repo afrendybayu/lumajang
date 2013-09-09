@@ -10,7 +10,7 @@
 #include "task.h"
 
 /* Demo program include files. */
-#include "serial.h"
+#include "serial/serial.h"
 #include "queue.h"
 #include "hardware.h"
 
