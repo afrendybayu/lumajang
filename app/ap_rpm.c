@@ -52,13 +52,14 @@ void reset_konter(void)	{
 
 void hitung_rpm(void)	{	
 	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[0], data_hit[0]);
+	uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[2].hit, konter.t_konter[3].hit);
 	//struct t_env *env2;
 	//env2 = (char *) ALMT_ENV;
 	
 	//if (env2->kalib[giliran].status==0)	
 	{
 		
-		portENTER_CRITICAL();
+		//portENTER_CRITICAL();
 		
 		if (konter.t_konter[giliran].hit_lama == konter.t_konter[giliran].hit)		{
 			//konter.t_konter[giliran].beda = 0;		
@@ -78,7 +79,7 @@ void hitung_rpm(void)	{
 		
 		konter.t_konter[giliran].hit_lama2 = konter.t_konter[giliran].hit2; 
 		#endif
-		portEXIT_CRITICAL();
+		//portEXIT_CRITICAL();
 	}
 	giliran++;
 	if (giliran == JML_KANAL) giliran = 0;

@@ -110,7 +110,7 @@
 
 #define PAKAI_SPI_SSP0
 #ifdef  PAKAI_SPI_SSP0
-	#define PAKAI_SDCARD
+//	#define PAKAI_SDCARD
 #endif
 
 /* Value to use on old rev '-' devices. */

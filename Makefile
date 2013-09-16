@@ -156,6 +156,7 @@ RELAY_SOURCE=	\
 
 ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
+		$(HW)/hwISR.c		\
 		
 
 SERIAL_SOURCE_ISR=	\

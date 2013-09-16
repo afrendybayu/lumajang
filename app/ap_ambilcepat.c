@@ -65,10 +65,11 @@ int ch;
 			}
 			#endif
 		#endif
-		#if 0
-		vTaskDelay(100);
-		//hitung_rpm();
-		//data_frek_rpm();
+		
+		#if 1
+		vTaskDelay(1000);
+		hitung_rpm();
+		data_frek_rpm();
 		#endif
 		vTaskDelay(1);
 	}

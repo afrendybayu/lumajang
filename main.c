@@ -147,7 +147,7 @@ int main( void )	{
 	st_hw.idle_c = 0;	
 
 	#ifdef PAKAI_SHELL
-		xSemSer0 = xSemaphoreCreateMutex();;
+		xSemSer0 = xSemaphoreCreateMutex();
 	#endif
 
 	setup_hardware();

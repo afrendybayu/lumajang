@@ -91,7 +91,7 @@ void init_hardware()	{
 
 
 	
-	#if 0
+	#if 1
 	gpio_int_init();
 	#endif
 	
@@ -190,7 +190,7 @@ void gpio_init()	{
 }
 
 // fungsi gpio_int_init untuk inisialisasi input interrupt konter
-#if 0
+#if 1
 void gpio_int_init()	{
 	extern void ( gpio_ISR_Wrapper )( void );
 	extern void ( timer1_ISR_Wrapper )( void );
