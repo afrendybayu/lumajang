@@ -31,6 +31,7 @@
 #include "sh_env.h"
 #include "sh_rtos.h"
 #include "sh_data.h"
+#include "sh_kanal.h"
 
 #include "sh_utils.h"
 
@@ -180,6 +181,9 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_env_cmd);
 	tinysh_add_command(&set_env_cmd);
 	tinysh_add_command(&cek_struct_cmd);
+
+	tinysh_add_command(&set_kanal_cmd);
+	tinysh_add_command(&cek_kanal_cmd);
 	
 	tinysh_add_command(&set_data_cmd);
 	tinysh_add_command(&cek_data_cmd);

@@ -246,7 +246,7 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	struct t_kalib kalib[JML_KANAL];
+	struct t_kalib kalib[JML_KANAL*2];
 	int magic1;
 	int magic2;
 	int mmc_serial;

@@ -52,12 +52,13 @@ void reset_konter(void)	{
 
 void hitung_rpm(void)	{	
 	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[0], data_hit[0]);
-	uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[2].hit, konter.t_konter[3].hit);
+	//uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[8].hit, konter.t_konter[9].hit);
 	//struct t_env *env2;
 	//env2 = (char *) ALMT_ENV;
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
 	
-	//if (env2->kalib[giliran].status==0)	
-	{
+	if (st_env->kalib[giliran].status==sRPM)		{
 		
 		//portENTER_CRITICAL();
 		
@@ -108,14 +109,13 @@ void data_frek_rpm (void) {
 	float temp_f;
 	float temp_rpm;
 	
-	//struct t_env *env2;
-	//env2 = (char *) ALMT_ENV;
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
 	
-	//for (i=0; i<JML_KANAL; i++)	
-	{
+	for (i=0; i<JML_KANAL; i++)	{
 		
-		status = 0;
-		//status = env2->kalib[i].status;
+		//status = 0;
+		status = st_env->kalib[i].status;
 		
 		if (status==sRPM)		{
 			if (data_putaran[i])	{
@@ -132,9 +132,10 @@ void data_frek_rpm (void) {
 			//qsprintf("%s() masuk ...f: %d, rpm: %d\r\n", __FUNCTION__, (int) temp_f, (int) temp_rpm);
 			
 			//data_f[0] = temp_rpm;
-			#if 0
-			data_f[(i*2)+1] = (konter.t_konter[i].hit*env2->kalib[i].m)+env2->kalib[i].C;
-			data_f[i*2] = (float) (temp_rpm*env2->kalib[i].m)+env2->kalib[i].C;
+			#if 1
+			//data_f[(i*2)+1] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
+			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			#endif
 			
 			#if 0
@@ -146,7 +147,7 @@ void data_frek_rpm (void) {
 			*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
 			#endif
 			
-			#if 0
+			#if 1
 			if (data_f[(i*2)+1]>10000000) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
 				data_f[(i*2)+1] = 0;

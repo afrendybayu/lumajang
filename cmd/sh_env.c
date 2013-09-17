@@ -194,14 +194,25 @@ void set_env_default()		{
 	st_env->GW2 = 1;
 	st_env->GW3 = 1;
 	
-	for (i=0; i<JML_KANAL; i++)	{
+	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
+		st_env->kalib[i].status = sRPM;
 		//strcpy(env.kalib[i].ket, "----");
+		//printf("%d", sRPM);
 	}
 	
+	for (i=0; i<(JML_KANAL); i++)	{
+		st_env->kalib[i+JML_KANAL].m = 1;
+		st_env->kalib[i+JML_KANAL].C = 0;
+		st_env->kalib[i+JML_KANAL].status = sADC_7708;
+		//strcpy(env.kalib[i].ket, "----");
+		//printf("%d", sADC_7708);
+	}
+	
+	
 	st_env->magic1 = 0x01;
-	st_env->magic2 = 0x01;
+	st_env->magic2 = 0x02;
 	st_env->mmc_serial = 0;
 	strcpy(st_env->SN, "STR.kalender");
 

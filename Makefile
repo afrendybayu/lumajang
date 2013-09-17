@@ -123,6 +123,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_rtos.c			\
 		$(CMD)/sh_hardware.c		\
 		$(CMD)/sh_env.c				\
+		$(CMD)/sh_kanal.c			\
 		$(CMD)/sh_utils.c			\
 		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
