@@ -9,9 +9,8 @@ typedef void (*IAP)(unsigned int [],unsigned int[]);
 #ifdef PAKAI_SDCARD
 #include "ff/ff9b/src/ff.h"
 //FATFS xFatFs[2];
-FATFS Fatfs[1];
+//FATFS Fatfs[1];
 #endif
-
 
 typedef struct	{
   unsigned int ReturnCode;
@@ -115,6 +114,16 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_ENV		(ALMT_SEKTOR_19)
 #define ALMT_SUMBER		(ALMT_SEKTOR_19+1024*1)
 #define ALMT_CRON		(ALMT_SEKTOR_19+1024*2)
+#define ALMT_FILE		(ALMT_SEKTOR_19+1024*3)
+
+enum t_struct{ 
+	DATA,
+	ENV,
+	SUMBER,
+	CRON,
+	BERKAS
+}; 
+enum t_struct st_struct;
 
 #define SEKTOR_DATA		20
 #define ALMT_DATA		ALMT_SEKTOR_20
@@ -126,6 +135,7 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_DATA_TMP		(ALMT_SEKTOR_21)
 #define ALMT_SUMBER_TMP		(ALMT_SEKTOR_21+1024*1)
 #define ALMT_CRON_TMP		(ALMT_SEKTOR_21+1024*2)
+#define ALMT_FILE_TMP		(ALMT_SEKTOR_21+1024*3)
 
 
 #define JUM_GPIO	10
@@ -134,14 +144,7 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define uchr		unsigned char
 //#define uint		unsigned int
 
-enum t_struct{ 
-	DATA,
-	ENV,
-	SUMBER,
-	CRON,
-	
-}; 
-enum t_struct st_struct;
+
 
 typedef struct {
 	//unsigned int new_period;
@@ -173,6 +176,7 @@ struct t_st_hw  {
 	long int adc_c;
 	unsigned char rtc;
 	unsigned char sdc;
+	int mm;
 };
 
 volatile struct t_st_hw st_hw;
@@ -183,6 +187,13 @@ struct t_kalib {
 	char status;		// [status lihat define di atas !!!] //
 	char adc;
 };
+
+#ifdef PAKAI_FILE_SIMPAN
+struct t_file	{
+	int jml;
+	int urut[JML_TITIK_DATA];
+};
+#endif
 
 struct t_adc {
 	unsigned char cur_kanal;
@@ -276,6 +287,7 @@ struct t_env {
 	char statusSlave;
 	int		prioDebug;
 	int		prioDebug2;
+	int		jmlfile;
 };
 //struct t_env st_env;
 

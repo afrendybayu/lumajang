@@ -142,14 +142,24 @@ SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\
 
 RTC_SOURCE= \
-		cmd/sh_rtc.c		\
+		$(CMD)/sh_rtc.c		\
 
-SDC_SOURCE=	\
-		$(MODUL)/ff/ff9b/src/ff.c		\
-		$(MODUL)/ff/ff9b/src/diskio.c	\
-		$(MODUL)/ff/sdc.c			\
-		$(MODUL)/ff/sdc_cmd.c		\
-		$(CMD)/sh_sdc.c				\
+#SDC_SOURCE=	\
+#		$(MODUL)/ff/ff9b/src/ff.c		\
+#		$(MODUL)/ff/ff9b/src/diskio.c	\
+#		$(MODUL)/ff/sdc.c			\
+#		$(MODUL)/ff/sdc_cmd.c		\
+#		$(CMD)/sh_sdc.c				\
+
+SDC_SOURCE= \
+		$(MODUL)/ff/fatfs/ff.c			\
+		$(MODUL)/ff/fatfs/gmmc.c		\
+		$(MODUL)/ff/fatfs/option/ccsbcs.c	\
+		$(MODUL)/ff/fatfs/low_ss1.c		\
+		$(MODUL)/ff/fatfs/spi_mmc.c		\
+		$(MODUL)/ff/fatfs/shell_fs.c		\
+		$(APP)/ap_file.c				\
+		$(CMD)/sh_file.c				\
 		
 
 RELAY_SOURCE=	\

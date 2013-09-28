@@ -18,7 +18,7 @@ void cek_sumber(int argc, char **argv)		{
 	IAP_return_t iap_return;
 	iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
 	if (iap_return.ReturnCode == CMD_SUCCESS)	{
-		printf("  ERR: Sektor Kosong ! Lakukan: set_env default\r\n");
+		printf("  ERR: Sektor Kosong ! Lakukan: set_sumber default\r\n");
 		return;
 	}
 	

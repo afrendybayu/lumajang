@@ -25,7 +25,7 @@ void cek_env(int argc, char **argv)	{
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
+	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_versi);
 	uprintf("  Nama Board : %s\r\n", st_env->nama_board);
 	uprintf("  No Seri    : %s\r\n", st_env->SN);
 	//uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
@@ -240,6 +240,7 @@ void set_env_default()		{
 	st_env->statusSlave = 0;
 	st_env->prioDebug  = 10;
 	st_env->prioDebug2 = 20;
+	st_env->jmlfile = 0;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);

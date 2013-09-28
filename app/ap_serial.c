@@ -48,7 +48,10 @@
 #endif
 
 #ifdef PAKAI_SDCARD
-	#include "sh_sdc.h"
+//	#include "sh_sdc.h"
+	#include "ff/fatfs/shell_fs.h"
+	#include "ap_file.h"
+	#include "sh_file.h"
 #endif
 
 static xComPortHandle xPort;
@@ -133,7 +136,7 @@ void init_banner()	{
 	//uprintf("xPrintQueue hasil queue: %d\r\n", xPrintQueue);
 	uprintf("\r\n\r\nDaun Biru Engineering, Maret 2013\r\n");
 	uprintf("==================================\r\n");
-	uprintf("monita %s %s\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
+	uprintf("monita %s %s\r\n", BOARD_SANTER, BOARD_SANTER_versi);
 	uprintf("CPU %s, %d MHz", uC, configCPU_CLOCK_HZ/1000000);
 	if (iap_return.ReturnCode == 0)
 		uprintf(", P/N 0x%08X", iap_return.Result[0]);
@@ -218,7 +221,8 @@ void cmd_shell()	{
 	//tinysh_add_command(&init_rtc_cmd);
 	tinysh_add_command(&kalender_rtc_cmd);
 	#endif
-	
+
+#if 0
 	#ifdef PAKAI_SDCARD
 	tinysh_add_command(&cek_sdc_cmd);
 	tinysh_add_command(&cek_free_cluster_cmd);
@@ -227,6 +231,21 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_pwd_cmd);
 	tinysh_add_command(&cek_ls_cmd);
 	#endif
+#endif
+
+	#ifdef PAKAI_SDCARD
+	tinysh_add_command(&util_cd_cmd);
+	tinysh_add_command(&util_pwd_cmd);
+	tinysh_add_command(&util_ls_cmd);
+	tinysh_add_command(&util_mkdir_cmd);
+	tinysh_add_command(&util_view_cmd);
+	tinysh_add_command(&util_rm_cmd);
+	tinysh_add_command(&simpan_file_cmd);
+	
+	tinysh_add_command(&cek_file_cmd);
+	tinysh_add_command(&set_file_cmd);
+	#endif
+
 #endif
 }
 
@@ -301,7 +320,7 @@ static portTASK_FUNCTION( vComRxTask, pvParameters )		{
 signed char cExpectedByte, cByteRxed;
 portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
-int ch;
+int ch, mm=0;
 char s[30];
 
 	/* Just to stop compiler warnings. */
@@ -319,10 +338,13 @@ char s[30];
 	
 	#ifdef PAKAI_SDCARD
 		st_hw.sdc = 0;
-		disk_initialize(SDC);
-		mount_disk(0);		// 0: SDCARD
-		uprintf("Cek Memori SDCARD: ...");
-		cek_free_cluster();
+		//disk_initialize(SDC);
+		disk_initialize(0);
+		set_fs_mount();
+		cek_fs_free();
+		//mount_disk(0);		// 0: SDCARD
+		//uprintf("Cek Memori SDCARD: ...");
+		//cek_free_cluster();
 		st_hw.sdc = 1;
 	#endif
 	
@@ -369,13 +391,22 @@ char s[30];
 	tinysh_char_in('\r');
 	vTaskDelay(500);
 	for( ;; )	{
-		vTaskDelay(10);
+		//vTaskDelay(10);
 		//printf("testing\r\n");
 		xGotChar = xSerialGetChar( xPort, &ch, 10 );
+		
 		if( xGotChar == pdTRUE )		{
 			tinysh_char_in((unsigned char) ch);
 			toogle_led_utama();
 		}
+		//if (st_hw.mm>=120)	{			// cron tiap 1 menit
+		if (st_hw.mm>=2)	{			// cron tiap 1 menit
+			st_hw.mm = 0;
+			#ifdef PAKAI_FILE_SIMPAN
+			simpan_file_data();
+			#endif
+		}
+		
 		qrprintf(0);
 	}
 	#endif	
