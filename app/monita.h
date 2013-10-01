@@ -191,6 +191,7 @@ struct t_kalib {
 #ifdef PAKAI_FILE_SIMPAN
 struct t_file	{
 	int jml;
+	int simpan;
 	int urut[JML_TITIK_DATA];
 };
 #endif

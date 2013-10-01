@@ -41,7 +41,7 @@ int ch;
 		//vTaskDelay(10); ---> malah error tidak dikenali
 	#endif
 	
-	#ifdef PAKAI_ADC_7708x
+	#ifdef PAKAI_ADC_7708
 		st_hw.adc = 0;
 		uprintf("\r\n");
 		if (setup_ad7708()==0)
@@ -49,6 +49,7 @@ int ch;
 	#endif
 	
 	st_hw.init++;
+	int loopac=0;
 	for( ;; )	{
 		
 
@@ -66,11 +67,16 @@ int ch;
 			#endif
 		#endif
 		
-		#if 1
-		vTaskDelay(1000);
-		hitung_rpm();
-		data_frek_rpm();
+		#if 0
+			vTaskDelay(1000);
+			hitung_rpm();
+			data_frek_rpm();
 		#endif
 		vTaskDelay(1);
+		loopac++;
+		if (loopac>=1000)	{
+			hitung_rpm();
+			data_frek_rpm();
+		}
 	}
 }

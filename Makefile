@@ -151,6 +151,11 @@ RTC_SOURCE= \
 #		$(MODUL)/ff/sdc_cmd.c		\
 #		$(CMD)/sh_sdc.c				\
 
+ADC_SOURCE= \
+		$(CMD)/sh_adc.c		\
+		$(MODUL)/adc/ad7708.c	\
+		$(APP)/ap_adc.c		\
+
 SDC_SOURCE= \
 		$(MODUL)/ff/fatfs/ff.c			\
 		$(MODUL)/ff/fatfs/gmmc.c		\
@@ -169,6 +174,8 @@ ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
 		$(HW)/hwISR.c		\
 		
+ADC_SOURCE_ISR= \
+		modul/adc/adcISR.c	\
 
 SERIAL_SOURCE_ISR=	\
 		$(MODUL)/serial/serialISR.c	\
@@ -184,8 +191,10 @@ THUMB_SOURCE += $(RELAY_SOURCE)
 THUMB_SOURCE += $(MODBUS_SOURCE)
 THUMB_SOURCE += $(RTC_SOURCE)
 THUMB_SOURCE += $(SDC_SOURCE)
+THUMB_SOURCE += $(ADC_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
+ARM_SOURCE	+=  $(ADC_SOURCE_ISR)
 
 all: RTOSDemo.bin sizebefore
 

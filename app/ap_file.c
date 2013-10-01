@@ -30,8 +30,9 @@ void sendHexFile(int nilai, int jml, FIL fp)	{
 void simpan_file_data()		{
 	FIL filx;
 	FRESULT res;
-	char st1[50], st2[50], s[4];
-	int i, oo;
+	DIR dir;
+	char st[50], st2[50], s[4], fol[20];
+	int i=0, oo;
 	
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -41,22 +42,40 @@ void simpan_file_data()		{
 	//ctime2.i = RTC_CTIME2;
 	
 	//uprintf("waktu: %d%02d%02d_%02d%02d\r\n", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes );
-	sprintf(st1, "%d%02d%02_%02d%02d", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes);
-	sprintf(st2, "0:%d%02d%02d_%02d.txt", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours);
+	sprintf(fol, "0:\\%d%02d%02d", ctime1.year, ctime1.month, ctime1.dom);
+	sprintf(st, "%s\\%d%02d%02d_%02d.txt", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours);
 	
 	
+	res = f_opendir(&dir, fol);
+	//uprintf("res buka folder: %d\r\n", res);
 	
-	res = f_open(&filx, st2, FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-    if (res) {
-		uprintf("res: %d\r\n", res);
-		return;
-		//die(res);
+	if (res != FR_OK)	{
+		res = f_mkdir(fol);
+		//uprintf("res buat folder: %d\r\n", res);
 	}
 	
-	res = f_lseek(&filx, f_size(&filx));
+	struct t_file  *st_file;
+	st_file = (char *) ALMT_FILE;
+	res = f_open(&filx, st, FA_OPEN_EXISTING | FA_READ | FA_WRITE);
+	if (res)	{		// GAGAL buka, bikin baru !!!
+		res = f_open(&filx, st, FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
+		if (res) {
+			uprintf("res: %d\r\n", res);
+			return;
+			//die(res);
+		} else {
+			// tambahan header untuk file baru !! -- disini --
+			
+		}
+	} else {		// file sudah ada
+		res = f_lseek(&filx, f_size(&filx));
+	}
+	
+	//res = f_lseek(&filx, f_size(&filx));
 	//f_write(&filx, "cobacoba\r\n", 10, &i);
-	for (i=0; i<10; i++)	{
-		memcpy(s, (void*) &data_f[10+i], 4);
+	for (i=0; i<st_file->jml; i++)	{
+		memcpy(s, (void*) &data_f[st_file->urut[i]-1], 4);
+		//f_puts(
 		f_write(&filx, s, 4, &oo);
 		//sendHexFile(data_f[10+i], 4, filx);
 	}
@@ -169,9 +188,14 @@ int simpan_konfig(int argc, char **argv)		{
 	}
 	tulis_konfig_file("", &filx);
 	
+	struct t_file  *st_file;
+	st_file = (char *) ALMT_FILE;
 	tulis_konfig_file("[file]", &filx);
+	sprintf(st1, "jumlah = %d", st_file->jml);
+	tulis_konfig_file(st1, &filx);
 	for (i=0; i<JML_TITIK_DATA; i++)	{
-		sprintf(st1, "urut%d = %s", i+1, "");
+		if (st_file->urut[i]==0)	break;
+		sprintf(st1, "urut%d = %d", i+1, st_file->urut[i]);
 		tulis_konfig_file(st1, &filx);
 	}
 	

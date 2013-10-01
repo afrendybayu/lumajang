@@ -336,6 +336,10 @@ char s[30];
 	cmd_shell();
 	st_hw.init++;
 	
+	#ifdef PAKAI_RTC
+		//init_RTC_sh();
+	#endif
+	
 	#ifdef PAKAI_SDCARD
 		st_hw.sdc = 0;
 		//disk_initialize(SDC);

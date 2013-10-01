@@ -115,7 +115,7 @@ void cek_flag_RTC_sh()	{
 void init_RTC_sh()	{
 	setup_rtc();
 	start_rtc();
-	//printf(" ********* init RTC: %d\r\n", flagRTCc);
+	uprintf(" ********* init RTC: %d\r\n", flagRTCc);
 }
 
 
@@ -129,7 +129,7 @@ void get_cal()	{
 	ctime1.i = RTC_CTIME1; 
 	ctime2.i = RTC_CTIME2;
 
-	qsprintf(	"  Waktu : %s, %d-%s-%04d %d:%02d:%02d\r\n", 			\
+	qsprintf(	"\r\n  Waktu : %s, %d-%s-%04d %d:%02d:%02d\r\n", 			\
 		hari[ctime0.dow], ctime1.dom, bln[ctime1.month], ctime1.year, 	\
 		ctime0.hours, ctime0.minutes, ctime0.seconds);		// ctime2.doy, 
 }

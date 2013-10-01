@@ -2,6 +2,8 @@
 #ifndef __SH_ADC__
 #define __SH_ADC__
 
+#include "tinysh/tinysh.h"
+
 #ifdef PAKAI_ADC_7708
 void cek_adc(void);
 

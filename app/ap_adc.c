@@ -7,7 +7,8 @@
 #ifdef PAKAI_ADC_7708
 
 extern struct t_adc adc;
-extern float data_f[];
+extern volatile float data_f[];
+//extern float data_f[];
 //extern struct t_env env;
 
 void data_adc()	{
@@ -15,9 +16,9 @@ void data_adc()	{
 	float tf;
 	
 	for (i=0; i<JML_KANAL_ADC; i++)		{
-		tf = (float) (adc.data[i] * faktor_pengali_420 * ANGKA_PENTING / 0xffff);
+		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
 		//data_f[20+i] = env.kalib[i].m * tf + env.kalib[i].C;
-		data_f[20+i] = tf;
+		data_f[JML_KANAL+i] = tf;
 	}
 }
 #endif

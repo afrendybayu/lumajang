@@ -34,15 +34,13 @@ void cek_file(int argc, char **argv)	{
 	for (i=0; i<JML_TITIK_DATA; i++)	{
 		if (st_file->urut[i]==0)			break;
 		else {
-			j = (int) (st_file->urut[i]/PER_SUMBER);
-			k = (st_file->urut[i]) % PER_SUMBER;
+			j = (int) ((st_file->urut[i]-1)/PER_SUMBER);
+			k = (st_file->urut[i]-1) % PER_SUMBER;
 			st_data = ALMT_DATA + j*JML_KOPI_TEMP;
-			uprintf("  %3d.\t%3d --> %-20s : %.1f\r\n", i+1, st_file->urut[i]+1, st_data[k].nama, data_f[st_file->urut[i]]);
+			uprintf("  %3d.\t%3d --> %-20s : %.1f\r\n", i+1, st_file->urut[i], st_data[k].nama, data_f[st_file->urut[i]-1]);
 		}
 	}
 }
-
-
 
 char set_file(int argc, char **argv)	{
 	if (argc>3 || argc==1)		{
@@ -71,15 +69,15 @@ char set_file(int argc, char **argv)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		return 2;
 	}
-	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_file);
+	//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_file);
 	memcpy((char *) st_file, (char *) ALMT_FILE, (sizeof (struct t_file)));
 	
 	int urut, i, j, k;
 	if (argc==3)	{
-		int no = cek_nomor_valid(argv[2], JML_TITIK_DATA);
-		//printf("  data: %d\r\n", no);
-		no--;
-		if (strcmp(argv[1], "tambah") == 0)	{
+		int no;
+		
+		if (!strcmp(argv[1], "tambah") || !strcmp(argv[1], "+"))	{
+			no = cek_nomor_valid(argv[2], JML_TITIK_DATA);
 			for (i=0; i<JML_TITIK_DATA; i++)	{
 				if (st_file->urut[i]==no)		{
 					uprintf("  DATA no-%d SUDAH ADA !\r\n", no+1);
@@ -88,16 +86,17 @@ char set_file(int argc, char **argv)	{
 				
 				if (st_file->urut[i]==0)			break;
 				else {
-					uprintf("  No %3d --> %d\r\n", i+1, st_file->urut[i]+1);
+					uprintf("  No %3d --> %d\r\n", i+1, st_file->urut[i]);
 				}
 			}
 			urut = i;
 			//uprintf("urut: %d, i: %d, no: %d\r\n", urut, i, no);
 			st_file->urut[i] = no;
-			uprintf("  No %3d --> tambah Data %d\r\n", i+1, st_file->urut[i]+1);
+			uprintf("  No %3d --> tambah Data %d\r\n", i+1, st_file->urut[i]);
 			st_file->jml++;
 		}
-		else if (strcmp(argv[1], "hapus") == 0)	{
+		else if (!strcmp(argv[1], "hapus") || !strcmp(argv[1], "-"))	{
+			no = cek_nomor_valid(argv[2], JML_TITIK_DATA);
 			int  fx, sisa=0;
 			
 			for (i=0; i<JML_TITIK_DATA; i++)	{
@@ -113,8 +112,19 @@ char set_file(int argc, char **argv)	{
 				st_file->urut[fx+i] = st_file->urut[fx+i+1];
 			}
 			st_file->urut[fx+i] = 0;
-			uprintf("  data no : %d terhapus, %d\r\n", no+1, fx+i+1);
-		}	
+			uprintf("  data no : %d terhapus, %d\r\n", no, fx+i);
+		}
+		else if (strcmp(argv[1], "simpan") == 0)	{
+			int p = strlen(argv[2]);
+			if (p==1)
+				st_file->simpan = atoi(argv[2]);
+			else 	{
+				if ( !strcmp(argv[2],"aktif") || !strcmp(argv[2],"ya") )	
+					st_file->simpan = 1;
+				else
+					st_file->simpan = 0;
+			}
+		}
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);

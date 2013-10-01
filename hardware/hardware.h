@@ -45,6 +45,7 @@ void rtcWrite(struct tm *newTime);
 						RTC_CCR &= ~RTC_CCR_CTCRST;	\
 						RTC_CCR |= RTC_CCR_CLKEN;	\
 					} while(0)
+			//
 		#endif
 		
 		#ifdef PAKAI_RELAY
