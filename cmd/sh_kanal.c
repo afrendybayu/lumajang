@@ -60,15 +60,21 @@ char set_kanal(int argc, char **argv)		{
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
 	if (argc==4 || argc==2)	{
+		//int no = cek_nomor_valid(argv[1], JML_KANAL);
 		if (strcmp(argv[1], "default") == 0)	{
 			printf("  set_kanal dengan konfig default !\r\n");
 			set_kanal_default();
 			return 0;
 		}
-		else if (strcmp(argv[1], "status") == 0)	{
-			
-			//simpan_st_rom(SEKTOR_DATA, lok, 1, (unsigned short *) st_data, 1);
-			vPortFree (st_env);
+		else if (strcmp(argv[2], "status") == 0)	{
+			int stx;
+			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s\r\n", no, argv[0], argv[1], argv[2], argv[3]);
+			stx = atoi( argv[3] );
+			st_env->kalib[no-1].status = stx;
+			if (stx == sRPM_RH)	{
+				st_env->kalib[no].status = sRUNNING_HOURS;
+			}
+			uprintf("  status[%d] : %d\r\n", no, st_env->kalib[no-1].status);
 		} else	{
 			sprintf(str_kanal, "%s", argv[2]);
 			ret = sscanf(str_kanal, "%f", &m);

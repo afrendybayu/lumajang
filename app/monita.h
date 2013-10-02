@@ -54,6 +54,9 @@ typedef enum IAP_STATUS_t {
 #define	 sPUSHBUTTON	2
 #define	 sFLOW1			3
 #define	 sFLOW2			4
+#define  sFLOWx			5
+#define	 sRPM_RH		6
+#define	 sRUNNING_HOURS	7
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202
@@ -155,6 +158,10 @@ typedef struct {
 	unsigned char onoff;
 	unsigned int hit2;
 	unsigned int hit_lama2;		// untuk mengetahui mati atau enggak
+	unsigned int rh_on;		// untuk mengetahui waktu aktif
+	unsigned int rh_off;		// untuk mengetahui waktu mati
+	unsigned int rh_flag;		// untuk mengetahui FSM rh
+	unsigned long rh;			// untuk mengetahui nilai running hours
 } ts_konter;
 
 struct t2_konter{

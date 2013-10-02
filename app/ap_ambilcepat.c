@@ -49,7 +49,7 @@ int ch;
 	#endif
 	
 	st_hw.init++;
-	int loopac=0;
+	int loopac=0, ff=0;
 	for( ;; )	{
 		
 
@@ -67,16 +67,19 @@ int ch;
 			#endif
 		#endif
 		
-		#if 0
-			vTaskDelay(1000);
-			hitung_rpm();
-			data_frek_rpm();
-		#endif
 		vTaskDelay(1);
 		loopac++;
-		if (loopac>=1000)	{
+		if (loopac>=200)	{
 			hitung_rpm();
 			data_frek_rpm();
+			loopac = 0;
+			#if 0
+			ff++;
+			if (ff>5)	{
+				uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
+				ff = 0;
+			}
+			#endif
 		}
 	}
 }

@@ -13,6 +13,7 @@
 #include "iap.h"
 
 //extern struct t_env env;
+#ifdef PAKAI_SDCARD
 
 void cek_file(int argc, char **argv)	{
 	IAP_return_t iap_return;
@@ -156,3 +157,4 @@ void set_file_default()		{
 
 }
 
+#endif

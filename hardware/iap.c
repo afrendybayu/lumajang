@@ -463,7 +463,7 @@ char kopi_semua_blok(int almt)		{
 		simpan_rom(SEKTOR_ENV, ALMT_ENV, (unsigned short *) st_env, hitung_ram(cek_jml_struct(ENV)) );
 		vPortFree (st_env);
 	}
-	
+	#ifdef PAKAI_SDCARD
 	if (almt != BERKAS)	{
 		struct t_file *st_file;
 		st_file = pvPortMalloc( sizeof (struct t_file) );
@@ -479,6 +479,7 @@ char kopi_semua_blok(int almt)		{
 		simpan_rom(SEKTOR_ENV, ALMT_FILE, (unsigned short *) st_file, hitung_ram(cek_jml_struct(BERKAS)) );
 		vPortFree (st_file);
 	}
+	#endif
 }
 
 // flag dipake untuk data

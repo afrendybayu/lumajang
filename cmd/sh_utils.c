@@ -49,8 +49,11 @@ int cek_jml_struct(char no)	{
 		return (sizeof(struct t_env));
 	else if (no == DATA)
 		return (sizeof(struct t_data));
+		
+	#ifdef PAKAI_SDCARD
 	else if (no == BERKAS)
 		return (sizeof(struct t_file));
+	#endif
 	else 
 		return 0;
 }
@@ -99,4 +102,8 @@ int parsing_istilah(char *strx, char **istilah)	{
 		}
 	}
 	return k;
+}
+
+void status_kanal(char *ket, int st)		{
+	
 }

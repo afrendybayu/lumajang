@@ -13,5 +13,7 @@ void set_konter_onoff (int i, int onoff);
 void reset_konter(void);
 void hitung_rpm(void);
 void data_frek_rpm (void);
+void hitung_running_hours();
+
 
 #endif

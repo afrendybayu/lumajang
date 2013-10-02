@@ -101,6 +101,9 @@ void hitung_rpm(void)	{
 	
 }
 
+void hitung_running_hours(int i)		{
+
+}
 
 void data_frek_rpm (void) {
 	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
@@ -117,50 +120,65 @@ void data_frek_rpm (void) {
 		//status = 0;
 		status = st_env->kalib[i].status;
 		
-		if (status==sRPM)		{
+		if (status==sRPM || status==sRPM_RH)		{
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
 				// rpm
 				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
-				//uprintf(".");
 			}
 			else	{
 				temp_f = 0;
 				temp_rpm = 0;
 			}
-			//qsprintf("%s() masuk ...f: %d, rpm: %d\r\n", __FUNCTION__, (int) temp_f, (int) temp_rpm);
-			
+			#if 0
+			if (i==0)	{
+				uprintf("%s() masuk ...f: %.2f, rpm: %.2f\r\n", __FUNCTION__, temp_f, temp_rpm);
+			}
+			#endif
 			//data_f[0] = temp_rpm;
 			#if 1
 			//data_f[(i*2)+1] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
-			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
-			#endif
-			
-			#if 0
-			data_f[(i*2)+1] = (konter.t_konter[i].hit);
-			data_f[i*2] = (float) (temp_rpm);
+			data_f[i] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
 			#endif
 			
 			#ifdef PAKAI_RTC
 			*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
 			#endif
+		}
+		else if (status==sFLOWx)	{
+			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
-			#if 1
-			if (data_f[(i*2)+1]>10000000) {		// reset setelah 10juta, 7 digit
+			#if 0
+			if (data_f[i]>10000000) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
-				data_f[(i*2)+1] = 0;
+				data_f[i] = 0;
 				konter.t_konter[i].hit = 0;
 			}
 			#endif
-
+			
 			#ifdef PAKAI_RTC
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
-			
-		}	
+		}
+		else if (status==sRUNNING_HOURS)	{
+			int fx = konter.t_konter[i].rh_flag;
+			if (data_f[i]>0 && fx==0)	{		// rpm mutar dari mati
+				//konter.t_konter[i].rh_on = 		// waktu mulai
+				konter.t_konter[i].rh_flag = 1;
+			}
+			if (fx==1)	{		// rpm jalan
+				//konter.t_konter[i].rh_off = 		// waktu berhenti
+				hitung_running_hours(i);
+			}
+			if (data_f[0]==0)		{			// rpm mati
+				konter.t_konter[i].rh_flag = 0;
+			}
+		}
+		
+		
 		#if 0
 		else if (status==sONOFF || status==sFLOW1 || status==sFLOW2 || status==ssFLOW2) {		// OnOff
 			// 					

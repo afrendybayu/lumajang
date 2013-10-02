@@ -3,10 +3,11 @@
 #define __SH_SDC__
 
 
-//#ifdef PAKAI_SDCARD
+//
 #include "FreeRTOS.h"
 #include "tinysh/tinysh.h"
 
+#ifdef PAKAI_SDCARD
 
 int cek_fs_free(void);
 void set_fs_mount(void);
@@ -24,6 +25,6 @@ static tinysh_cmd_t util_ls_cmd={0,"ls","list direktory","[args]", util_ls,0,0,0
 static tinysh_cmd_t util_mkdir_cmd={0,"mkdir","buat direktory","[args]", util_mkdir,0,0,0};
 static tinysh_cmd_t util_rm_cmd={0,"rm","hapus file/folder","[args]", util_rm,0,0,0};
 
-//#endif
+#endif
 
 #endif
