@@ -8,6 +8,8 @@
 #include "adc/ad7708.h"
 #endif
 
+#include <time.h>
+
 xTaskHandle *hdl_cepat;
 extern volatile struct t_st_hw st_hw;
 
@@ -48,8 +50,13 @@ int ch;
 			uprintf("___ADC TIDAK dikenali !____\r\n");
 	#endif
 	
+
+
+	
+	
 	st_hw.init++;
 	int loopac=0, ff=0;
+	struct tm a;
 	for( ;; )	{
 		
 
@@ -69,14 +76,17 @@ int ch;
 		
 		vTaskDelay(1);
 		loopac++;
-		if (loopac>=200)	{
+		if (loopac>=100)	{
 			hitung_rpm();
-			data_frek_rpm();
+			
 			loopac = 0;
-			#if 0
+			#if 1
 			ff++;
-			if (ff>5)	{
-				uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
+			if (ff>10)	{
+				data_frek_rpm();
+				//uprintf(" waktu: %ld, fl: %d, on: %ld, rh: %ld, data_f[2]: %.0f\r\n", now_to_time(1, a), \
+				//	konter.t_konter[2].rh_flag, konter.t_konter[2].rh_on, konter.t_konter[2].rh, data_f[2]);
+				//uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
 				ff = 0;
 			}
 			#endif

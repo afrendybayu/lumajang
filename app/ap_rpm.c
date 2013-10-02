@@ -4,6 +4,7 @@
 #include "ap_rpm.h"
 #include "monita.h"
 #include "math.h"
+#include <time.h>
 
 extern unsigned int giliran;
 //extern volatile float data_f[];
@@ -45,6 +46,11 @@ void reset_konter(void)	{
 		konter.t_konter[i].hit_lama2 = 0;
 		konter.t_konter[i].onoff = 0;
 		
+		konter.t_konter[i].rh_on = 0;
+		konter.t_konter[i].rh_off = 0;
+		konter.t_konter[i].rh_flag = 0;
+		konter.t_konter[i].rh = 0;
+		
 		status_konter[i] = 0;
 	}
 
@@ -52,15 +58,15 @@ void reset_konter(void)	{
 
 void hitung_rpm(void)	{	
 	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[0], data_hit[0]);
-	//uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[8].hit, konter.t_konter[9].hit);
+	//uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[0].hit, konter.t_konter[1].hit);
 	//struct t_env *env2;
 	//env2 = (char *) ALMT_ENV;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	int i;
 	
-	
-	if (st_env->kalib[giliran].status==sRPM)		{
+	char status = st_env->kalib[i].status;
+	if (status==sRPM || status == sRPM_RH)		{
 		
 		//portENTER_CRITICAL();
 		
@@ -103,8 +109,45 @@ void hitung_rpm(void)	{
 	
 }
 
-void hitung_running_hours(int i)		{
+time_t now_to_time(int now, struct tm waktu)	{
+	rtcCTIME0_t ctime0;
+	rtcCTIME1_t ctime1;
+	//rtcCTIME2_t ctime2;
+	ctime0.i = RTC_CTIME0; 
+	ctime1.i = RTC_CTIME1; 
+	//ctime2.i = RTC_CTIME2;
+	
+	time_t t_of_day;
+	
+	if (now == 1)	{
+		struct tm t;
+		t.tm_year = ctime1.year - 1900;		// mulai 1900
+		t.tm_mon = ctime1.month - 1;		// 0-11
+		t.tm_mday = ctime1.dom;				// 1-31
+		t.tm_hour = ctime0.hours;
+		t.tm_min = ctime0.minutes;
+		t.tm_sec = ctime0.seconds;
+		t_of_day = mktime(&t);
+	} else {	
+		#if 0
+		t.tm_year = 2013 - 1900;
+		t.tm_mon = 10;
+		t.tm_mday = 2;
+		t.tm_hour = 17;
+		t.tm_min = 27;
+		t.tm_sec = 30;
+		//t.tm_isdst = 1;
+		#endif
+		t_of_day = mktime(&waktu);
+	}
+	return t_of_day;
+}
 
+void hitung_running_hours(int i)		{
+	time_t t;
+	t = konter.t_konter[i].rh_off - konter.t_konter[i].rh_on;
+	konter.t_konter[i].rh = t;
+	data_f[i] = konter.t_konter[i].rh_x + t;
 }
 
 void data_frek_rpm (void) {
@@ -118,11 +161,10 @@ void data_frek_rpm (void) {
 	st_env = ALMT_ENV;
 	
 	for (i=0; i<JML_KANAL; i++)	{
-		
-		//status = 0;
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
+			
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
@@ -134,8 +176,8 @@ void data_frek_rpm (void) {
 				temp_rpm = 0;
 			}
 			#if 0
-			if (i==0)	{
-				uprintf("%s() masuk ...f: %.2f, rpm: %.2f\r\n", __FUNCTION__, temp_f, temp_rpm);
+			if (i==1)	{
+				uprintf("%s() masuk ...%d f: %.2f, rpm: %.2f\r\n", __FUNCTION__, data_putaran[i], temp_f, temp_rpm);
 			}
 			#endif
 			//data_f[0] = temp_rpm;
@@ -166,16 +208,27 @@ void data_frek_rpm (void) {
 			#endif
 		}
 		else if (status==sRUNNING_HOURS)	{
+			struct tm w;
+			time_t t;
+			
+			t = now_to_time(1, w);
 			int fx = konter.t_konter[i].rh_flag;
-			if (data_f[i]>0 && fx==0)	{		// rpm mutar dari mati
-				//konter.t_konter[i].rh_on = 		// waktu mulai
+			if (data_f[i-1]>0 && fx==0)	{		// rpm mutar dari mati
+				konter.t_konter[i].rh_on = t;		// waktu mulai
 				konter.t_konter[i].rh_flag = 1;
+				//uprintf("----------> flag: 1  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
 			}
 			if (fx==1)	{		// rpm jalan
-				//konter.t_konter[i].rh_off = 		// waktu berhenti
+				konter.t_konter[i].rh_off = t;		// waktu berhenti
 				hitung_running_hours(i);
+				//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
 			}
-			if (data_f[0]==0)		{			// rpm mati
+			if (data_f[i-1]==0 && fx==1)		{			// rpm mati, simpan dulu
+				konter.t_konter[i].rh_x += konter.t_konter[i].rh;
+				konter.t_konter[i].rh_flag = 2;
+				//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (fx==2)	{
 				konter.t_konter[i].rh_flag = 0;
 			}
 		}

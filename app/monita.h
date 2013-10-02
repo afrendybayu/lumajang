@@ -158,10 +158,11 @@ typedef struct {
 	unsigned char onoff;
 	unsigned int hit2;
 	unsigned int hit_lama2;		// untuk mengetahui mati atau enggak
-	unsigned int rh_on;		// untuk mengetahui waktu aktif
-	unsigned int rh_off;		// untuk mengetahui waktu mati
+	time_t rh_on;		// untuk mengetahui waktu aktif
+	time_t rh_off;		// untuk mengetahui waktu mati
 	unsigned int rh_flag;		// untuk mengetahui FSM rh
-	unsigned long rh;			// untuk mengetahui nilai running hours
+	time_t rh;			// untuk mengetahui nilai running hours
+	time_t rh_x;			// untuk mengetahui nilai running hours
 } ts_konter;
 
 struct t2_konter{
