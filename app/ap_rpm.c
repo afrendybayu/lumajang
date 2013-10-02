@@ -148,6 +148,7 @@ void hitung_running_hours(int i)		{
 	t = konter.t_konter[i].rh_off - konter.t_konter[i].rh_on;
 	konter.t_konter[i].rh = t;
 	data_f[i] = konter.t_konter[i].rh_x + t;
+	*(&MEM_RTC0+(i)) = data_f[i];
 }
 
 void data_frek_rpm (void) {
@@ -190,14 +191,15 @@ void data_frek_rpm (void) {
 			#endif
 			
 			#ifdef PAKAI_RTC
-			*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
+			//*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
+			*(&MEM_RTC0+(i)) = 0;
 			#endif
 		}
 		else if (status==sFLOWx)	{
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
 			#if 0
-			if (data_f[i]>10000000) {		// reset setelah 10juta, 7 digit
+			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
 				data_f[i] = 0;
 				konter.t_konter[i].hit = 0;
@@ -205,6 +207,7 @@ void data_frek_rpm (void) {
 			#endif
 			
 			#ifdef PAKAI_RTC
+			*(&MEM_RTC0+(i))   = data_f[i];
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif

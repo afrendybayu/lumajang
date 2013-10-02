@@ -162,7 +162,7 @@ SDC_SOURCE= \
 		$(MODUL)/ff/fatfs/option/ccsbcs.c	\
 		$(MODUL)/ff/fatfs/low_ss1.c		\
 		$(MODUL)/ff/fatfs/spi_mmc.c		\
-		$(MODUL)/ff/fatfs/shell_fs.c		\
+		$(MODUL)/ff/fatfs/shell_fs.c	\
 		$(APP)/ap_file.c				\
 		$(CMD)/sh_file.c				\
 		
@@ -187,7 +187,7 @@ ARM_OBJS = $(ARM_SOURCE:.c=.o)
 
 THUMB_SOURCE += $(SERIAL_SOURCE)
 THUMB_SOURCE += $(SERIAL2_SOURCE)
-THUMB_SOURCE += $(RELAY_SOURCE)
+#THUMB_SOURCE += $(RELAY_SOURCE)
 THUMB_SOURCE += $(MODBUS_SOURCE)
 THUMB_SOURCE += $(RTC_SOURCE)
 THUMB_SOURCE += $(SDC_SOURCE)

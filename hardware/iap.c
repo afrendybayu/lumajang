@@ -404,21 +404,44 @@ void generate_data_random()		{
 	}
 }
 
+void load_data_rtc()	{
+	int i;
+	char status;
+	
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	status = st_env->kalib[i].status;
+	
+	for (i=0; i<JML_KANAL; i++)		{
+		data_f[i] = *(&MEM_RTC0+(i));
+		if (status==sRUNNING_HOURS)		{
+			konter.t_konter[i].rh_x = *(&MEM_RTC0+(i));
+		}
+	}
+}
+
 void baca_konfig_rom()		{
 	//printf("Data env & sumber\r\n");
 	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
+	int i;
+	
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
 		printf("Baca Konfig ENV & SUMBER  ");
+		//load_data_rtc();
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
 		printf(">> Init ROM: ENV, SUMBER\r\n");
 		set_env_default();
 		set_sumber_default();
+		
+		#ifdef PAKAI_FILE_SIMPAN
+		set_file_default();
+		#endif
 	} else {
 		
 	}
 	//printf("Data data\r\n");
-	generate_data_random();
+	//generate_data_random();
 	iap_return = iapReadBlankSector(SEKTOR_DATA, SEKTOR_DATA);
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
 		printf("Baca Konfig DATA");

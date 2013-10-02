@@ -7,7 +7,7 @@
 #include "FreeRTOS.h"
 #include "tinysh/tinysh.h"
 
-#ifdef PAKAI_SDCARD
+#ifdef PAKAI_FILE_SIMPAN
 void simpan_file_data()	;
 int simpan_konfig(int argc, char **argv);
 
