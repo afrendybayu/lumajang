@@ -57,6 +57,8 @@ void hitung_rpm(void)	{
 	//env2 = (char *) ALMT_ENV;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
+	int i;
+	
 	
 	if (st_env->kalib[giliran].status==sRPM)		{
 		
