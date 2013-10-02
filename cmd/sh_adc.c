@@ -17,8 +17,8 @@ void cek_adc(void)	{
 	uprintf(" ADC count = %d\r\n", adc.count);
 	uprintf(" Ch | Kuantisasi |  Tegangan\r\n********************************\r\n");
 	for (i=0; i<JML_KANAL_ADC; i++ ) {
-		uprintf(" %2d | %10d | %8d V\r\n", \
-			i+1, adc.data[i], (int) data_f[JML_KANAL+i]);
+		uprintf(" %2d | %10d | %.5f V\r\n", \
+			i+1, adc.data[i], data_f[JML_KANAL+i]);
 	}
 }
 
