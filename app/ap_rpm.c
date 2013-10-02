@@ -154,7 +154,7 @@ void data_frek_rpm (void) {
 	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
 	unsigned int i=0;
 	char status;
-	float temp_f;
+	float temp_f, fl2;
 	float temp_rpm;
 	
 	struct t_env *st_env;
@@ -180,11 +180,13 @@ void data_frek_rpm (void) {
 				uprintf("%s() masuk ...%d f: %.2f, rpm: %.2f\r\n", __FUNCTION__, data_putaran[i], temp_f, temp_rpm);
 			}
 			#endif
-			//data_f[0] = temp_rpm;
+
 			#if 1
 			//data_f[(i*2)+1] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
-			data_f[i] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			
+			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			if (fl2<RPM_MAX)	data_f[i] = fl2;
 			#endif
 			
 			#ifdef PAKAI_RTC

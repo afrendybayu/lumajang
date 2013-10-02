@@ -47,7 +47,7 @@ typedef enum IAP_STATUS_t {
 
 //IAP_return_t iap_return;
 
-
+#define  RPM_MAX		10000
 
 #define  sRPM			0
 #define	 sONOFF			1
