@@ -50,6 +50,9 @@ typedef enum IAP_STATUS_t {
 #define  RPM_MAX		10000
 #define  nFLOW_MAX		1000000
 
+#define  YA				1
+#define  TIDAK			0
+
 #define  sRPM			0
 #define	 sONOFF			1
 #define	 sPUSHBUTTON	2

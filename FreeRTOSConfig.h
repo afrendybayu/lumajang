@@ -116,7 +116,7 @@
 #endif
 
 
-//#define PAKAI_SPI_SSP0
+#define PAKAI_SPI_SSP0
 #ifdef  PAKAI_SPI_SSP0
 	#define PAKAI_FILE_SIMPAN
 	#define PAKAI_SDCARD

@@ -121,9 +121,9 @@ char set_file(int argc, char **argv)	{
 				st_file->simpan = atoi(argv[2]);
 			else 	{
 				if ( !strcmp(argv[2],"aktif") || !strcmp(argv[2],"ya") )	
-					st_file->simpan = 1;
+					st_file->simpan = YA;
 				else
-					st_file->simpan = 0;
+					st_file->simpan = TIDAK;
 			}
 		}
 	}
