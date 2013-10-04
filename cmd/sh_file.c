@@ -33,13 +33,16 @@ void cek_file(int argc, char **argv)	{
 	//uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_versi);
 	uprintf("\r\n  Simpan : %s\r\n", (st_file->simpan==YA)?"YA [1]":"TIDAK [0]");
 	uprintf("  File   : %d data\r\n", st_file->jml);
+	if (st_file->jml>0)
+		uprintf(" Urut  | NO |  ID  |          NAMA           :     Nilai     |\r\n");
 	for (i=0; i<JML_TITIK_DATA; i++)	{
 		if (st_file->urut[i]==0)			break;
 		else {
 			j = (int) ((st_file->urut[i]-1)/PER_SUMBER);
 			k = (st_file->urut[i]-1) % PER_SUMBER;
 			st_data = ALMT_DATA + j*JML_KOPI_TEMP;
-			uprintf("  %3d.\t%3d --> %-20s : %.1f\r\n", i+1, st_file->urut[i], st_data[k].nama, data_f[st_file->urut[i]-1]);
+			uprintf("  %3d.\t%3d  [%4d] --> %-20s : %.1f\r\n", i+1, \
+				st_file->urut[i], st_data[k].id, st_data[k].nama, data_f[st_file->urut[i]-1]);
 		}
 	}
 }

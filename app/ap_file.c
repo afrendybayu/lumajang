@@ -14,7 +14,7 @@
 
 #ifdef PAKAI_FILE_SIMPAN
 
-#define FORMAT_SIMPAN_STRING
+//#define FORMAT_SIMPAN_STRING
 
 void sendHexFile(int nilai, int jml, FIL fp)	{
 	int i;
@@ -36,7 +36,8 @@ void simpan_file_data()		{
 	char st[50], st2[50], s[4], fol[20];
 	char isi[256];
 	int i=0, oo, menit;
-	unsigned int x;
+	unsigned int wx;
+	int j, k;
 	
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -48,7 +49,7 @@ void simpan_file_data()		{
 	//uprintf("waktu: %d%02d%02d_%02d%02d\r\n", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes );
 	menit =  (ctime0.minutes<30)?0:30;
 	sprintf(fol, "0:\\%d%02d%02d", ctime1.year, ctime1.month, ctime1.dom);
-	sprintf(st, "%s\\%d%02d%02d_%02d%02d.txt", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, menit);
+	sprintf(st, "%s\\%d%02d%02d_%02d%02d.str", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, menit);
 	
 	
 	res = f_opendir(&dir, fol);
@@ -61,6 +62,9 @@ void simpan_file_data()		{
 	
 	struct t_file  *st_file;
 	st_file = (char *) ALMT_FILE;
+	
+	struct t_data *st_data;
+	
 	res = f_open(&filx, st, FA_OPEN_EXISTING | FA_READ | FA_WRITE);
 	if (res)	{		// GAGAL buka, bikin baru !!!
 		res = f_open(&filx, st, FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
@@ -70,7 +74,15 @@ void simpan_file_data()		{
 			//die(res);
 		} else {
 			// tambahan header untuk file baru !! -- disini --
-			
+			isi[0] = '\r'; isi[1] = '\n';
+			for (i=0; i<st_file->jml; i++)	{
+				j = (int) ((st_file->urut[i]-1)/PER_SUMBER);
+				k = (st_file->urut[i]-1) % PER_SUMBER;
+				st_data = ALMT_DATA + j*JML_KOPI_TEMP;
+				
+				memcpy((void*) &isi[2*i+2], (void*) &st_data[k].id, 2);
+			}
+			f_write(&filx, isi, (st_file->jml*4+2), &oo);
 		}
 	} else {		// file sudah ada
 		res = f_lseek(&filx, f_size(&filx));
@@ -91,11 +103,11 @@ void simpan_file_data()		{
 		#else
 			if (i==0)	{
 				isi[0] = '\r'; isi[1] = '\n';
-				
-				memcpy(isi[2], (void*) now_to_time(1, a), 4);
+				wx = (unsigned int) now_to_time(1, a);
+				memcpy(&isi[2], (void*) &wx, 4);
 			}
 			
-			memcpy(isi[4*i+6], (void*) &data_f[st_file->urut[i]-1], 4);
+			memcpy((void*) &isi[4*i+6], (void*) &data_f[st_file->urut[i]-1], 4);
 			//f_write(&filx, s, 4, &oo);
 		#endif
 
