@@ -31,7 +31,8 @@ void cek_file(int argc, char **argv)	{
 	struct t_data *st_data;
 	
 	//uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_versi);
-	uprintf("\r\n  File : %d data\r\n", st_file->jml);
+	uprintf("\r\n  Simpan : %s\r\n", (st_file->simpan==YA)?"YA [1]":"TIDAK [0]");
+	uprintf("  File   : %d data\r\n", st_file->jml);
 	for (i=0; i<JML_TITIK_DATA; i++)	{
 		if (st_file->urut[i]==0)			break;
 		else {
@@ -158,3 +159,4 @@ void set_file_default()		{
 }
 
 #endif
+

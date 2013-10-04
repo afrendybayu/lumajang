@@ -116,7 +116,7 @@ time_t now_to_time(int now, struct tm waktu)	{
 	ctime0.i = RTC_CTIME0; 
 	ctime1.i = RTC_CTIME1; 
 	//ctime2.i = RTC_CTIME2;
-	
+
 	time_t t_of_day;
 	
 	if (now == 1)	{

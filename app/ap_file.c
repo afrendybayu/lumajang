@@ -10,9 +10,11 @@
 #include "ff/fatfs/ff.h"
 #include "monita.h"
 #include "ap_file.h"
-
+#include <time.h>
 
 #ifdef PAKAI_FILE_SIMPAN
+
+#define FORMAT_SIMPAN_STRING
 
 void sendHexFile(int nilai, int jml, FIL fp)	{
 	int i;
@@ -32,7 +34,9 @@ void simpan_file_data()		{
 	FRESULT res;
 	DIR dir;
 	char st[50], st2[50], s[4], fol[20];
-	int i=0, oo;
+	char isi[256];
+	int i=0, oo, menit;
+	unsigned int x;
 	
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -42,8 +46,9 @@ void simpan_file_data()		{
 	//ctime2.i = RTC_CTIME2;
 	
 	//uprintf("waktu: %d%02d%02d_%02d%02d\r\n", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes );
+	menit =  (ctime0.minutes<30)?0:30;
 	sprintf(fol, "0:\\%d%02d%02d", ctime1.year, ctime1.month, ctime1.dom);
-	sprintf(st, "%s\\%d%02d%02d_%02d.txt", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours);
+	sprintf(st, "%s\\%d%02d%02d_%02d%02d.txt", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, menit);
 	
 	
 	res = f_opendir(&dir, fol);
@@ -71,14 +76,37 @@ void simpan_file_data()		{
 		res = f_lseek(&filx, f_size(&filx));
 	}
 	
+	time_t wkt;
+	struct tm a;
 	//res = f_lseek(&filx, f_size(&filx));
 	//f_write(&filx, "cobacoba\r\n", 10, &i);
 	for (i=0; i<st_file->jml; i++)	{
-		memcpy(s, (void*) &data_f[st_file->urut[i]-1], 4);
-		//f_puts(
-		f_write(&filx, s, 4, &oo);
+		#ifdef FORMAT_SIMPAN_STRING
+			if (i==0)	{
+				sprintf(isi, "%ld ", now_to_time(1, a));
+			}
+			sprintf(st2, "%.1f ", data_f[st_file->urut[i]-1]);
+			strcat(isi, st2);
+		
+		#else
+			if (i==0)	{
+				isi[0] = '\r'; isi[1] = '\n';
+				
+				memcpy(isi[2], (void*) now_to_time(1, a), 4);
+			}
+			
+			memcpy(isi[4*i+6], (void*) &data_f[st_file->urut[i]-1], 4);
+			//f_write(&filx, s, 4, &oo);
+		#endif
+
 		//sendHexFile(data_f[10+i], 4, filx);
 	}
+	#ifdef FORMAT_SIMPAN_STRING
+		//uprintf("%s", isi);
+		f_puts(isi, &filx);
+	#else
+		f_write(&filx, isi, (st_file->jml*4+6), &oo);
+	#endif
 	
 	//f_sync(&filx);
 	f_close(&filx);
