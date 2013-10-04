@@ -403,8 +403,8 @@ char s[30];
 			tinysh_char_in((unsigned char) ch);
 			toogle_led_utama();
 		}
-		//if (st_hw.mm>=120)	{			// cron tiap 1 menit
-		if (st_hw.mm >= 10)	{			// cron tiap 10detik
+		if (st_hw.mm>=120)	{			// cron tiap 1 menit
+		//if (st_hw.mm >= 10)	{			// cron tiap 10detik
 		//if (st_hw.mm>=2)		{			// cron tiap 1 detik
 			st_hw.mm = 0;
 			#ifdef PAKAI_FILE_SIMPAN
