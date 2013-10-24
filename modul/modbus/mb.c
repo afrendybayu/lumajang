@@ -109,27 +109,28 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	int i=0, j, index=0;
 	char ketemu=0;
 	
-	struct t_data *st_data;
-	do	{
-		st_data = ALMT_DATA + i*JML_KOPI_TEMP;
-		//printf("i: %d, st_data: %08x\r\n", i, st_data);
-		for (j=0; j<PER_SUMBER; j++)	{
-		//	printf("id: %d, reg: %d\r\n", st_data[j].id, reg);
-			if (st_data[j].id == reg)	{
-		//		printf("ketemu: %d\r\n", i*PER_SUMBER+j);
-				ketemu=1;
-				index = i*PER_SUMBER+j;
-				break;
+	if (cmd<READ_FILE_CONTENT)	{
+		struct t_data *st_data;
+		do	{
+			st_data = ALMT_DATA + i*JML_KOPI_TEMP;
+			//printf("i: %d, st_data: %08x\r\n", i, st_data);
+			for (j=0; j<PER_SUMBER; j++)	{
+			//	printf("id: %d, reg: %d\r\n", st_data[j].id, reg);
+				if (st_data[j].id == reg)	{
+			//		printf("ketemu: %d\r\n", i*PER_SUMBER+j);
+					ketemu=1;
+					index = i*PER_SUMBER+j;
+					break;
+				}
 			}
-		}
-		i++;
-		if (i>JML_SUMBER)	{
-			printf("===> ID tidak ditemukan !!\r\n");
-			return 0;
-		}
-	} while (ketemu==0);
-	printf("Data index: %d\r\n", index);
-
+			i++;
+			if (i>JML_SUMBER)	{
+				printf("===> ID tidak ditemukan !!\r\n");
+				return 0;
+			}
+		} while (ketemu==0);
+		printf("Data index: %d\r\n", index);
+	}
 	
 	if (cmd==READ_HOLDING_REG)		{
 		return baca_reg_mb(index, jml);
@@ -142,10 +143,17 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			baca_kirim_file(reg, len, str);
 			
+		#endif
+	}
+	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
+		//uprintf("==> FILE SENDED\r\n");
+		#ifdef PAKAI_FILE_SIMPAN
+			//baca_kirim_file(reg, len, str);
+			proses_file_terkirim(len, str);
 		#endif
 	}
 	return 10;
@@ -215,7 +223,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 	respon[0] = str[0];		respon[1] = str[1];
 	memcpy(&respon[2], (void*) &lenPar, 4);
 	memcpy(&respon[6], (void*) &lenTot, 4);
-	memcpy(&respon[10], (void*) &nf, strlen(nf));
+	memcpy(&respon[10], (void*) &nf, strlen(nf));	respon[10+strlen(nf)]  = '\0';
 	
 	#if 0
 	nmx = 8;
@@ -243,6 +251,15 @@ int baca_kirim_file(int no, int len, char *str)		{
 	
 	f_close(&fd2);
 	vPortFree (respon);
+}
+
+int proses_file_terkirim(int len, char *str)	{
+	char nf[32], path[64];
+	int x = (int) (str[2]<<8 | str[3]);
+	memcpy(nf, &str[4], x);
+	uprintf("nama file SENDED: %s\r\n", nf);
+	
+	
 }
 
 #endif
@@ -332,7 +349,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	for (i=0; i<njml; i++)	{
 		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		fl = (float *)&tmpFl;
-		printf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
+		//printf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
 		data_f[index+i] = *fl;		
 	}
@@ -347,7 +364,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 		vPortFree (respon);
 		return 1;
 	}
-	printf("Alok: %d @%#08x\r\n", jml_st_mb3H(jml), respon);
+	//printf("Alok: %d @%#08x\r\n", jml_st_mb3H(jml), respon);
 
 	struct t_env *st_env;
 	st_env = ALMT_ENV;

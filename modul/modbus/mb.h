@@ -30,5 +30,5 @@ unsigned short crc_ccitt_0xffff(int len, char *data);
 
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int reg, int len, char *str);
-
+int proses_file_terkirim(int len, char *str);
 #endif
