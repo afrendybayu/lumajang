@@ -72,7 +72,7 @@ portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
 int ch;
 char s[30];
-	char strmb[256];
+	char strmb[MAX_RX_MB];
 	int  nmb = 0, balas = 0;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
@@ -85,6 +85,10 @@ char s[30];
 	//nSer2 = 0;
 	int loop2 = 0;
 	disTX2_485();
+	
+	do {
+		vTaskDelay(100);
+	} while(st_hw.init != uxTaskGetNumberOfTasks());
 		
 	for( ;; )	{
 		//printd2(10, "serial 2: %d\r\n", loop2++);
@@ -128,12 +132,14 @@ char s[30];
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 
+	#if 0
 	printf("\r\nJml CMD: %d -->", mbn);
 	int i;
 	for (i=0; i<mbn; i++)		{
 		printf(" %02x", mbstr[i]);
 	}
 	printf("\r\n");
+	#endif
 	
 	struct t_env *p_env3;
 	p_env3 = (char *) ALMT_ENV;
@@ -142,7 +148,14 @@ int proses_mod(int mbn, char *mbstr)	{
 		return 1;
 	}
 	
-	hsl = cek_crc_mod(mbn, mbstr);
+	cmd = mbstr[1];
+	
+	if (cmd>=READ_FILE_CONTENT)
+		hsl = cek_crc_ccitt_0xffff(mbn, mbstr);		// modbus-serial dari skywave data file
+	else
+		hsl = cek_crc_mod(mbn, mbstr);				// modbus murni
+	
+	
 	
 	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
 		//printf(" > LULUS < !!!\r\n");
@@ -155,7 +168,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
-			return respon_modbus(cmd, reg, jml, mbstr);
+			return respon_modbus(cmd, reg, jml, mbstr, mbn);
 		}
 	}
 	return 2;

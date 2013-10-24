@@ -16,6 +16,20 @@
 
 //#define FORMAT_SIMPAN_STRING
 
+char *pisah_nf(char *pnf)	{
+	char *pch, pcx[64], stmp[128];
+	
+	strcpy(stmp, pnf);
+	//printf("--> %s() path: %s\r\n", __FUNCTION__, stmp);
+	pch = strtok (stmp,"\\");
+	while (pch != NULL)  {
+		strcpy(pcx, pch);
+		pch = strtok (NULL, "\\");
+	}
+	//printf("hasil: %s\r\n", pcx);
+	return pcx;
+}
+
 void sendHexFile(int nilai, int jml, FIL fp)	{
 	int i;
 	char s[4];
@@ -242,5 +256,151 @@ int simpan_konfig(int argc, char **argv)		{
 	f_close(&filx);
 }
 
+void cari_waktu(char *dest, char *posisi) {		// cari posisi path folder
+	
+	if ((posisi[0]!='H') && (posisi[0]!='h') && (posisi[0]!='J') && (posisi[0]!='j') && (posisi[0]!='B') && (posisi[0]!='b') ) {
+		printf("Argumen tidak benar !!\r\n");
+		printf("Contoh : H-7, J-2, B-1\r\n");
+		sprintf(dest,"\\");
+		return;
+	}
+
+	struct tm *a;
+	unsigned int wx = (unsigned int) now_to_time(1, a);		// epoch
+	//uprintf("epoch : %ld\r\n", wx);
+	char *pch, str[10];
+	pch=strstr(posisi,"-");
+  	if (pch!=NULL)
+  		strcpy(str, pch+1);
+  	else
+  		return 0;
+	
+	//uprintf("waktu: %d%02d%02d_%02d%02d\r\n", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes );
+	int ijam, itgl, ibulan, ithn, count;
+
+	if ( (posisi[0]=='H') || (posisi[0]=='h') ) {
+		wx -= (24*3600*atoi(str));
+	}
+	if ( (posisi[0]=='J') || (posisi[0]=='j') ) {
+		wx -= (3600*atoi(str));
+	}
+	
+	a = localtime (&wx);
+	//uprintf("tmp: %d, time: %ld, %04d-%02d-%02d %02d:%02d\r\n", \
+	//	atoi(str), wx, a->tm_year+1900, a->tm_mon+1, a->tm_mday, a->tm_hour, a->tm_min);
+	sprintf(dest, "\\%04d%02d%02d", a->tm_year+1900, a->tm_mon+1, a->tm_mday);
+}
+
+int cari_files (char* pathxx, char *nf, int aksi) {
+	char buf_lfn[255];
+	FRESULT res;
+	FILINFO fnoxx;
+	DIR dirs;
+	char *nama;
+	int i=0;
+	static char aaaa[64];
+	static char bbbb[255];
+	strcpy(aaaa, pathxx);
+	unsigned int jum_dirs=0;
+	//fileInfo.lfname = buf_lfn;
+	//fileInfo.lfsize = 255;//sizeof (buf_lfn);
+	static char lfnxx[_MAX_LFN * (_DF1S ? 2 : 1) + 1];
+    fnoxx.lfname = lfnxx;
+    fnoxx.lfsize = sizeof(lfnxx);
+    
+	if ((res = f_opendir (&dirs,  pathxx)))		{ 
+		uprintf("%s(): ERROR = %d\r\n", __FUNCTION__, res);
+		return 0;
+	}
+	//printf("%s(): Open dir %s OK\r\n", __FUNCTION__, pathxx);
+	
+	char waktu[64];
+	struct tm *a;
+	unsigned int wx = (unsigned int) now_to_time(1, a);		// epoch
+	a = localtime (&wx);
+	sprintf(waktu, "%04d%02d%02d_%02d", a->tm_year+1900, a->tm_mon+1, a->tm_mday, a->tm_hour);
+	//uprintf("=====> file waktu : %s\r\n", waktu);
+	
+	if (res == FR_OK) {
+		for(;;) {
+			res = f_readdir(&dirs, &fnoxx);
+			
+			if (res != FR_OK || fnoxx.fname[0] == 0) break;
+			if (fnoxx.lfname[0] == 0)
+				nama = &(fnoxx.fname [0]);
+			else
+				nama = &(fnoxx.lfname[0]);
+
+			//sprintf(bbbb,"%s\\%s", aaaa, nama);		//
+			//sprintf(bbbb,"%s\\",aaaa);
+			strcpy(bbbb,aaaa);
+			strcat(bbbb,"\\");
+			strcat(bbbb,nama);
+			//printf("path: %s, %s, nama: %s\r\n",aaaa, bbbb, nama);
+			/*
+			printf ("\r\n%c%c%c%c%c %u/%02u/%02u %02u:%02u %9u  %s",
+					(fnoxx.fattrib & AM_DIR) ? 'D' : '-',
+					(fnoxx.fattrib & AM_RDO) ? 'R' : '-',
+					(fnoxx.fattrib & AM_HID) ? 'H' : '-',
+					(fnoxx.fattrib & AM_SYS) ? 'S' : '-',
+					(fnoxx.fattrib & AM_ARC) ? 'A' : '-',
+					(fnoxx.fdate >> 9) + 1980, (fnoxx.fdate >> 5) & 15, fnoxx.fdate & 31,
+					(fnoxx.ftime >> 11), (fnoxx.ftime >> 5) & 63,
+					fnoxx.fsize, nama);
+			//*/
+			//*
+			
+			
+			if (strncmp(waktu, nama, 11))	{		// 
+				if (aksi == LIHAT)	{
+					uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
+					i++;
+				}
+				if (aksi == LIHAT_ISI_SATU)	{
+					uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
+					sprintf(pathxx, "%s", bbbb);
+					sprintf(nf, "%s", nama);
+					return 1;
+				}
+			}
+			//*/
+		}
+	}
+	return i;
+}
+
+int cari_berkas(char *str_doku, char *path, int aksi) {
+	char c = str_doku[0];
+	if ((c!='H') && (c!='h') && (c!='J') && (c!='j') && (c!='B') && (c!='b') ) {
+		printf("Argumen tidak benar !!\r\n");
+		printf("Contoh : H-7, J-2, B-1\r\n");
+		return -1;
+	}
+	
+	char path_bk[127], namafile[64];
+	char *pch, str[10], waktu[10];
+	int i=0,j;
+	strcpy(waktu,str_doku);
+	pch=strstr(waktu,"-");
+  	if (pch!=NULL)
+  		strcpy(str, pch+1);
+
+	//printf("str %s: %d\r\n", __FUNCTION__, atoi(str));
+  	for(i=atoi(str); i>=0; i--) {
+		sprintf(waktu, "%c-%d", waktu[0],i);
+		cari_waktu(path_bk, waktu);
+		//printf("_______________waktu: %s, path: %s\r\n",waktu, path_bk);
+		j=cari_files(path_bk, namafile, aksi);
+		if (aksi==LIHAT_ISI_SATU && j>0)	break;
+		if (j==90)	break;
+	}
+	
+	if (aksi==LIHAT_ISI_SATU)	{
+		sprintf(path, "%s", path_bk);
+	}
+	
+	return j;
+	//*/
+}
 
 #endif

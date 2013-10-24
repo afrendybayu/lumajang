@@ -25,6 +25,60 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 	return 0;
 }
 
+unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch) 	{ 
+	const unsigned int Poly16=0x1021;
+    unsigned short i, xor_flag;
+
+    ch<<=8;
+    for(i=0; i<8; i++) { 
+		if ((bad_crc ^ ch) & 0x8000)	{ 
+			xor_flag = 1; 
+        } 
+        else { 
+			xor_flag = 0; 
+        } 
+        bad_crc = bad_crc << 1; 
+        if (xor_flag)	{ 
+            bad_crc = bad_crc ^ Poly16; 
+        } 
+        ch = ch << 1; 
+    }
+    return bad_crc;
+}
+
+unsigned short crc_ccitt_0xffff(int len, char *data)	{
+	unsigned short bad_crc=0xFFFF; 
+	unsigned char lo, hi;
+
+	int i;
+	for (i=0; i<len; i++) {
+		bad_crc = update_bad_crc (bad_crc, data[i]);
+		//printf(" %02x: %02x", data[i], bad_crc);
+	}
+	return bad_crc;
+}
+
+unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
+	unsigned short bad_crc=0xFFFF; 
+	unsigned char lo, hi;
+
+	int i;
+	for (i=0; i<(len-2); i++) {
+		bad_crc = update_bad_crc (bad_crc, data[i]);
+		//printf(" %02x: %02x", data[i], bad_crc);
+	}
+	//uprintf("\r\nCRC Modbus: %04X\r\n", bad_crc);
+	hi = ((bad_crc&0xFF00)>>8);	lo = (bad_crc&0xFF);
+	//uprintf("hi: %02x %02x --- lo: %02x %02x\r\n", hi, data[len-2], lo, data[len-1]);
+	
+	if (hi==data[len-2] && lo==data[len-1]) {
+		//printf("SIP crc ccitt 0xffff\r\n");
+		return 1;
+	}
+	return 0;
+}
+
+
 unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	const unsigned int Poly16=0xA001;
 	unsigned int LSB, i;
@@ -50,8 +104,8 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 	return k;
 }
 
-int respon_modbus(int cmd, int reg, int jml, char *str)	{
-	//printf("-->%s, cmd: %02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
+int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
+	printf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	int i=0, j, index=0;
 	char ketemu=0;
 	
@@ -87,11 +141,111 @@ int respon_modbus(int cmd, int reg, int jml, char *str)	{
 		
 	}
 	
-	if (cmd==READ_FILE_CONTENT)		{
-		
+	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
+		uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		#ifdef PAKAI_FILE_SIMPAN
+			baca_kirim_file(reg, len, str);
+			
+		#endif
 	}
 	return 10;
 }
+
+#ifdef PAKAI_FILE_SIMPAN
+int baca_kirim_file(int no, int len, char *str)		{
+	char path[64], nf[32];
+	unsigned long int size, i;
+	int res, lenTot=0, lenPar=0, nFilemulai=0, ufile=0, nmx=0;
+	FIL fd2;
+	char *respon;
+	FILINFO *finfo;
+	
+	if (no==0)	{
+		//cari_berkas("H-2", LIHAT);
+		cari_berkas("H-2", path, LIHAT_ISI_SATU);
+		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
+		
+		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
+			printf("%s(): Buka file error %d !\r\n", __FUNCTION__, res);					
+			return 0;
+		}
+		
+		lenPar = lenTot = fd2.fsize;
+		uprintf("fsize: %d\r\n", fd2.fsize);
+		if (lenTot>MAX_SEND_FILE_MB)	lenPar = MAX_SEND_FILE_MB;
+		
+		nmx = fd2.fsize + 2 + 8 + 20 + 2;	// header + 2*file + namafile + crc
+		respon = pvPortMalloc( nmx );		// nMallox
+		if (respon == NULL)	{
+			printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+			f_close(&fd2);
+			vPortFree (respon);
+			return 0;
+		}
+		strcpy(nf, pisah_nf(path));
+		
+		f_read(&fd2, &respon[30], fd2.fsize, &ufile);
+		
+		#if 0
+		uprintf("namafile: %s : %d\r\n", nf, ufile);
+		int kk,ll, h=0;
+		for (kk=0; kk<fd2.fsize; kk++)	{
+			uprintf(" %02x", respon[30+kk]);
+			h++;
+			if (h>8)	uprintf("   ");
+			if (h>16)	{ 	h=0; uprintf("\r\n");	}
+		}
+		#endif
+	} 
+	else {
+		nFilemulai = MAX_SEND_FILE_MB*(no+1);
+		lenPar = MAX_SEND_FILE_MB*no;
+		lenTot = fd2.fsize;
+	}
+	
+	//f_lseek( &fd2, finfo);
+	//uprintf("fsize: %d\r\n", finfo->fsize);
+	//f_read( &fd2, path, 6, &res);
+	//f_read( &fd, buffer, ret, &ln);
+	
+	// 2  : header : IDslave + CMD
+	// 8  : [4]+[4] pjg file sub + tot
+	// 20 : nama file
+	
+	respon[0] = str[0];		respon[1] = str[1];
+	memcpy(&respon[2], (void*) &lenPar, 4);
+	memcpy(&respon[6], (void*) &lenTot, 4);
+	memcpy(&respon[10], (void*) &nf, strlen(nf));
+	
+	#if 0
+	nmx = 8;
+	respon[0] = 0x11;	respon[1] = 0x25;	
+	respon[2] = 0x00;	respon[3] = 0x00;
+	respon[4] = 0x00;	respon[5] = 0x00;
+	#endif
+	
+	unsigned short bad_crc=crc_ccitt_0xffff(nmx-2, respon);
+	respon[nmx-2] = ((bad_crc&0xFF00)>>8);
+	respon[nmx-1] = (bad_crc&0xFF);
+
+	#if 0
+		uprintf("namafile: %s : %d\r\n", nf, ufile);
+		int kk,ll, h=0;
+		for (kk=0; kk<nmx; kk++)	{
+			uprintf(" %02x", respon[kk]);
+			h++;
+			if (h==8)	uprintf("   ");
+			if (h==16)	{ 	h=0; uprintf("\r\n");	}
+		}
+	#endif
+	
+	kirim_respon_mb(nmx, respon, 3000);
+	
+	f_close(&fd2);
+	vPortFree (respon);
+}
+
+#endif
 
 int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
@@ -106,7 +260,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		vPortFree (respon);
 		return 0;
 	}
-	printf("Alok: %d @%#08x\r\n", nX, respon);
+	//printf("Alok: %d @%#08x\r\n", nX, respon);
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
@@ -122,7 +276,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		}
 		
 		ifl = (unsigned int *) &data_f[index+i];
-		printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
 		respon[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
 		respon[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
 		respon[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
@@ -137,15 +291,16 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	respon[nX-1] = ((Crc&0xFF00)>>8);	
 	respon[nX-2] = (Crc&0xFF);
 	
-	#if 1
+	#if 0
 	printf("===> Respon[%d]: ", nX);
 	for (i=0; i<nX; i++)		{
 		printf(" %02x", respon[i]);
 		// kirim Serial2 modbus
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
-	#endif
 	printf("\r\n\r\n");
+	#endif
+	
 	
 	kirim_respon_mb(nX, respon, 100);
 	

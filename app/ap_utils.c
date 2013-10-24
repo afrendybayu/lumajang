@@ -6,7 +6,48 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "monita.h"
 #include "ap_utils.h"
+
+#ifdef PAKAI_RTC
+time_t now_to_time(int now, struct tm waktu)	{
+	rtcCTIME0_t ctime0;
+	rtcCTIME1_t ctime1;
+	//rtcCTIME2_t ctime2;
+	ctime0.i = RTC_CTIME0; 
+	ctime1.i = RTC_CTIME1; 
+	//ctime2.i = RTC_CTIME2;
+
+	time_t t_of_day;
+	
+	if (now == 1)	{
+		struct tm t;
+		t.tm_year = ctime1.year - 1900;		// mulai 1900
+		t.tm_mon = ctime1.month - 1;		// 0-11
+		t.tm_mday = ctime1.dom;				// 1-31
+		t.tm_hour = ctime0.hours;
+		t.tm_min = ctime0.minutes;
+		t.tm_sec = ctime0.seconds;
+		t_of_day = mktime(&t);
+	} else {	
+		#if 0
+		t.tm_year = 2013 - 1900;
+		t.tm_mon = 10;
+		t.tm_mday = 2;
+		t.tm_hour = 17;
+		t.tm_min = 27;
+		t.tm_sec = 30;
+		//t.tm_isdst = 1;
+		#endif
+		t_of_day = mktime(&waktu);
+	}
+	return t_of_day;
+}
+#endif
+
+#if defined(PAKAI_RTC) && defined(PAKAI_FILE_SIMPAN)
+
+#endif
 
 #ifdef PAKAI_MODBUS
 

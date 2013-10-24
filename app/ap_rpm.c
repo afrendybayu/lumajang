@@ -109,6 +109,7 @@ void hitung_rpm(void)	{
 	
 }
 
+#if 0
 time_t now_to_time(int now, struct tm waktu)	{
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -142,6 +143,7 @@ time_t now_to_time(int now, struct tm waktu)	{
 	}
 	return t_of_day;
 }
+#endif
 
 void hitung_running_hours(int i)		{
 	time_t t;
