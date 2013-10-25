@@ -59,7 +59,7 @@ unsigned char setup_ad7708()	{
 	//uprintf("SET mode : %02x\r\n", 0x01);
 	//uprintf("mode : %04x \r\n", cek_adc_modex());
 	adaADC = 2;
-	uprintf("Kalibrasi %d kanal ADC %s, id: %02x\r\n", JML_KANAL_ADC, (ch==5)?"AD7708":"AD7718", idadc );
+	uprintf("\r\n\r\nKalibrasi %d kanal ADC %s, id: %02x\r\n", JML_KANAL_ADC, (ch==5)?"AD7708":"AD7718", idadc );
 	for (ch=0; ch<JML_KANAL_ADC; ch++)	{		// JML_KANAL_ADC
 		uprintf("  Kanal %2d : ", ch+1);
 		if (ch>=8)

@@ -434,7 +434,9 @@ void baca_konfig_rom()		{
 		set_env_default();
 		set_sumber_default();
 		
+		
 		#ifdef PAKAI_FILE_SIMPAN
+		printf(">> Init ROM: FILE\r\n");
 		set_file_default();
 		#endif
 	} else {

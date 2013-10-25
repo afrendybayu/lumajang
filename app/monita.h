@@ -70,10 +70,12 @@ typedef enum IAP_STATUS_t {
 #define	 sADC_ORI		9
 #define  sADC_7708		250
 
+#define  FOLDER_SENDED		"terkirim"
 #define	 LIHAT				0
 #define  LIHAT_ISI_SATU		1
 #define  MAX_SEND_FILE_MB	3600
-#define  MAX_RX_MB			4096
+#define  MAX_RX_MB			4*1024
+#define  MAX_DEBUG_TX		2*1024
 
 //#define ATA		0
 //#define MMC		1

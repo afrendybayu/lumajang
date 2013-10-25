@@ -7,18 +7,22 @@
 #ifdef PAKAI_MODBUS
 
 extern volatile float data_f[];
+extern char strmb[];
+extern char outmb[];
 
 int cek_crc_mod(int nstr, unsigned char *x)	{
 	unsigned char lo, hi;
 
 	unsigned int i, Crc = 0xFFFF;
 	for (i=0; i<(nstr-2); i++) {
-		Crc = CRC16 (Crc, x[i]);
+		//Crc = CRC16 (Crc, x[i]);
+		Crc = CRC16 (Crc, strmb[i]);
 	}
 	hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
 	printf("CRC Modbus: %04X\r\n", Crc);
 	
-	if (hi==x[nstr-1] && lo==x[nstr-2]) {
+	//if (hi==x[nstr-1] && lo==x[nstr-2]) {
+	if (hi==strmb[nstr-1] && lo==strmb[nstr-2]) {
 		//printf("SIP crc\r\n");
 		return 1;
 	}
@@ -64,14 +68,15 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 
 	int i;
 	for (i=0; i<(len-2); i++) {
-		bad_crc = update_bad_crc (bad_crc, data[i]);
+		//bad_crc = update_bad_crc (bad_crc, data[i]);
+		bad_crc = update_bad_crc (bad_crc, strmb[i]);
 		//printf(" %02x: %02x", data[i], bad_crc);
 	}
 	//uprintf("\r\nCRC Modbus: %04X\r\n", bad_crc);
 	hi = ((bad_crc&0xFF00)>>8);	lo = (bad_crc&0xFF);
 	//uprintf("hi: %02x %02x --- lo: %02x %02x\r\n", hi, data[len-2], lo, data[len-1]);
 	
-	if (hi==data[len-2] && lo==data[len-1]) {
+	if (hi==strmb[len-2] && lo==strmb[len-1]) {
 		//printf("SIP crc ccitt 0xffff\r\n");
 		return 1;
 	}
@@ -97,7 +102,7 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 	
 	enaTX2_485();
 	for (i=0; i<jml; i++)	{
-		k += xSerialPutChar2 (0, s[i], 10);
+		k += xSerialPutChar2 (0, outmb[i], 10);
 	}
 	vTaskDelay(timeout);
 	disTX2_485();
@@ -136,7 +141,8 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		return baca_reg_mb(index, jml);
 	}
 	if (cmd==WRITE_MULTIPLE_REG)	{
-		return tulis_reg_mb(reg, index, jml, str);
+		//return tulis_reg_mb(reg, index, jml, str);
+		return tulis_reg_mb(reg, index, jml, strmb);
 	}
 	if (cmd==READ_FILE_NAME)		{
 		
@@ -145,15 +151,16 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
 		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
-			baca_kirim_file(reg, len, str);
-			
+			//baca_kirim_file(reg, len, str);
+			baca_kirim_file(reg, len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
 		//uprintf("==> FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
-			//baca_kirim_file(reg, len, str);
-			proses_file_terkirim(len, str);
+			//int kk = proses_file_terkirim(len, str);
+			int kk = proses_file_terkirim(len, strmb);
+			//printf("hasil sended : %d\r\n", kk);
 		#endif
 	}
 	return 10;
@@ -170,30 +177,33 @@ int baca_kirim_file(int no, int len, char *str)		{
 	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
-		cari_berkas("H-2", path, LIHAT_ISI_SATU);
-		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
+		cari_berkas("H-3", path, LIHAT_ISI_SATU);
+		uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
-			printf("%s(): Buka file error %d !\r\n", __FUNCTION__, res);					
+			printf("%s(): Buka file error %d : %s !\r\n", __FUNCTION__, res, path);
 			return 0;
 		}
 		
 		lenPar = lenTot = fd2.fsize;
-		uprintf("fsize: %d\r\n", fd2.fsize);
 		if (lenTot>MAX_SEND_FILE_MB)	lenPar = MAX_SEND_FILE_MB;
+		uprintf("fsize: %d/%d\r\n", lenPar, fd2.fsize);
 		
 		nmx = fd2.fsize + 2 + 8 + 20 + 2;	// header + 2*file + namafile + crc
+		#if 0
 		respon = pvPortMalloc( nmx );		// nMallox
 		if (respon == NULL)	{
-			printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+			uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 			f_close(&fd2);
 			vPortFree (respon);
 			return 0;
 		}
+		#endif
 		strcpy(nf, pisah_nf(path));
 		
-		f_read(&fd2, &respon[30], fd2.fsize, &ufile);
-		
+		//f_read(&fd2, &respon[30], fd2.fsize, &ufile);
+		f_read(&fd2, &outmb[30], fd2.fsize, &ufile);
+
 		#if 0
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
 		int kk,ll, h=0;
@@ -220,46 +230,81 @@ int baca_kirim_file(int no, int len, char *str)		{
 	// 8  : [4]+[4] pjg file sub + tot
 	// 20 : nama file
 	
-	respon[0] = str[0];		respon[1] = str[1];
-	memcpy(&respon[2], (void*) &lenPar, 4);
-	memcpy(&respon[6], (void*) &lenTot, 4);
-	memcpy(&respon[10], (void*) &nf, strlen(nf));	respon[10+strlen(nf)]  = '\0';
+	outmb[0] = str[0];		outmb[1] = str[1];
+	memcpy(&outmb[2], (void*) &lenPar, 4);
+	memcpy(&outmb[6], (void*) &lenTot, 4);
+	memcpy(&outmb[10], (void*) &nf, strlen(nf));	outmb[10+strlen(nf)]  = '\0';
 	
 	#if 0
 	nmx = 8;
-	respon[0] = 0x11;	respon[1] = 0x25;	
-	respon[2] = 0x00;	respon[3] = 0x00;
-	respon[4] = 0x00;	respon[5] = 0x00;
+	outmb[0] = 0x11;	outmb[1] = 0x25;	
+	outmb[2] = 0x00;	outmb[3] = 0x00;
+	outmb[4] = 0x00;	outmb[5] = 0x00;
 	#endif
 	
-	unsigned short bad_crc=crc_ccitt_0xffff(nmx-2, respon);
-	respon[nmx-2] = ((bad_crc&0xFF00)>>8);
-	respon[nmx-1] = (bad_crc&0xFF);
+	unsigned short bad_crc=crc_ccitt_0xffff(nmx-2, outmb);
+	outmb[nmx-2] = ((bad_crc&0xFF00)>>8);
+	outmb[nmx-1] = (bad_crc&0xFF);
 
 	#if 0
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
 		int kk,ll, h=0;
 		for (kk=0; kk<nmx; kk++)	{
-			uprintf(" %02x", respon[kk]);
+			uprintf(" %02x", outmb[kk]);
 			h++;
 			if (h==8)	uprintf("   ");
 			if (h==16)	{ 	h=0; uprintf("\r\n");	}
 		}
 	#endif
 	
-	kirim_respon_mb(nmx, respon, 3000);
-	
+	kirim_respon_mb(nmx, outmb, 3000);
+	vTaskDelay(100);
 	f_close(&fd2);
-	vPortFree (respon);
+	//hapus_folder_kosong();
+	
+	//vPortFree (respon);
 }
 
 int proses_file_terkirim(int len, char *str)	{
-	char nf[32], path[64];
+	char nf[32], path[64], pch[64];
 	int x = (int) (str[2]<<8 | str[3]);
 	memcpy(nf, &str[4], x);
-	uprintf("nama file SENDED: %s\r\n", nf);
+	//uprintf("nama file SENDED: %s\r\n", nf);
+	
+	FIL fd2;
+	FRESULT res;
+	DIR dir;
+
+	strncpy(pch, nf, 8); pch[8] = 0;
+	sprintf(path, "\\%s\\%s", pch, nf);
+	
+	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
+	if (res != FR_OK)	{
+		res = f_mkdir(FOLDER_SENDED);
+		//if (res != FR_OK)	return 1;
+		
+		res = f_opendir(&dir, FOLDER_SENDED);
+		if (res != FR_OK)	return 2;
+		
+		#if 0
+		res = f_opendir(&dir, pch);
+		if (res != FR_OK)	{
+			res = f_mkdir(pch);
+			if (res != FR_OK)	return 3;
+			res = f_opendir(&dir, pch);
+			if (res != FR_OK)	return 4;
+		}
+		#endif
+	}
+	
+	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
+	//uprintf("path: %s, ke: %s\r\n", path, pch);
+	res = f_rename(path, pch);
+	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	
+	
+	return 0;
 }
 
 #endif

@@ -259,8 +259,8 @@ int simpan_konfig(int argc, char **argv)		{
 void cari_waktu(char *dest, char *posisi) {		// cari posisi path folder
 	
 	if ((posisi[0]!='H') && (posisi[0]!='h') && (posisi[0]!='J') && (posisi[0]!='j') && (posisi[0]!='B') && (posisi[0]!='b') ) {
-		printf("Argumen tidak benar !!\r\n");
-		printf("Contoh : H-7, J-2, B-1\r\n");
+		uprintf("Argumen tidak benar !!\r\n");
+		uprintf("Contoh : H-7, J-2, B-1\r\n");
 		sprintf(dest,"\\");
 		return;
 	}
@@ -309,8 +309,8 @@ int cari_files (char* pathxx, char *nf, int aksi) {
     fnoxx.lfsize = sizeof(lfnxx);
     
 	if ((res = f_opendir (&dirs,  pathxx)))		{ 
-		uprintf("%s(): ERROR = %d\r\n", __FUNCTION__, res);
-		return 0;
+		//uprintf("%s(): ERROR = %d\r\n", __FUNCTION__, res);
+		return -1;
 	}
 	//printf("%s(): Open dir %s OK\r\n", __FUNCTION__, pathxx);
 	
@@ -369,6 +369,10 @@ int cari_files (char* pathxx, char *nf, int aksi) {
 	return i;
 }
 
+int hapus_folder(char *fol)	{
+	f_unlink(fol);
+}
+
 int cari_berkas(char *str_doku, char *path, int aksi) {
 	char c = str_doku[0];
 	if ((c!='H') && (c!='h') && (c!='J') && (c!='j') && (c!='B') && (c!='b') ) {
@@ -389,8 +393,9 @@ int cari_berkas(char *str_doku, char *path, int aksi) {
   	for(i=atoi(str); i>=0; i--) {
 		sprintf(waktu, "%c-%d", waktu[0],i);
 		cari_waktu(path_bk, waktu);
-		//printf("_______________waktu: %s, path: %s\r\n",waktu, path_bk);
 		j=cari_files(path_bk, namafile, aksi);
+		printf("_______________j:%d, waktu: %s, path: %s\r\n", j, waktu, path_bk);
+		if (j==0)	hapus_folder(path_bk);
 		if (aksi==LIHAT_ISI_SATU && j>0)	break;
 		if (j==90)	break;
 	}

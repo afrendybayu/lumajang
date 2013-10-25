@@ -45,7 +45,9 @@ int ch;
 	
 	#ifdef PAKAI_ADC_7708
 		st_hw.adc = 0;
-		uprintf("\r\n");
+		#ifdef PAKAI_SDCARD
+		vTaskDelay(700);
+		#endif
 		if (setup_ad7708()==0)
 			uprintf("___ADC TIDAK dikenali !____\r\n");
 	#endif

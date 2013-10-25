@@ -438,7 +438,7 @@ void qsprintf(char *fmt, ...) {
 }
 
 // uprintf : user/custom printf ke serial debug
-char str_buffer[256];
+char str_buffer[MAX_DEBUG_TX]		__attribute__ ((section (".usbram1")));
 void uprintf(char *fmt, ...) {
 #ifdef PAKAI_SHELL
 //#if 1
@@ -470,7 +470,7 @@ int printf0 (const char *fmt, ...)		{
 	/* Print the string */
 	if( xSemSer0 != NULL )    {
 		if( xSemaphoreTake( xSemSer0, ( portTickType ) 10 ) == pdTRUE )	{
-			vSerialPutString(xPort, str_buffer, 256);
+			vSerialPutString(xPort, str_buffer, 0xffff);
 			xSemaphoreGive( xSemSer0 );
 		}
 	}
