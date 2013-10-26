@@ -15,6 +15,16 @@
 //extern struct t_env env;
 #ifdef PAKAI_FILE_SIMPAN
 
+void set_konfig_file(int argc, char **argv)	{
+	if (argc!=2)		{
+	//	file_kitab();
+		return;
+	}
+	
+	uprintf("\r\n Upload Konfig, path: %s\r\n", argv[1]);
+	upload_konfig(argv[1]);
+}
+
 void cek_file(int argc, char **argv)	{
 	IAP_return_t iap_return;
 	iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);

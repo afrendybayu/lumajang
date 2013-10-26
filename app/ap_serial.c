@@ -244,6 +244,7 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&cek_file_cmd);
 	tinysh_add_command(&set_file_cmd);
+	tinysh_add_command(&upload_file_cmd);
 	#endif
 
 #endif
