@@ -18,7 +18,7 @@ char* strcmd_conf[]  = {"env", "kanal", "sumber", "data", "files", NULL};
 char* strcmd_env[]   = {"nama", "sn", "idslave", "debug1", "debug2", NULL};
 char* strcmd_kanal[] = {"kalib", "status", NULL};
 char* strcmd_smbr[]  = {"nama", "ip", "alamat", "stack", NULL};
-char* strcmd_data[]  = {"nama", "id", "satuan", "status", "batas", NULL};
+char* strcmd_data[]  = {"nama", "id", "satuan", "status", "batas", "formula", NULL};
 char* strcmd_files[] = {"jumlah", "urut", NULL};
 
 enum xcmd_conf	{
@@ -38,7 +38,7 @@ enum xcmd_conf_sumber	{
 } cmd_conf_sumber		__attribute__ ((section (".usbram1")));
 
 enum xcmd_conf_data	{
-	DATA_NAMA, DATA_ID, DATA_SATUAN, DATA_STATUS, DATA_BATAS
+	DATA_NAMA, DATA_ID, DATA_SATUAN, DATA_STATUS, DATA_BATAS, DARA_FORMULA
 } cmd_conf_data		__attribute__ ((section (".usbram1")));
 
 enum xcmd_conf_files	{
@@ -161,6 +161,15 @@ int parsing_cfg_sumber(int i, char *str)	{
 	pch = strchr(str, '=') + 1;
 	pch = strtok(pch, "\r\n");
 	
+	struct t_sumber *st_sumber;
+	st_sumber = pvPortMalloc( JML_SUMBER * sizeof (struct t_sumber) );
+	if (st_sumber == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_sumber);
+		return -1;
+	}
+	memcpy((char *) st_sumber, (char *) ALMT_SUMBER, (JML_SUMBER * sizeof (struct t_sumber)));
+	
 	if (i==SMBR_NAMA)	{
 		sscanf(str, "nama%d = ", &nx);
 		do	{
@@ -183,15 +192,28 @@ int parsing_cfg_sumber(int i, char *str)	{
 		sscanf(str, "stack%d = %d", &nx, &num);
 		uprintf("   SUMBER [%d] stack:%d\r\n", nx, num);		
 	}
+	
+	simpan_st_rom(SEKTOR_ENV, SUMBER, 1, (unsigned short *) st_sumber, 0);
+	vPortFree(st_sumber);
 }
 
 int parsing_cfg_data(int i, char *str)	{
 	int nx, num;
 	char tstr[32], *pch;
 	float rL, aLL, aL, aH, aHH, rH;
+	int nox, lok;
 	
 	pch = strchr(str, '=') + 1;
 	pch = strtok(pch, "\r\n");
+	
+	struct t_data *st_data;		
+	st_data = pvPortMalloc( PER_SUMBER * sizeof (struct t_data) );
+	if (st_data == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_data);
+		return 3;
+	}
+
 	
 	if (i==DATA_NAMA)	{
 		sscanf(str, "nama%d = ", &nx);
@@ -199,10 +221,20 @@ int parsing_cfg_data(int i, char *str)	{
 			pch++;
 		} while (*pch==' ');
 		uprintf("   DATA [%d] nama:%s\r\n", nx, pch);
+		nx--;
+		nox = nx % PER_SUMBER;
+		lok = (int) (nx/PER_SUMBER);
+		memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));
+		strcpy(st_data[nox].nama, pch);
 	}
 	else if (i==DATA_ID)	{
 		sscanf(str, "id%d = %d", &nx, &num);
 		uprintf("   DATA [%d] id:%d\r\n", nx, num);
+		nx--;
+		nox = nx % PER_SUMBER;
+		lok = (int) (nx/PER_SUMBER);
+		memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));
+		st_data[nox].id = num;
 	}
 	else if (i==DATA_SATUAN)	{
 		sscanf(str, "satuan%d = ", &nx);
@@ -210,6 +242,11 @@ int parsing_cfg_data(int i, char *str)	{
 			pch++;
 		} while (*pch==' ');
 		uprintf("   DATA [%d] satuan:%s\r\n", nx, pch);
+		nx--;
+		nox = nx % PER_SUMBER;
+		lok = (int) (nx/PER_SUMBER);
+		memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));
+		strcpy(st_data[nox].satuan, pch);
 	}
 	else if (i==DATA_STATUS)	{
 		sscanf(str, "status%d = ", &nx);
@@ -218,12 +255,30 @@ int parsing_cfg_data(int i, char *str)	{
 		} while (*pch==' ');
 		num = (strcmp(pch, "MATI"))?0:1;
 		uprintf("   DATA [%d] status: [%d] %s\r\n", nx, num, pch);
+		nx--;
+		nox = nx % PER_SUMBER;
+		lok = (int) (nx/PER_SUMBER);
+		memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));
+		st_data[nox].status = num;
 	}
 	else if (i==DATA_BATAS)	{
 		sscanf(str, "batas%d = %f %f %f %f %f %f", &nx, &rL, &aLL, &aL, &aH, &aHH, &rH);
 		uprintf("   DATA [%d] rL:%.1f, aLL:%.1f, aL:%.1f, aH:%.1f, aHH:%.1f, rH:%.1f\r\n", \
 			nx, rL, aLL, aL, aH, aHH, rH);
+		nx--;
+		nox = nx % PER_SUMBER;
+		lok = (int) (nx/PER_SUMBER);
+		memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));
+		st_data[nox].rangeL = rL;
+		st_data[nox].batasLL = aLL;
+		st_data[nox].batasL  = aL;
+		st_data[nox].batasH  = aH;
+		st_data[nox].batasHH = aHH;
+		st_data[nox].rangeH = rH;
 	}
+	
+	simpan_st_rom(SEKTOR_DATA, lok, 1, (unsigned short *) st_data, 1);
+	vPortFree (st_data);
 }
 
 int parsing_cfg_files(int i, char *str)	{
@@ -238,6 +293,7 @@ int parsing_cfg_files(int i, char *str)	{
 	st_file = pvPortMalloc( sizeof (struct t_file) );
 	if (st_file == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_file);
 		return 2;
 	}
 	//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_file);
@@ -249,6 +305,7 @@ int parsing_cfg_files(int i, char *str)	{
 			pch++;
 		} while (*pch==' ');
 		uprintf("   FILES jml:%d\r\n", nx);
+		st_file->jml = nx;
 	}
 	else if (i==FILES_URUT)	{
 		sscanf(str, "urut%d = ", &nx);
@@ -257,8 +314,12 @@ int parsing_cfg_files(int i, char *str)	{
 		if (num>0)	{
 		//if ((num>0) && ())	{
 			uprintf("   FILES [%2d] urut:%d\r\n", nx, num);
+			st_file->urut[nx-1] = num;
 		}
 	}
+	
+	simpan_st_rom(SEKTOR_ENV, BERKAS, 1, (unsigned short *) st_file, 0);
+	vPortFree (st_file);
 }
 
 int parsing_cmd_setting_subutama(char *str)	{
@@ -592,7 +653,7 @@ int simpan_konfig(int argc, char **argv)		{
 	
 	struct t_file  *st_file;
 	st_file = (char *) ALMT_FILE;
-	tulis_konfig_file("[file]", &filx);
+	tulis_konfig_file("[files]", &filx);
 	sprintf(st1, "jumlah = %d", st_file->jml);
 	tulis_konfig_file(st1, &filx);
 	for (i=0; i<JML_TITIK_DATA; i++)	{

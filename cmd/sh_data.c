@@ -98,6 +98,7 @@ char set_data(int argc, char **argv)		{
 	st_data = pvPortMalloc( PER_SUMBER * sizeof (struct t_data) );
 	if (st_data == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_data);
 		return 3;
 	}
 	

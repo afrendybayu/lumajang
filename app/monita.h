@@ -2,9 +2,13 @@
 #ifndef __APP_MONITA__
 #define __APP_MONITA__
 
+#include <time.h>
+
 #define JML_SECTOR_LPC 		28
 #define IAP_ADDRESS 		0x7FFFFFF1
 typedef void (*IAP)(unsigned int [],unsigned int[]);
+
+
 
 #ifdef PAKAI_SDCARD
 #include "ff/ff9b/src/ff.h"
@@ -196,6 +200,8 @@ struct t_st_hw  {
 	unsigned char rtc;
 	unsigned char sdc;
 	int mm;
+	time_t wkt_awal;
+	time_t wkt_now;
 };
 
 volatile struct t_st_hw st_hw;

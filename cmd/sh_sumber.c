@@ -75,6 +75,7 @@ char set_sumber(int argc, char **argv)		{
 	st_sumber = pvPortMalloc( JML_SUMBER * sizeof (struct t_sumber) );
 	if (st_sumber == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_sumber);
 		return -1;
 	}
 	printf(" -->%s(): Mallok @%X\r\n", __FUNCTION__, st_sumber);

@@ -82,6 +82,7 @@ char set_file(int argc, char **argv)	{
 	st_file = pvPortMalloc( sizeof (struct t_file) );
 	if (st_file == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_file);
 		return 2;
 	}
 	//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_file);

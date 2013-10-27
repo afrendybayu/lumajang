@@ -70,6 +70,7 @@ char set_env(int argc, char **argv)	{
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_env);
 		return 2;
 	}
 	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);

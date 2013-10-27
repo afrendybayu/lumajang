@@ -118,6 +118,47 @@ void init_RTC_sh()	{
 	uprintf(" ********* init RTC: %d\r\n", flagRTCc);
 }
 
+void start_uptime()		{
+	struct tm *a;
+	st_hw.wkt_awal = (unsigned int) now_to_time(1, a);		// epoch
+}
+
+void hitung_uptime()	{
+	unsigned int beda_t;
+	struct tm *a;
+	int nW[5];
+	char kalimat[100], katakan[30];
+	
+	st_hw.wkt_now = (unsigned int) now_to_time(1, a);		// epoch
+	beda_t = st_hw.wkt_now - st_hw.wkt_awal;
+	hitung_wkt(beda_t, &nW);
+	
+	strcpy(kalimat, "");
+	if (nW[4] > 0)	{
+		sprintf(katakan," %d thn ", nW[4]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[3] > 0)	{
+		sprintf(katakan, "%d hari ", nW[3]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[2] > 0)	{
+		sprintf(katakan, "%d jam ", nW[2]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[1] > 0)	{
+		sprintf(katakan, "%d mnt ", nW[1]);
+		strcat(kalimat, katakan);
+	}
+	
+	a = localtime (&st_hw.wkt_awal);
+	uprintf("\r\n  UPtime %s%d dtk [total %d detik]\r\n  Sejak %d-%02d-%4d %d:%02d%:%02d ", kalimat, nW[0], beda_t,	\
+		a->tm_mday, a->tm_mon+1, a->tm_year+1900, a->tm_hour, a->tm_min, a->tm_sec);
+		
+	a = localtime (&st_hw.wkt_now);
+	uprintf(  " Now: %d-%02d-%4d %d:%02d%:%02d\r\n", \
+		a->tm_mday, a->tm_mon+1, a->tm_year+1900, a->tm_hour, a->tm_min, a->tm_sec);
+}
 
 void get_cal()	{
 	char* hari[] = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};

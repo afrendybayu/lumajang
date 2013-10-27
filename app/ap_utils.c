@@ -10,6 +10,20 @@
 #include "ap_utils.h"
 
 #ifdef PAKAI_RTC
+
+void hitung_wkt(unsigned int w, int *wx)	{
+	int aW[] = {1, 60, 60, 24, 365, 1};
+	char i=0;
+	
+	for (i=0; i<5; i++)	{
+		wx[i] = w /= (int) aW[i];
+		//printf("wx[%d]: %d, w:%d, aW[%d]\r\n",i,  wx[i], w, i, aW[i]);
+		if (wx[i]>=aW[i+1] && i<4)
+			wx[i] %= aW[i+1];
+		//printf("wx[%d]: %d\r\n",i,  wx[i]);
+	}
+}
+
 time_t now_to_time(int now, struct tm waktu)	{
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -45,7 +59,7 @@ time_t now_to_time(int now, struct tm waktu)	{
 }
 #endif
 
-#if defined(PAKAI_RTC) && defined(PAKAI_FILE_SIMPAN)
+#if defined(PAKAI_FILE_SIMPAN)
 
 #endif
 

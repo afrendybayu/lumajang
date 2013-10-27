@@ -220,6 +220,7 @@ void cmd_shell()	{
 	//tinysh_add_command(&cek_flag_rtc_cmd);
 	//tinysh_add_command(&init_rtc_cmd);
 	tinysh_add_command(&kalender_rtc_cmd);
+	tinysh_add_command(&uptime_cmd);
 	#endif
 
 #if 0
@@ -339,6 +340,7 @@ char s[30];
 	
 	#ifdef PAKAI_RTC
 		//init_RTC_sh();
+		start_uptime();
 	#endif
 	
 	#ifdef PAKAI_SDCARD
