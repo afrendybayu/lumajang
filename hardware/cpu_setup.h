@@ -18,7 +18,8 @@ inline void pll_feed(void);
 #define mainPLL_MUL			( ( unsigned portLONG ) ( PLL_MUL - 1 ) )
 #define PLL_DIV				1
 #define mainPLL_DIV			( ( unsigned portLONG ) (PLL_DIV - 1) )
-#define CLK_DIV				8
+#define CLK_DIV				8		// 480/8 = 60
+//#define CLK_DIV			48		// 480/48 = 10
 #define mainCPU_CLK_DIV		( ( unsigned portLONG ) (CLK_DIV-1) )
 #define mainPLL_ENABLE		( ( unsigned portLONG ) 0x0001 )
 #define mainPLL_CONNECT		( ( ( unsigned portLONG ) 0x0002 ) | mainPLL_ENABLE )
