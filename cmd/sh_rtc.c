@@ -226,16 +226,11 @@ void set_rtc_mem(int argc, char ** argv)	{
 }
 
 void set_rtc_mem_default()	{
-	int nx = atoi(argv[1]);			// nx valid >0
-	float fl=0, kf;
-	unsigned int *ifl;
+	float fl=0;
+	int i;
 
 	for (i=0; i<JML_TITIK_DATA; i++)	{
-		ifl = (unsigned int *) &fl;
 		*(&MEM_RTC0+(RTC_MEM_START+i)) = *( (int*) &fl);
-		
-		kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+nx))));
-		uprintf("  memRTC [%d/%d]: %.3f, %d\r\n", nx, RTC_MEM_START+nx, kf, ifl);
 	}
 }
 

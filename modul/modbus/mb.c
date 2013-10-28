@@ -110,7 +110,7 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 }
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
-	printf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
+	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	int i=0, j, index=0;
 	char ketemu=0;
 	
@@ -134,7 +134,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 				return 0;
 			}
 		} while (ketemu==0);
-		printf("Data index: %d\r\n", index);
+		//uprintf("Data index: %d\r\n", index);
 	}
 	
 	if (cmd==READ_HOLDING_REG)		{
@@ -302,8 +302,6 @@ int proses_file_terkirim(int len, char *str)	{
 	res = f_rename(path, pch);
 	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
-	
-	
 	return 0;
 }
 
@@ -315,6 +313,8 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);
+	
+	#if 0
 	respon = pvPortMalloc( nX );
 	
 	if (respon == NULL)	{
@@ -322,14 +322,15 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		vPortFree (respon);
 		return 0;
 	}
+	#endif
 	//printf("Alok: %d @%#08x\r\n", nX, respon);
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	respon[0] = st_env->almtSlave;
-	respon[1] = READ_HOLDING_REG;
-	respon[2] = njml*4;
+	outmb[0] = st_env->almtSlave;
+	outmb[1] = READ_HOLDING_REG;
+	outmb[2] = njml*4;
 	
 	unsigned int *ifl;
 	for (i=0; i<njml; i++)	{
@@ -339,19 +340,19 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		
 		ifl = (unsigned int *) &data_f[index+i];
 		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
-		respon[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
-		respon[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
-		respon[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
-		respon[6+i*4] = (unsigned char) (*ifl & 0xff);
+		outmb[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
+		outmb[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
+		outmb[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
+		outmb[6+i*4] = (unsigned char) (*ifl & 0xff);
 	}
 
 
 	unsigned int Crc = 0xFFFF;
 	for (i=0; i<(nX-2); i++)	{
-		Crc = CRC16 (Crc, respon[i]);
+		Crc = CRC16 (Crc, outmb[i]);
 	}
-	respon[nX-1] = ((Crc&0xFF00)>>8);	
-	respon[nX-2] = (Crc&0xFF);
+	outmb[nX-1] = ((Crc&0xFF00)>>8);	
+	outmb[nX-2] = (Crc&0xFF);
 	
 	#if 0
 	printf("===> Respon[%d]: ", nX);
@@ -364,7 +365,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	#endif
 	
 	
-	kirim_respon_mb(nX, respon, 100);
+	kirim_respon_mb(nX, outmb, 100);
 	
 	#if 0
 	enaTX2_485();
@@ -373,7 +374,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	disTX2_485();
 	#endif
 	
-	vPortFree (respon);
+	//vPortFree (respon);
 	return nX;
 }
 
@@ -401,7 +402,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	
 	
 	//************   BALAS   ************//
-	
+	#if 0
 	respon = pvPortMalloc( jml_st_mb10H );
 	
 	if (respon == NULL)	{
@@ -410,35 +411,36 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 		return 1;
 	}
 	//printf("Alok: %d @%#08x\r\n", jml_st_mb3H(jml), respon);
+	#endif
 
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	respon[0] = st_env->almtSlave;
-	respon[1] = WRITE_MULTIPLE_REG;
-	respon[2] = (reg>>8) & 0xff;
-	respon[3] = (reg & 0xff);
-	respon[4] = (jml>>8) & 0xff;
-	respon[5] = (jml & 0xff);
+	outmb[0] = st_env->almtSlave;
+	outmb[1] = WRITE_MULTIPLE_REG;
+	outmb[2] = (reg>>8) & 0xff;
+	outmb[3] = (reg & 0xff);
+	outmb[4] = (jml>>8) & 0xff;
+	outmb[5] = (jml & 0xff);
 	
 	unsigned int Crc = 0xFFFF;
 	for (i=0; i<(jml_st_mb10H-2); i++)	{
-		Crc = CRC16 (Crc, respon[i]);
+		Crc = CRC16 (Crc, outmb[i]);
 	}
-	respon[jml_st_mb10H-1] = ((Crc&0xFF00)>>8);	
-	respon[jml_st_mb10H-2] = (Crc&0xFF);
+	outmb[jml_st_mb10H-1] = ((Crc&0xFF00)>>8);	
+	outmb[jml_st_mb10H-2] = (Crc&0xFF);
 	
-	#if 1
+	#if 0
 	printf("===> Respon: ");
 	for (i=0; i<jml_st_mb10H; i++)		{
-		printf(" %02x", respon[i]);
+		printf(" %02x", outmb[i]);
 		// kirim Serial2 modbus
 		//xSerialPutChar2 (0, respon[i], 0xffff);
 	}
 	printf("\r\n\r\n");
 	#endif
 	
-	kirim_respon_mb(jml_st_mb10H, respon, 100);
+	kirim_respon_mb(jml_st_mb10H, outmb, 100);
 	
 	#if 0
 	enaTX2_485();
@@ -450,7 +452,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	disTX2_485();
 	#endif
 	
-	vPortFree (respon);
+	//vPortFree (respon);
 	return jml_st_mb10H;
 }
 
