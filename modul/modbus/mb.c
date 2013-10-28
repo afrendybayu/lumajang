@@ -19,7 +19,7 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 		Crc = CRC16 (Crc, strmb[i]);
 	}
 	hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
-	printf("CRC Modbus: %04X\r\n", Crc);
+	//uprintf("CRC Modbus: %04X\r\n", Crc);
 	
 	//if (hi==x[nstr-1] && lo==x[nstr-2]) {
 	if (hi==strmb[nstr-1] && lo==strmb[nstr-2]) {
@@ -178,7 +178,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
 		cari_berkas("H-3", path, LIHAT_ISI_SATU);
-		uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
+		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
 			printf("%s(): Buka file error %d : %s !\r\n", __FUNCTION__, res, path);
@@ -187,7 +187,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		
 		lenPar = lenTot = fd2.fsize;
 		if (lenTot>MAX_SEND_FILE_MB)	lenPar = MAX_SEND_FILE_MB;
-		uprintf("fsize: %d/%d\r\n", lenPar, fd2.fsize);
+		//uprintf("fsize: %d/%d\r\n", lenPar, fd2.fsize);
 		
 		nmx = fd2.fsize + 2 + 8 + 20 + 2;	// header + 2*file + namafile + crc
 		#if 0

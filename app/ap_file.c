@@ -220,7 +220,7 @@ int parsing_cfg_data(int i, char *str)	{
 		do	{
 			pch++;
 		} while (*pch==' ');
-		uprintf("   DATA [%d] nama:%s\r\n", nx, pch);
+		//uprintf("   DATA [%d] nama:%s\r\n", nx, pch);
 		nx--;
 		nox = nx % PER_SUMBER;
 		lok = (int) (nx/PER_SUMBER);
@@ -229,7 +229,7 @@ int parsing_cfg_data(int i, char *str)	{
 	}
 	else if (i==DATA_ID)	{
 		sscanf(str, "id%d = %d", &nx, &num);
-		uprintf("   DATA [%d] id:%d\r\n", nx, num);
+		//uprintf("   DATA [%d] id:%d\r\n", nx, num);
 		nx--;
 		nox = nx % PER_SUMBER;
 		lok = (int) (nx/PER_SUMBER);
@@ -241,7 +241,7 @@ int parsing_cfg_data(int i, char *str)	{
 		do	{
 			pch++;
 		} while (*pch==' ');
-		uprintf("   DATA [%d] satuan:%s\r\n", nx, pch);
+		//uprintf("   DATA [%d] satuan:%s\r\n", nx, pch);
 		nx--;
 		nox = nx % PER_SUMBER;
 		lok = (int) (nx/PER_SUMBER);
@@ -254,7 +254,7 @@ int parsing_cfg_data(int i, char *str)	{
 			pch++;
 		} while (*pch==' ');
 		num = (strcmp(pch, "MATI"))?0:1;
-		uprintf("   DATA [%d] status: [%d] %s\r\n", nx, num, pch);
+		//uprintf("   DATA [%d] status: [%d] %s\r\n", nx, num, pch);
 		nx--;
 		nox = nx % PER_SUMBER;
 		lok = (int) (nx/PER_SUMBER);
@@ -263,8 +263,8 @@ int parsing_cfg_data(int i, char *str)	{
 	}
 	else if (i==DATA_BATAS)	{
 		sscanf(str, "batas%d = %f %f %f %f %f %f", &nx, &rL, &aLL, &aL, &aH, &aHH, &rH);
-		uprintf("   DATA [%d] rL:%.1f, aLL:%.1f, aL:%.1f, aH:%.1f, aHH:%.1f, rH:%.1f\r\n", \
-			nx, rL, aLL, aL, aH, aHH, rH);
+		//uprintf("   DATA [%d] rL:%.1f, aLL:%.1f, aL:%.1f, aH:%.1f, aHH:%.1f, rH:%.1f\r\n", \
+		//	nx, rL, aLL, aL, aH, aHH, rH);
 		nx--;
 		nox = nx % PER_SUMBER;
 		lok = (int) (nx/PER_SUMBER);
@@ -292,7 +292,7 @@ int parsing_cfg_files(int i, char *str)	{
 	struct t_file *st_file;
 	st_file = pvPortMalloc( sizeof (struct t_file) );
 	if (st_file == NULL)	{
-		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		vPortFree (st_file);
 		return 2;
 	}
@@ -304,7 +304,7 @@ int parsing_cfg_files(int i, char *str)	{
 		do	{
 			pch++;
 		} while (*pch==' ');
-		uprintf("   FILES jml:%d\r\n", nx);
+		//uprintf("   FILES jml:%d\r\n", nx);
 		st_file->jml = nx;
 	}
 	else if (i==FILES_URUT)	{
@@ -313,7 +313,7 @@ int parsing_cfg_files(int i, char *str)	{
 		
 		if (num>0)	{
 		//if ((num>0) && ())	{
-			uprintf("   FILES [%2d] urut:%d\r\n", nx, num);
+		//	uprintf("   FILES [%2d] urut:%d\r\n", nx, num);
 			st_file->urut[nx-1] = num;
 		}
 	}
@@ -391,7 +391,7 @@ void parsing_file_setting(char *str)	{
 	pch = strchr(str, '[');
 	if (pch != NULL)	{
 		parsing_cmd_setting_utama(str);
-		uprintf ("NOT NILL cmd: %d\r\n", st_conf.cmd);
+		//uprintf ("NOT NILL cmd: %d\r\n", st_conf.cmd);
 	} else {
 		parsing_cmd_setting_subutama(str);
 	}
@@ -415,10 +415,10 @@ int upload_konfig(char *path)	{
 		//baris++;
 	}
 	
-	uprintf("=== AKHIR FILE ====\r\n");
+	//uprintf("=== AKHIR FILE ====\r\n");
 
 	f_close(&filx);
-	uprintf("=== TUTUP FILE ====\r\n");
+	//uprintf("=== TUTUP FILE ====\r\n");
 }
 
 char *pisah_nf(char *pnf)	{
@@ -762,11 +762,11 @@ int cari_files (char* pathxx, char *nf, int aksi) {
 			
 			if (strncmp(waktu, nama, 11))	{		// 
 				if (aksi == LIHAT)	{
-					uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
+					//uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
 					i++;
 				}
 				if (aksi == LIHAT_ISI_SATU)	{
-					uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
+					//uprintf("aksi: %d, path: %s, namafile: %s\r\n", aksi, bbbb, nama);
 					sprintf(pathxx, "%s", bbbb);
 					sprintf(nf, "%s", nama);
 					return 1;
@@ -803,7 +803,7 @@ int cari_berkas(char *str_doku, char *path, int aksi) {
 		sprintf(waktu, "%c-%d", waktu[0],i);
 		cari_waktu(path_bk, waktu);
 		j=cari_files(path_bk, namafile, aksi);
-		printf("_______________j:%d, waktu: %s, path: %s\r\n", j, waktu, path_bk);
+		//uprintf("_______________j:%d, waktu: %s, path: %s\r\n", j, waktu, path_bk);
 		if (j==0)	hapus_folder(path_bk);
 		if (aksi==LIHAT_ISI_SATU && j>0)	break;
 		if (j==90)	break;

@@ -407,16 +407,19 @@ void generate_data_random()		{
 void load_data_rtc()	{
 	int i;
 	char status;
+	float kf;
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	status = st_env->kalib[i].status;
 	
 	for (i=0; i<JML_KANAL; i++)		{
-		data_f[i] = *(&MEM_RTC0+(i));
+		data_f[i] = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i))));
+		//data_f[i] = *(&MEM_RTC0+(i));
 		if (status==sRUNNING_HOURS)		{
-			konter.t_konter[i].rh_x = *(&MEM_RTC0+(i));
+			konter.t_konter[i].rh_x = (int ) data_f[i];
 		}
+		//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 	}
 }
 

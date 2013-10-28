@@ -195,7 +195,7 @@ void cek_rtc_mem(int argc, char ** argv)	{
 		}
 		for (i=0; i<jml; i++)	{
 			kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+mulai+i))));
-			uprintf("  Nilai[%d]: %.2f\r\n", mulai+i, kf);
+			uprintf("  Nilai[%2d]: %.2f\r\n", mulai+i, kf);
 		}
 	}
 }

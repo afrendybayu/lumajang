@@ -135,7 +135,7 @@ char s[30];
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 
-	#if 1
+	#if 0
 	printf("\r\nJml CMD: %d -->", mbn);
 	int i,mm;
 	
@@ -182,7 +182,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		reg = (int) (strmb[2]<<8 | strmb[3]);
 		jml = (int) (strmb[4]<<8 | strmb[5]);
 		
-		printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
+		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
