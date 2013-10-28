@@ -99,3 +99,11 @@ void data_kitab()	{
 void kanal_kitab()	{
 	printf(" Perintah untuk mengubah konfig kanal !\r\n");
 }
+
+void file_kitab()	{
+	
+}
+
+void rtc_kitab(int i)	{
+	printf(" Perintah untuk mengubah nilai memori RTC !\r\n");
+}

@@ -81,6 +81,8 @@ typedef enum IAP_STATUS_t {
 #define  MAX_RX_MB			4*1024
 #define  MAX_DEBUG_TX		2*1024
 
+#define  RTC_MEM_START		100
+
 //#define ATA		0
 //#define MMC		1
 //#define USB		2
@@ -223,7 +225,7 @@ struct t_file	{
 
 struct t_adc {
 	unsigned char cur_kanal;
-	unsigned char count;
+	unsigned int count;
 	unsigned char ambil;
 	unsigned short data[JML_KANAL];
 	//float flt_data[JML_KANAL];

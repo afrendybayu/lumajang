@@ -145,6 +145,7 @@ int ambil_data_ad7708()	{
 			adc.cur_kanal+1, adc.data[adc.cur_kanal], adc.data[adc.cur_kanal], data[0], data[1], data[2]);
 		adc.ambil = 0;
 		koleksi_adc7708();
+		adc.count++;
 		return 2;
 	}
 	return 0;

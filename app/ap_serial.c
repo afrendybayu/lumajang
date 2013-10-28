@@ -221,6 +221,8 @@ void cmd_shell()	{
 	//tinysh_add_command(&init_rtc_cmd);
 	tinysh_add_command(&kalender_rtc_cmd);
 	tinysh_add_command(&uptime_cmd);
+	tinysh_add_command(&set_rtc_mem_cmd);
+	tinysh_add_command(&cek_rtc_mem_cmd);
 	#endif
 
 #if 0
