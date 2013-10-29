@@ -14,6 +14,6 @@ int hapus_folder(char *fol);
 int simpan_konfig(int argc, char **argv);
 int upload_konfig(char *path);
 
-static tinysh_cmd_t simpan_file_cmd={0,"simpan_file","simpan konfig ke file","[args]", simpan_konfig,0,0,0};
+static tinysh_cmd_t simpan_file_cmd={0,"simpan_konfig","simpan konfig ke file","[args]", simpan_konfig,0,0,0};
 #endif
 #endif

@@ -190,10 +190,18 @@ void cek_rtc_mem(int argc, char ** argv)	{
 			uprintf("\r\n  Arg Register mulai SALAH !!!\r\n");
 		}
 		jml = atoi(argv[2]);
+		if (jml>50)	jml=50;
 		if (jml==0)		{
 			uprintf("\r\n  Arg Jml SALAH !!!\r\n");
 		}
 		for (i=0; i<jml; i++)	{
+			kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+mulai+i))));
+			uprintf("  Nilai[%2d]: %.2f, dataf[%d]: %.2f\r\n", mulai+i, kf, i, data_f[i]);
+		}
+	}
+	if (argc==2)	{
+		mulai = atoi(argv[1]);
+		for (i=0; i<JML_KANAL; i++)	{
 			kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+mulai+i))));
 			uprintf("  Nilai[%2d]: %.2f\r\n", mulai+i, kf);
 		}
@@ -219,10 +227,29 @@ void set_rtc_mem(int argc, char ** argv)	{
 	uprintf("  memRTC [%d]: %.3f\r\n", nx, fl);
 	
 	ifl = (unsigned int *) &fl;
-	*(&MEM_RTC0+(RTC_MEM_START+nx)) = *( (int*) &fl);
+	data_f[nx-1] = fl;
+
+	*(&MEM_RTC0+(RTC_MEM_START+nx)) = *( (int*) &fl);	// 100 + kanal (1-...)
 	
 	kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+nx))));
 	uprintf("  memRTC [%d/%d]: %.3f, %d\r\n", nx, RTC_MEM_START+nx, kf, ifl);
+	
+	#if 1
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	if (nx>10)	return;
+	
+	int ch = nx-1;
+	char status=st_env->kalib[ch].status;
+	if (status==sRUNNING_HOURS)		{
+		konter.t_konter[ch].rh_x = (int) fl;
+		uprintf("   data[%d]= %.f, %d\r\n", ch, data_f[ch], konter.t_konter[ch].rh_x);
+	}
+	else if (status==sFLOWx)		{
+		konter.t_konter[ch].hit = (int) (fl-st_env->kalib[ch].C)/st_env->kalib[ch].m;
+		uprintf("   data[%d]= %.f, %d\r\n", ch, data_f[ch], konter.t_konter[ch].hit);
+	}
+	#endif
 }
 
 void set_rtc_mem_default()	{

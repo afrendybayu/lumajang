@@ -181,7 +181,8 @@ int baca_kirim_file(int no, int len, char *str)		{
 		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
-			printf("%s(): Buka file error %d : %s !\r\n", __FUNCTION__, res, path);
+			if (res!=FR_NO_FILE)
+				uprintf("%s(): Buka file error %d : %s !\r\n", __FUNCTION__, res, path);
 			return 0;
 		}
 		
@@ -300,7 +301,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	return 0;
 }

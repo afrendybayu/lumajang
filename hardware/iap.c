@@ -409,18 +409,33 @@ void load_data_rtc()	{
 	char status;
 	float kf;
 	
-	struct t_env *st_env;
-	st_env = ALMT_ENV;
-	status = st_env->kalib[i].status;
+	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
 	
-	for (i=0; i<JML_KANAL; i++)		{
-		data_f[i] = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i))));
-		//data_f[i] = *(&MEM_RTC0+(i));
-		if (status==sRUNNING_HOURS)		{
-			konter.t_konter[i].rh_x = (int ) data_f[i];
+	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
+		uprintf("  Baca data dari memRTC\r\n");
+		struct t_env *st_env;
+		st_env = ALMT_ENV;
+		
+		for (i=0; i<JML_KANAL; i++)		{
+			status = st_env->kalib[i].status;
+			data_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+1))));
+			if (status==sRUNNING_HOURS)		{
+				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
+			}
+			if (status==sFLOWx)		{
+				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
+				uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
+			}
+			uprintf("i: %d --> nilai[%d]: %.3f\r\n", i, i, data_f[i]);
+			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 		}
-		//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 	}
+	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
+	
+	}
+	
+	
+	
 }
 
 void baca_konfig_rom()		{
