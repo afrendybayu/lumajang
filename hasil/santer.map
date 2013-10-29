@@ -325,7 +325,7 @@ LOAD app/ap_adc.o
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libm.a
-LOAD /tmp/cc7EI7WP.o
+LOAD /tmp/ccZbBXjQ.o
 START GROUP
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/thumb/interwork/libgcc.a
 LOAD /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libc.a
@@ -335,7 +335,7 @@ END GROUP
 
 startup         0x00000000       0x44
  *(.startup)
- .startup       0x00000000       0x44 /tmp/cc7EI7WP.o
+ .startup       0x00000000       0x44 /tmp/ccZbBXjQ.o
 
 prog            0x00000044    0x25ea4
  *(.text)
@@ -431,130 +431,130 @@ prog            0x00000044    0x25ea4
                 0x00003870                set_konter_onoff
                 0x00003794                set_konter_rpm
                 0x000039fc                hitung_rpm
- .text          0x00003f3c       0xf8 app/ap_ambilcepat.o
+ .text          0x00003f3c       0xfc app/ap_ambilcepat.o
                 0x00003f3c                init_ambilCepatTasks
- .text          0x00004034      0x1b8 modul/FreeRTOSv5.2/list.o
-                0x00004090                vListInsertEnd
-                0x0000407c                vListInitialiseItem
-                0x00004034                vListInitialise
-                0x00004184                uxListRemove
-                0x000040ec                vListInsert
- .text          0x000041ec      0xab0 modul/FreeRTOSv5.2/queue.o
-                0x00004568                xQueueGenericSendFromISR
-                0x00004884                xQueuePeekFromISR
-                0x0000492c                vQueueDelete
-                0x00004410                xQueueGenericSend
-                0x00004958                ucQueueGetQueueNumber
-                0x0000498c                ucQueueGetQueueType
-                0x000047dc                xQueueReceiveFromISR
-                0x000042b4                xQueueGenericCreate
-                0x00004970                vQueueSetQueueNumber
-                0x00004c6c                xQueueIsQueueFullFromISR
-                0x000048e8                uxQueueMessagesWaiting
-                0x00004618                xQueueGenericReceive
-                0x000041ec                xQueueGenericReset
-                0x00004910                uxQueueMessagesWaitingFromISR
-                0x00004c08                xQueueIsQueueEmptyFromISR
-                0x00004364                xQueueCreateMutex
- .text          0x00004c9c     0x148c modul/FreeRTOSv5.2/tasks.o
-                0x00005258                vTaskEndScheduler
-                0x00005788                vTaskPlaceOnEventList
-                0x00004c9c                xTaskGenericCreate
-                0x00005000                xTaskIsTaskSuspended
-                0x0000511c                xTaskResumeFromISR
-                0x000053a8                xTaskGetTickCount
-                0x000053f8                uxTaskGetSystemState
-                0x000057f8                xTaskRemoveFromEventList
-                0x000058e4                xTaskCheckForTimeOut
-                0x00005270                vTaskSuspendAll
-                0x000053cc                xTaskGetTickCountFromISR
-                0x00005f20                vTaskPriorityDisinherit
-                0x00005e44                vTaskPriorityInherit
-                0x00005074                vTaskResume
-                0x000056e8                vTaskSwitchContext
-                0x000059d4                vTaskSetTaskNumber
-                0x00004f5c                vTaskSuspend
-                0x000053ec                uxTaskGetNumberOfTasks
-                0x00005fbc                vTaskList
-                0x000059a0                uxTaskGetTaskNumber
-                0x00004e34                vTaskDelayUntil
-                0x00005e2c                xTaskGetCurrentTaskHandle
-                0x00005280                xTaskResumeAll
-                0x000051f0                vTaskStartScheduler
-                0x00005994                vTaskMissedYield
-                0x00005518                xTaskIncrementTick
-                0x00004efc                vTaskDelay
-                0x000058bc                vTaskSetTimeOutState
- .text          0x00006128      0x258 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/port.o
-                0x000062e8                xPortStartScheduler
-                0x000062fc                vPortEndScheduler
-                0x00006128                pxPortInitialiseStack
- .text          0x00006380      0x298 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
-                0x000065b0                xPortGetFreeHeapSize
-                0x00006510                vPortFree
-                0x00006380                pvPortMalloc
-                0x000065bc                vPortInitialiseBlocks
- .text          0x00006618       0x68 cmd/sh_rtos.o
-                0x0000667c                cek_memory_stack
-                0x00006618                task_list
- .text          0x00006680      0x8d8 cmd/sh_hardware.o
-                0x00006680                idle_tick
-                0x00006830                simpan_struct_rom
-                0x000066a4                cek_blank_sector_rom
-                0x00006b68                simpan_sector_rom
-                0x00006798                hapus_sector_rom
-                0x00006e18                kopi_sektor
-                0x00006eb0                baca_rom
- .text          0x00006f58      0x7d8 cmd/sh_env.o
-                0x000073a0                set_env_default
-                0x00006f58                cek_env
-                0x00007050                set_env
- .text          0x00007730      0x568 cmd/sh_kanal.o
-                0x00007888                set_kanal
-                0x00007730                cek_kanal
-                0x00007bcc                set_kanal_default
- .text          0x00007c98      0x358 cmd/sh_utils.o
-                0x00007f5c                parsing_istilah
-                0x00007e00                cek_jml_struct
-                0x00007f24                nIstilah
-                0x00007da8                cek_no_struct
-                0x00007ce4                baca_ip
-                0x00007fe0                status_kanal
-                0x00007c98                cek_nomor_valid
-                0x00007e54                cek_struct
- .text          0x00007ff0      0x75c cmd/sh_sumber.o
-                0x00007ff0                cek_sumber
-                0x00008190                set_sumber
-                0x0000859c                set_sumber_default
- .text          0x0000874c      0x290 cmd/manual.o
-                0x000089c0                rtc_kitab
-                0x0000874c                sumber_kitab
-                0x0000886c                data_kitab
-                0x000089bc                file_kitab
-                0x00008760                env_kitab
-                0x000089a8                kanal_kitab
- .text          0x000089dc      0x1c4 app/ap_utils.o
-                0x00008acc                now_to_time
-                0x000089dc                hitung_wkt
- .text          0x00008ba0      0x4c8 modul/serial/serial.o
-                0x00008ba0                xSerialPortInit2
-                0x0000905c                vSerialClose
-                0x00008d54                xSerialPutChar2
-                0x00008f60                vSerialPutString
-                0x00008fb0                xSerialPutChar
-                0x00008f1c                xSerialGetChar
-                0x00008d04                vSerialPutString2
-                0x00008cc0                xSerialGetChar2
-                0x00008e00                xSerialPortInitMinimal
- .text          0x00009068      0x6e0 app/ap_serial.o
+ .text          0x00004038      0x1b8 modul/FreeRTOSv5.2/list.o
+                0x00004094                vListInsertEnd
+                0x00004080                vListInitialiseItem
+                0x00004038                vListInitialise
+                0x00004188                uxListRemove
+                0x000040f0                vListInsert
+ .text          0x000041f0      0xab0 modul/FreeRTOSv5.2/queue.o
+                0x0000456c                xQueueGenericSendFromISR
+                0x00004888                xQueuePeekFromISR
+                0x00004930                vQueueDelete
+                0x00004414                xQueueGenericSend
+                0x0000495c                ucQueueGetQueueNumber
+                0x00004990                ucQueueGetQueueType
+                0x000047e0                xQueueReceiveFromISR
+                0x000042b8                xQueueGenericCreate
+                0x00004974                vQueueSetQueueNumber
+                0x00004c70                xQueueIsQueueFullFromISR
+                0x000048ec                uxQueueMessagesWaiting
+                0x0000461c                xQueueGenericReceive
+                0x000041f0                xQueueGenericReset
+                0x00004914                uxQueueMessagesWaitingFromISR
+                0x00004c0c                xQueueIsQueueEmptyFromISR
+                0x00004368                xQueueCreateMutex
+ .text          0x00004ca0     0x148c modul/FreeRTOSv5.2/tasks.o
+                0x0000525c                vTaskEndScheduler
+                0x0000578c                vTaskPlaceOnEventList
+                0x00004ca0                xTaskGenericCreate
+                0x00005004                xTaskIsTaskSuspended
+                0x00005120                xTaskResumeFromISR
+                0x000053ac                xTaskGetTickCount
+                0x000053fc                uxTaskGetSystemState
+                0x000057fc                xTaskRemoveFromEventList
+                0x000058e8                xTaskCheckForTimeOut
+                0x00005274                vTaskSuspendAll
+                0x000053d0                xTaskGetTickCountFromISR
+                0x00005f24                vTaskPriorityDisinherit
+                0x00005e48                vTaskPriorityInherit
+                0x00005078                vTaskResume
+                0x000056ec                vTaskSwitchContext
+                0x000059d8                vTaskSetTaskNumber
+                0x00004f60                vTaskSuspend
+                0x000053f0                uxTaskGetNumberOfTasks
+                0x00005fc0                vTaskList
+                0x000059a4                uxTaskGetTaskNumber
+                0x00004e38                vTaskDelayUntil
+                0x00005e30                xTaskGetCurrentTaskHandle
+                0x00005284                xTaskResumeAll
+                0x000051f4                vTaskStartScheduler
+                0x00005998                vTaskMissedYield
+                0x0000551c                xTaskIncrementTick
+                0x00004f00                vTaskDelay
+                0x000058c0                vTaskSetTimeOutState
+ .text          0x0000612c      0x258 modul/FreeRTOSv5.2/portable/GCC/ARM7_LPC23xx/port.o
+                0x000062ec                xPortStartScheduler
+                0x00006300                vPortEndScheduler
+                0x0000612c                pxPortInitialiseStack
+ .text          0x00006384      0x298 modul/FreeRTOSv5.2/portable/MemMang/heap_2.o
+                0x000065b4                xPortGetFreeHeapSize
+                0x00006514                vPortFree
+                0x00006384                pvPortMalloc
+                0x000065c0                vPortInitialiseBlocks
+ .text          0x0000661c       0x68 cmd/sh_rtos.o
+                0x00006680                cek_memory_stack
+                0x0000661c                task_list
+ .text          0x00006684      0x8d8 cmd/sh_hardware.o
+                0x00006684                idle_tick
+                0x00006834                simpan_struct_rom
+                0x000066a8                cek_blank_sector_rom
+                0x00006b6c                simpan_sector_rom
+                0x0000679c                hapus_sector_rom
+                0x00006e1c                kopi_sektor
+                0x00006eb4                baca_rom
+ .text          0x00006f5c      0x7d8 cmd/sh_env.o
+                0x000073a4                set_env_default
+                0x00006f5c                cek_env
+                0x00007054                set_env
+ .text          0x00007734      0x568 cmd/sh_kanal.o
+                0x0000788c                set_kanal
+                0x00007734                cek_kanal
+                0x00007bd0                set_kanal_default
+ .text          0x00007c9c      0x358 cmd/sh_utils.o
+                0x00007f60                parsing_istilah
+                0x00007e04                cek_jml_struct
+                0x00007f28                nIstilah
+                0x00007dac                cek_no_struct
+                0x00007ce8                baca_ip
+                0x00007fe4                status_kanal
+                0x00007c9c                cek_nomor_valid
+                0x00007e58                cek_struct
+ .text          0x00007ff4      0x75c cmd/sh_sumber.o
+                0x00007ff4                cek_sumber
+                0x00008194                set_sumber
+                0x000085a0                set_sumber_default
+ .text          0x00008750      0x290 cmd/manual.o
+                0x000089c4                rtc_kitab
+                0x00008750                sumber_kitab
+                0x00008870                data_kitab
+                0x000089c0                file_kitab
+                0x00008764                env_kitab
+                0x000089ac                kanal_kitab
+ .text          0x000089e0      0x1c4 app/ap_utils.o
+                0x00008ad0                now_to_time
+                0x000089e0                hitung_wkt
+ .text          0x00008ba4      0x4c8 modul/serial/serial.o
+                0x00008ba4                xSerialPortInit2
+                0x00009060                vSerialClose
+                0x00008d58                xSerialPutChar2
+                0x00008f64                vSerialPutString
+                0x00008fb4                xSerialPutChar
+                0x00008f20                xSerialGetChar
+                0x00008d08                vSerialPutString2
+                0x00008cc4                xSerialGetChar2
+                0x00008e04                xSerialPortInitMinimal
+ .text          0x0000906c      0x6dc app/ap_serial.o
                 0x000095e4                qsprintf
                 0x00009634                uprintf
-                0x00009310                cmd_shell
+                0x00009314                cmd_shell
                 0x000096c0                printf0
-                0x0000921c                init_banner
-                0x0000910c                qrprintf
-                0x00009198                vAltStartComTestTasks
-                0x00009068                printd
+                0x00009220                init_banner
+                0x00009110                qrprintf
+                0x0000919c                vAltStartComTestTasks
+                0x0000906c                printd
  .text          0x00009748     0x10d8 modul/tinysh/tinysh.o
                 0x0000a5e8                tinysh_char_in
                 0x0000a604                tinysh_add_command
@@ -1009,7 +1009,7 @@ prog            0x00000044    0x25ea4
                 0x000218c4                scalbn
  .text          0x000219f4       0x24 /home/afrendy/projdb/koding/FreeRTOS/FreeRTOSV7.5.2/FreeRTOS/Demo/1santer/RTOSDemo/modul/TOOLCHAIN/bin/../lib/gcc/arm-elf/4.1.0/../../../../arm-elf/lib/thumb/interwork/libm.a(s_copysign.o)
                 0x000219f4                copysign
- .text          0x00021a18       0xc4 /tmp/cc7EI7WP.o
+ .text          0x00021a18       0xc4 /tmp/ccZbBXjQ.o
                 0x00021a18                start
                 0x00021ac0                endless_loop
  *(.rodata)

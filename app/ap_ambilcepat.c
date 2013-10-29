@@ -27,6 +27,7 @@ int ch;
 	//uprintf("  task : %s\r\n", __FUNCTION__);
 	
 	reset_konter();
+	load_data_rtc();
 
 	#ifdef PAKAI_SDCARD
 		//st_hw.sdc = 0;
