@@ -150,7 +150,7 @@ void hitung_running_hours(int i)		{
 	t = konter.t_konter[i].rh_off - konter.t_konter[i].rh_on;
 	konter.t_konter[i].rh = t;
 	data_f[i] = konter.t_konter[i].rh_x + t;
-	*(&MEM_RTC0+RTC_MEM_START+i) = *( (int*) &data_f[i]);
+	*(&MEM_RTC0+RTC_MEM_START+i+1) = *( (int*) &data_f[i]);
 }
 
 void data_frek_rpm (void) {
