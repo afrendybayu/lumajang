@@ -61,8 +61,8 @@ NAMA_FILE=santer
 RTOS_SOURCE_DIR=modul/FreeRTOSv5.2
 
 #UIP_COMMON_DIR=../../Common/ethernet/uIP/uip-1.0/uip
-PENULIS=../../../../../../atinom/modul/Penulis/lpc_dbe
-
+#PENULIS=../../../../../../atinom/modul/Penulis/lpc_dbe
+PENULIS=modul/Penulis/lpc_dbe 
 HW=hardware
 MODUL=modul
 CMD=cmd
