@@ -421,13 +421,13 @@ void load_data_rtc()	{
 			data_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+1))));
 			if (status==sRUNNING_HOURS)		{
 				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
-				uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
+				//uprintf("RUNHOUR[%d] : %d  --> ", i+1, konter.t_konter[i].rh_x);
 			}
 			if (status==sFLOWx)		{
 				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
 				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
 			}
-			uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
+			//uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
 			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 		}
 	}
