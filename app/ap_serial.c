@@ -413,6 +413,7 @@ char s[30];
 		//if (st_hw.mm >= 10)	{			// cron tiap 10detik
 		//if (st_hw.mm>=2)		{			// cron tiap 1 detik
 			st_hw.mm = 0;
+			st_hw.uuwaktu++;
 			#ifdef PAKAI_FILE_SIMPAN
 			simpan_file_data();
 			#endif

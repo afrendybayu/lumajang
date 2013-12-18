@@ -204,6 +204,8 @@ struct t_st_hw  {
 	int mm;
 	time_t wkt_awal;
 	time_t wkt_now;
+	int uudetik;
+	int uuwaktu;
 };
 
 volatile struct t_st_hw st_hw;

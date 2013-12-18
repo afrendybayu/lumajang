@@ -2,6 +2,7 @@
 #include "FreeRTOS.h"
 #include "monita.h"
 #include "hardware.h"
+#include "ap_utils.h"
 #include "mb.h"
 
 #ifdef PAKAI_MODBUS
@@ -160,7 +161,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			//printf("hasil sended : %d\r\n", kk);
+			printf("hasil sended : %d\r\n", kk);
 		#endif
 	}
 	return 10;
@@ -301,7 +302,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	return 0;
 }
@@ -396,9 +397,17 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	for (i=0; i<njml; i++)	{
 		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		fl = (float *)&tmpFl;
-		//printf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
+		//uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
-		data_f[index+i] = *fl;		
+		data_f[index+i] = *fl;
+		if (index+i==24)	{			// waktu epoch !!!
+			//uprintf(">>>>> sync waktu modem[%d] : %.0f\r\n", index+i, data_f[index+i]);
+			if (st_hw.uuwaktu>2)	{
+				uprintf("+++++ waktunya update waktu modem[%d] : %.0f !!!\r\n", index+i, data_f[index+i]);
+				sync_waktu_modem(data_f[index+i]);
+				st_hw.uuwaktu=0;
+			}
+		}
 	}
 	
 	

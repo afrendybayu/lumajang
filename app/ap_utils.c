@@ -11,6 +11,10 @@
 
 #ifdef PAKAI_RTC
 
+int sync_waktu_modem(float x)	{
+	uprintf("+++++> %s: %.0f\r\n", __FUNCTION__, x);
+}
+
 void hitung_wkt(unsigned int w, int *wx)	{
 	int aW[] = {1, 60, 60, 24, 365, 1};
 	char i=0;

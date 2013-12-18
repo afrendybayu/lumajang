@@ -16,7 +16,7 @@ void cek_data(int argc, char **argv)	{
 	struct t_data *st_data;
 	if (argc==2)	{
 		int smb = atoi(argv[1]);
-		if (smb==0)		{
+		if (smb==0 || smb>JML_SUMBER)		{
 			printf("\r\n--> Sumber SALAH !!\r\n");
 			return;
 		}
