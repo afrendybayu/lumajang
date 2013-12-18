@@ -49,6 +49,11 @@ int cek_jml_struct(char no)	{
 		return (sizeof(struct t_env));
 	else if (no == DATA)
 		return (sizeof(struct t_data));
+		
+	#ifdef PAKAI_SDCARD
+	else if (no == BERKAS)
+		return (sizeof(struct t_file));
+	#endif
 	else 
 		return 0;
 }
@@ -64,6 +69,7 @@ void cek_struct(int argc, char **argv)		{
 		printf("  Jml struct env   : %d\r\n", cek_jml_struct(ENV));
 		printf("  Jml struct data  : %d\r\n", (cek_jml_struct(DATA)*PER_SUMBER));
 		printf("  Jml struct sumber: %d\r\n", (cek_jml_struct(SUMBER)*JML_SUMBER));
+		printf("  Jml struct file  : %d\r\n", (cek_jml_struct(BERKAS)));
 		return;
 	}
 	printf("  Jml struct %s : %d\r\n", argv[1], st);
@@ -96,4 +102,8 @@ int parsing_istilah(char *strx, char **istilah)	{
 		}
 	}
 	return k;
+}
+
+void status_kanal(char *ket, int st)		{
+	
 }

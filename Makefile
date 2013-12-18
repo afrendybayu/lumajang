@@ -59,10 +59,16 @@ NAMA_FILE=santer
 #DEMO_INCLUDE_DIR=../../Common/include
 
 RTOS_SOURCE_DIR=modul/FreeRTOSv5.2
+<<<<<<< HEAD
 
 #UIP_COMMON_DIR=../../Common/ethernet/uIP/uip-1.0/uip
 PENULIS=../../../../../../atinom/modul/Penulis/lpc_dbe
+=======
+>>>>>>> pentol
 
+#UIP_COMMON_DIR=../../Common/ethernet/uIP/uip-1.0/uip
+#PENULIS=../../../../../../atinom/modul/Penulis/lpc_dbe
+PENULIS=modul/Penulis/lpc_dbe 
 HW=hardware
 MODUL=modul
 CMD=cmd
@@ -123,6 +129,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_rtos.c			\
 		$(CMD)/sh_hardware.c		\
 		$(CMD)/sh_env.c				\
+		$(CMD)/sh_kanal.c			\
 		$(CMD)/sh_utils.c			\
 		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
@@ -141,14 +148,29 @@ SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\
 
 RTC_SOURCE= \
-		cmd/sh_rtc.c		\
+		$(CMD)/sh_rtc.c		\
 
-SDC_SOURCE=	\
-		$(MODUL)/ff/ff9b/src/ff.c		\
-		$(MODUL)/ff/ff9b/src/diskio.c	\
-		$(MODUL)/ff/sdc.c			\
-		$(MODUL)/ff/sdc_cmd.c		\
-		$(CMD)/sh_sdc.c				\
+#SDC_SOURCE=	\
+#		$(MODUL)/ff/ff9b/src/ff.c		\
+#		$(MODUL)/ff/ff9b/src/diskio.c	\
+#		$(MODUL)/ff/sdc.c			\
+#		$(MODUL)/ff/sdc_cmd.c		\
+#		$(CMD)/sh_sdc.c				\
+
+ADC_SOURCE= \
+		$(CMD)/sh_adc.c		\
+		$(MODUL)/adc/ad7708.c	\
+		$(APP)/ap_adc.c		\
+
+SDC_SOURCE= \
+		$(MODUL)/ff/fatfs/ff.c			\
+		$(MODUL)/ff/fatfs/gmmc.c		\
+		$(MODUL)/ff/fatfs/option/ccsbcs.c	\
+		$(MODUL)/ff/fatfs/low_ss1.c		\
+		$(MODUL)/ff/fatfs/spi_mmc.c		\
+		$(MODUL)/ff/fatfs/shell_fs.c	\
+		$(APP)/ap_file.c				\
+		$(CMD)/sh_file.c				\
 		
 
 RELAY_SOURCE=	\
@@ -156,7 +178,10 @@ RELAY_SOURCE=	\
 
 ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
+		$(HW)/hwISR.c		\
 		
+ADC_SOURCE_ISR= \
+		modul/adc/adcISR.c	\
 
 SERIAL_SOURCE_ISR=	\
 		$(MODUL)/serial/serialISR.c	\
@@ -167,13 +192,15 @@ THUMB_OBJS = $(THUMB_SOURCE:.c=.o)
 ARM_OBJS = $(ARM_SOURCE:.c=.o)
 
 THUMB_SOURCE += $(SERIAL_SOURCE)
-#THUMB_SOURCE += $(SERIAL2_SOURCE)
-THUMB_SOURCE += $(RELAY_SOURCE)
+THUMB_SOURCE += $(SERIAL2_SOURCE)
+#THUMB_SOURCE += $(RELAY_SOURCE)
 THUMB_SOURCE += $(MODBUS_SOURCE)
 THUMB_SOURCE += $(RTC_SOURCE)
 THUMB_SOURCE += $(SDC_SOURCE)
+THUMB_SOURCE += $(ADC_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
+ARM_SOURCE	+=  $(ADC_SOURCE_ISR)
 
 all: RTOSDemo.bin sizebefore
 
@@ -195,6 +222,7 @@ $(THUMB_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 $(ARM_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+bersihbersih:
 clean :
 	rm $(NAMA_FILE).elf
 	rm $(NAMA_FILE).hex

@@ -45,6 +45,7 @@ void rtcWrite(struct tm *newTime);
 						RTC_CCR &= ~RTC_CCR_CTCRST;	\
 						RTC_CCR |= RTC_CCR_CLKEN;	\
 					} while(0)
+			//
 		#endif
 		
 		#ifdef PAKAI_RELAY
@@ -88,6 +89,7 @@ void rtcWrite(struct tm *newTime);
 			
 			#define mainCOM_TEST_PRIORITY		( tskIDLE_PRIORITY + 2 )
 			#define mainCOM_TEST_BAUD_RATE		( ( unsigned long ) 115200 )
+			//#define mainCOM_TEST_BAUD_RATE		( ( unsigned long ) 9600 )
 			
 			#define setup_serial0_P0()	do {				\
 						PINSEL0 |= mainTX_ENABLE | mainRX_ENABLE;	\

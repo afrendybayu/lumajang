@@ -95,3 +95,15 @@ void data_kitab()	{
 	printf("    artinya me-nonaktifkan relay untuk data ke 8 pada kanal 2\r\n");
 	printf("\r\n");
 }
+
+void kanal_kitab()	{
+	printf(" Perintah untuk mengubah konfig kanal !\r\n");
+}
+
+void file_kitab()	{
+	
+}
+
+void rtc_kitab(int i)	{
+	printf(" Perintah untuk mengubah nilai memori RTC !\r\n");
+}

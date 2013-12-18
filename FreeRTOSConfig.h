@@ -83,7 +83,8 @@
 
 #define PROMPT				"iTong"
 #define BOARD_SANTER		"Santer"
-#define BOARD_SANTER_v1_0	"v1.0"
+#define BOARD_SANTER_v1_0
+#define BOARD_SANTER_versi	"v1.2"
 
 #define PAKAI_LED_UTAMA
 #define PAKAI_SHELL
@@ -95,21 +96,29 @@
 
 #define ST_LED				3
 #define ST_SHELL			20
-#define ST_SANTER			10		//	10
+#define ST_SANTER			8		//	10
 
 //#define PAKAI_RELAY
 
-//#define PAKAI_SERIAL_2
+#define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
 	#define PAKAI_SERIAL_2_P0		9600
-	#define ST_SER2					10
+	#define ST_SER2					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	#define MODBUS_RTU_SLAVE		
 #endif
 
+
+#define PAKAI_SPI_SSP1
+#ifdef  PAKAI_SPI_SSP1
+	#define PAKAI_ADC_7708 
+#endif
+
+
 #define PAKAI_SPI_SSP0
 #ifdef  PAKAI_SPI_SSP0
+	#define PAKAI_FILE_SIMPAN
 	#define PAKAI_SDCARD
 #endif
 
@@ -129,6 +138,8 @@
 #define configUSE_IDLE_HOOK         1
 #define configUSE_TICK_HOOK         1
 #define configCPU_CLOCK_HZ          ( ( unsigned long ) 60000000 )	/* =12Mhz xtal multiplied by 5 using the PLL. */
+//#define configCPU_CLOCK_HZ          ( ( unsigned long ) 10000000 )//
+//#define configCPU_CLOCK_HZ_low      ( ( unsigned long ) 10000000 )
 #define configTICK_RATE_HZ          ( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 4 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 104 )

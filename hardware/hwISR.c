@@ -69,12 +69,26 @@ void gpio_ISR_Handler( void )	{
 	//cek sumber
 
 	#if 0
-	if (IO2_INT_STAT_R & iKonter_10) {
+	if (IO0_INT_STAT_F & iKonter_10)	{
+		t = 9;	zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
 		#if 0
+		if (zz==1) {
+			set_konter_onoff(t, 0);
+		}
+		#endif
+		IO0_INT_CLR = iKonter_10;
+	}
+	#endif
+	if (IO0_INT_STAT_R & iKonter_10) {
 		t = 9; zz = status_konter[t];
 		if (zz==sRPM) {
-			//set_konter_rpm(t, new_period);
-		} else if (zz==sONOFF) {
+			set_konter_rpm(t, new_period);
+		} 
+		#if 0
+		else if (zz==sONOFF) {
 			set_konter_onoff(t, 1);
 		#ifdef PAKAI_PILIHAN_FLOW
 		} else if (zz==100)	{
@@ -83,17 +97,12 @@ void gpio_ISR_Handler( void )	{
 		#endif
 		}
 		#endif
-		IO2_INT_CLR = iKonter_10;
+		IO0_INT_CLR = iKonter_10;
 	} 
-	if (IO2_INT_STAT_F & iKonter_10)	{
-		t = 9;	zz = status_konter[t];
-		if (zz==1) {
-			set_konter_onoff(t, 0);
-		}
-		IO2_INT_CLR = iKonter_10;
-	}
+	
 
-	if (IO2_INT_STAT_F & iKonter_9) {
+	#if 0
+	if (IO0_INT_STAT_F & iKonter_9) {
 		t = 8;	zz = status_konter[t];
 		if (zz==0) {
 			set_konter_rpm(t, new_period);
@@ -104,10 +113,15 @@ void gpio_ISR_Handler( void )	{
 			set_konter_flow_pilih(t, zz);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_9;
-	} 
-	if (IO2_INT_STAT_R & iKonter_9)	{
+		IO0_INT_CLR = iKonter_9;
+	}
+	#endif
+	if (IO0_INT_STAT_R & iKonter_9)	{
 		t = 8;	zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (zz==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -115,10 +129,14 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 0);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_9;
+		#endif
+		IO0_INT_CLR = iKonter_9;
 	}
 
-	if (IO2_INT_STAT_F & iKonter_8) {		// buat pulsa
+
+
+	#if 0
+	if (IO0_INT_STAT_F & iKonter_8) {		// buat pulsa
 		t = 7; zz = status_konter[t];
 		if (zz==0) {
 			set_konter_rpm(t, new_period);
@@ -140,10 +158,15 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 1);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_8;
+		IO0_INT_CLR = iKonter_8;
 	} 
-	if (IO2_INT_STAT_R & iKonter_8)	{
+	#endif
+	if (IO0_INT_STAT_R & iKonter_8)	{
 		t = 7;  zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (zz==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -155,11 +178,13 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 0);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_8;
+		#endif
+		IO0_INT_CLR = iKonter_8;
 	}
-	
-	
-	if (IO2_INT_STAT_F & iKonter_7) {
+
+
+	#if 0
+	if (IO0_INT_STAT_F & iKonter_7) {
 		t = 6; zz = status_konter[t];
 		if (zz==0) {
 			set_konter_rpm(t, new_period);
@@ -183,10 +208,15 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 1);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_7;
+		IO0_INT_CLR = iKonter_7;
 	} 
-	if (IO2_INT_STAT_R & iKonter_7)	{
+	#endif
+	if (IO0_INT_STAT_R & iKonter_7)	{
 		t = 6; zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (zz==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -198,11 +228,12 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 0);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_7;
+		#endif
+		IO0_INT_CLR = iKonter_7;
 	}
 
-
-	if (IO2_INT_STAT_F & iKonter_6) {
+	#if 0
+	if (IO0_INT_STAT_F & iKonter_6) {
 		t = 5;  zz = status_konter[t];
 		if (zz==0) {
 			set_konter_rpm(t, new_period);
@@ -224,10 +255,15 @@ void gpio_ISR_Handler( void )	{
 			set_konter_flow_pilih(t, zz);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_6;
+		IO0_INT_CLR = iKonter_6;
 	} 
-	if (IO2_INT_STAT_R & iKonter_6)	{
+	#endif
+	if (IO0_INT_STAT_R & iKonter_6)	{
 		t = 5;  zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (zz==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -235,10 +271,12 @@ void gpio_ISR_Handler( void )	{
 			set_konter_flow_pilih(t, konter.t_konter[t-1].onoff);
 		#endif
 		}
-		IO2_INT_CLR = iKonter_6;
+		#endif
+		IO0_INT_CLR = iKonter_6;
 	}
-	
 
+
+	#if 0
 	if (IO2_INT_STAT_F & iKonter_5)	{
 		t = 4;  zz = status_konter[t];
 		if (zz==0) {
@@ -265,8 +303,13 @@ void gpio_ISR_Handler( void )	{
 		//set_konter(t, new_period);
 		IO2_INT_CLR = iKonter_5;
 	}
+	#endif
 	if (IO2_INT_STAT_R & iKonter_5)	{
 		t = 4;
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (status_konter[t]==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -278,9 +321,12 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 0);
 		#endif
 		}
+		#endif
 		IO2_INT_CLR = iKonter_5;
 	}
 	
+
+	#if 0
 	if (IO2_INT_STAT_F & iKonter_4)	{
 		t = 3;  zz = status_konter[t];
 		//set_konter_rpm(t, new_period);
@@ -308,8 +354,13 @@ void gpio_ISR_Handler( void )	{
 		}		
 		IO2_INT_CLR = iKonter_4;
 	}
+	#endif
 	if (IO2_INT_STAT_R & iKonter_4)	{
 		t = 3; zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
 		if (zz==1) {
 			set_konter_onoff(t, 0);
 		#ifdef PAKAI_PILIHAN_FLOW
@@ -321,9 +372,33 @@ void gpio_ISR_Handler( void )	{
 			set_konter_onoff(t, 0);
 		#endif
 		}
+		#endif
 		IO2_INT_CLR = iKonter_4;
 	}
-		
+	
+
+	if (IO2_INT_STAT_R & iKonter_3)	{
+		t = 2; zz = status_konter[t];
+		if (zz==sRPM) {
+			set_konter_rpm(t, new_period);
+		}
+		#if 0
+		if (zz==1) {
+			set_konter_onoff(t, 0);
+		#ifdef PAKAI_PILIHAN_FLOW
+		} else if (zz==3)	{
+			set_konter_onoff(t, 0);
+		} else if (zz==4)	{
+			set_konter_onoff(t, 0);
+		} else if (zz==201)	{
+			set_konter_onoff(t, 0);
+		#endif
+		}
+		#endif
+		IO2_INT_CLR = iKonter_3;
+	}
+
+	#if 0
 	if (IO2_INT_STAT_F & iKonter_3)	{
 		t = 2; zz = status_konter[t];
 		//set_konter(t, new_period);
@@ -349,29 +424,15 @@ void gpio_ISR_Handler( void )	{
 		}
 		IO2_INT_CLR = iKonter_3;
 	}
-	if (IO2_INT_STAT_R & iKonter_3)	{
-		t = 2; zz = status_konter[t];
-		if (zz==1) {
-			set_konter_onoff(t, 0);
-		#ifdef PAKAI_PILIHAN_FLOW
-		} else if (zz==3)	{
-			set_konter_onoff(t, 0);
-		} else if (zz==4)	{
-			set_konter_onoff(t, 0);
-		} else if (zz==201)	{
-			set_konter_onoff(t, 0);
-		#endif
-		}
-		IO2_INT_CLR = iKonter_3;
-	}
 	#endif
 
 	if (IO2_INT_STAT_R & iKonter_2)	{
 		t = 1; zz = status_konter[t];
-		#if 0
 		if (zz==sRPM) {
 			set_konter_rpm(t, new_period);
-		} else if (zz==sONOFF) {
+		}
+		#if 0
+		else if (zz==sONOFF) {
 			set_konter_onoff(t, 1);
 		#ifdef PAKAI_PUSHBUTTON
 		} else if (zz==sPUSHBUTTON) {

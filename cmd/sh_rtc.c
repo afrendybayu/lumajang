@@ -115,9 +115,55 @@ void cek_flag_RTC_sh()	{
 void init_RTC_sh()	{
 	setup_rtc();
 	start_rtc();
-	//printf(" ********* init RTC: %d\r\n", flagRTCc);
+	uprintf(" ********* init RTC: %d\r\n", flagRTCc);
 }
 
+void start_uptime()		{
+	struct tm *a;
+	st_hw.wkt_awal = (unsigned int) now_to_time(1, a);		// epoch
+}
+
+void hitung_uptime()	{
+	unsigned int beda_t;
+	struct tm *a;
+	int nW[5];
+	char kalimat[100], katakan[30];
+	
+	st_hw.wkt_now = (unsigned int) now_to_time(1, a);		// epoch
+	beda_t = st_hw.wkt_now - st_hw.wkt_awal;
+	if (beda_t<0)	{
+		uprintf("  \r\n KALENDER ERROR !!!\r\n");
+		return 0;
+	}
+	
+	hitung_wkt(beda_t, &nW);
+	
+	strcpy(kalimat, "");
+	if (nW[4] > 0)	{
+		sprintf(katakan," %d thn ", nW[4]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[3] > 0)	{
+		sprintf(katakan, "%d hari ", nW[3]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[2] > 0)	{
+		sprintf(katakan, "%d jam ", nW[2]);
+		strcat(kalimat, katakan);
+	}
+	if (nW[1] > 0)	{
+		sprintf(katakan, "%d mnt ", nW[1]);
+		strcat(kalimat, katakan);
+	}
+	
+	a = localtime (&st_hw.wkt_awal);
+	uprintf("\r\n  UPtime %s%d dtk [total %d detik]\r\n  Sejak %d-%02d-%4d %d:%02d%:%02d ", kalimat, nW[0], beda_t,	\
+		a->tm_mday, a->tm_mon+1, a->tm_year+1900, a->tm_hour, a->tm_min, a->tm_sec);
+		
+	a = localtime (&st_hw.wkt_now);
+	uprintf(  " Now: %d-%02d-%4d %d:%02d%:%02d\r\n", \
+		a->tm_mday, a->tm_mon+1, a->tm_year+1900, a->tm_hour, a->tm_min, a->tm_sec);
+}
 
 void get_cal()	{
 	char* hari[] = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
@@ -129,9 +175,90 @@ void get_cal()	{
 	ctime1.i = RTC_CTIME1; 
 	ctime2.i = RTC_CTIME2;
 
-	qsprintf(	"  Waktu : %s, %d-%s-%04d %d:%02d:%02d\r\n", 			\
+	qsprintf(	"\r\n  Waktu : %s, %d-%s-%04d %d:%02d:%02d\r\n", 			\
 		hari[ctime0.dow], ctime1.dom, bln[ctime1.month], ctime1.year, 	\
 		ctime0.hours, ctime0.minutes, ctime0.seconds);		// ctime2.doy, 
+}
+
+void cek_rtc_mem(int argc, char ** argv)	{
+	uprintf("\r\n");
+	int jml, mulai, cc, i;
+	float kf;
+	if (argc==3)	{
+		mulai = atoi(argv[1]);
+		if (mulai==0)		{
+			uprintf("\r\n  Arg Register mulai SALAH !!!\r\n");
+		}
+		jml = atoi(argv[2]);
+		if (jml>50)	jml=50;
+		if (jml==0)		{
+			uprintf("\r\n  Arg Jml SALAH !!!\r\n");
+		}
+		for (i=0; i<jml; i++)	{
+			kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+mulai+i))));
+			uprintf("  Nilai[%2d]: %.2f, dataf[%d]: %.2f\r\n", mulai+i, kf, i, data_f[i]);
+		}
+	}
+	if (argc==2)	{
+		mulai = atoi(argv[1]);
+		for (i=0; i<JML_KANAL; i++)	{
+			kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+mulai+i))));
+			uprintf("  Nilai[%2d]: %.2f\r\n", mulai+i, kf);
+		}
+	}
+}
+
+void set_rtc_mem(int argc, char ** argv)	{
+	uprintf("\r\n");
+	if (argc!=3)	{
+		rtc_kitab(0);
+		return 1;
+	}
+	
+	int nx = atoi(argv[1]);			// nx valid >0
+	float fl, kf;
+	unsigned int *ifl;
+	
+	if (nx==0)	{
+		rtc_kitab(1);
+		return 1;
+	}
+	sscanf(argv[2], "%f", &fl);
+	uprintf("  memRTC [%d]: %.3f\r\n", nx, fl);
+	
+	ifl = (unsigned int *) &fl;
+	data_f[nx-1] = fl;
+
+	*(&MEM_RTC0+(RTC_MEM_START+nx)) = *( (int*) &fl);	// 100 + kanal (1-...)
+	
+	kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+nx))));
+	uprintf("  memRTC [%d/%d]: %.3f, %d\r\n", nx, RTC_MEM_START+nx, kf, ifl);
+	
+	#if 1
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	if (nx>10)	return;
+	
+	int ch = nx-1;
+	char status=st_env->kalib[ch].status;
+	if (status==sRUNNING_HOURS)		{
+		konter.t_konter[ch].rh_x = (int) fl;
+		uprintf("   data[%d]= %.f, %d\r\n", ch, data_f[ch], konter.t_konter[ch].rh_x);
+	}
+	else if (status==sFLOWx)		{
+		konter.t_konter[ch].hit = (int) (fl-st_env->kalib[ch].C)/st_env->kalib[ch].m;
+		uprintf("   data[%d]= %.f, %d\r\n", ch, data_f[ch], konter.t_konter[ch].hit);
+	}
+	#endif
+}
+
+void set_rtc_mem_default()	{
+	float fl=0;
+	int i;
+
+	for (i=0; i<JML_TITIK_DATA; i++)	{
+		*(&MEM_RTC0+(RTC_MEM_START+i)) = *( (int*) &fl);
+	}
 }
 
 #ifdef PAKAI_KONTROL_RTC

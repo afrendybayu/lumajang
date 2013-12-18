@@ -271,9 +271,9 @@ void baca_rom()	{
 	
 	int i;
 	char *envx;
-	envx = (char *) ALMT_ENV;
+	envx = (char *) ALMT_FILE;
 	printf("  data: ");
-	for (i=0; i<10; i++)	{
+	for (i=0; i<20; i++)	{
 		printf("%02X ", *envx++);
 	}
 	printf("\r\n");

@@ -25,7 +25,7 @@ void cek_env(int argc, char **argv)	{
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_v1_0);
+	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_versi);
 	uprintf("  Nama Board : %s\r\n", st_env->nama_board);
 	uprintf("  No Seri    : %s\r\n", st_env->SN);
 	//uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
@@ -70,6 +70,7 @@ char set_env(int argc, char **argv)	{
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_env);
 		return 2;
 	}
 	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
@@ -194,14 +195,25 @@ void set_env_default()		{
 	st_env->GW2 = 1;
 	st_env->GW3 = 1;
 	
-	for (i=0; i<JML_KANAL; i++)	{
+	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
+		st_env->kalib[i].status = sRPM;
 		//strcpy(env.kalib[i].ket, "----");
+		//printf("%d", sRPM);
 	}
 	
+	for (i=0; i<(JML_KANAL); i++)	{
+		st_env->kalib[i+JML_KANAL].m = 1;
+		st_env->kalib[i+JML_KANAL].C = 0;
+		st_env->kalib[i+JML_KANAL].status = sADC_7708;
+		//strcpy(env.kalib[i].ket, "----");
+		//printf("%d", sADC_7708);
+	}
+	
+	
 	st_env->magic1 = 0x01;
-	st_env->magic2 = 0x01;
+	st_env->magic2 = 0x02;
 	st_env->mmc_serial = 0;
 	strcpy(st_env->SN, "STR.kalender");
 
@@ -229,6 +241,7 @@ void set_env_default()		{
 	st_env->statusSlave = 0;
 	st_env->prioDebug  = 10;
 	st_env->prioDebug2 = 20;
+	st_env->jmlfile = 0;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);

@@ -791,7 +791,11 @@ FRESULT move_window (
 		uprintf("%s --> disk: %d, sect: %d\r\n", __FUNCTION__, fs->drv, sector);
 		if (disk_read(fs->drv, fs->win, sector, 1) != RES_OK)
 			return FR_DISK_ERR;
+<<<<<<< HEAD
 		uprintf("%s --> OK %d\r\n", __FUNCTION__, sector);
+=======
+		//uprintf("%s --> OK %d\r\n", __FUNCTION__, sector);
+>>>>>>> pentol
 		fs->winsect = sector;
 	}
 
@@ -2073,7 +2077,7 @@ BYTE check_fs (	/* 0:FAT-VBR, 1:Any BR but not FAT, 2:Not a BR, 3:Disk error */
 )
 {
 	//uprintf("===> %s() fs->drv: %d, fs->win: %d, sect: %d\r\n", \
-	//			__FUNCTION__, fs->drv, fs->win, sect);
+				__FUNCTION__, fs->drv, fs->win, sect);
 	if (disk_read(fs->drv, fs->win, sect, 1) != RES_OK)	/* Load boot record */
 		return 3;
 	//printf("+++++++++++++++++++++ ADA DISINI +++++++++++++++++==\r\n");
@@ -2251,11 +2255,13 @@ FRESULT chk_mounted (	/* FR_OK(0): successful, !=0: any error occurred */
 	} else {
 		if (!fs->n_rootdir)	return FR_NO_FILESYSTEM;	/* (BPB_RootEntCnt must not be 0) */
 		fs->dirbase = fs->fatbase + fasize;				/* Root directory start sector */
+		uprintf("fs->dirbase: %d, fs->fatbase: %d, fasize: %d\r\n", fs->dirbase, fs->fatbase, fasize);
 		szbfat = (fmt == FS_FAT16) ?					/* (Required FAT size) */
 			fs->n_fatent * 2 : fs->n_fatent * 3 / 2 + (fs->n_fatent & 1);
 	}
 	if (fs->fsize < (szbfat + (SS(fs) - 1)) / SS(fs))	/* (BPB_FATSz must not be less than required) */
 		return FR_NO_FILESYSTEM;
+	
 
 #if !_FS_READONLY
 	/* Initialize cluster allocation information */

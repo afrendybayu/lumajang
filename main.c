@@ -144,10 +144,13 @@ xSemaphoreHandle xSemSer0 = NULL;
 int main( void )	{
 
 	st_hw.init = 0;
-	st_hw.idle_c = 0;	
+	st_hw.idle_c = 0;
+	st_hw.mm = 0;
+	st_hw.uudetik = 0;
+	st_hw.uuwaktu = 0;
 
 	#ifdef PAKAI_SHELL
-		xSemSer0 = xSemaphoreCreateMutex();;
+		xSemSer0 = xSemaphoreCreateMutex();
 	#endif
 
 	setup_hardware();
@@ -286,6 +289,8 @@ void vLedTask( void *pvParameters )	{
 		#else
 		vTaskDelay(495);
 		#endif
+		st_hw.mm++;
+		//uprintf("..%d", st_hw.mm);
 	}
 
 }

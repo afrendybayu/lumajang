@@ -18,7 +18,7 @@ void cek_sumber(int argc, char **argv)		{
 	IAP_return_t iap_return;
 	iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
 	if (iap_return.ReturnCode == CMD_SUCCESS)	{
-		printf("  ERR: Sektor Kosong ! Lakukan: set_env default\r\n");
+		printf("  ERR: Sektor Kosong ! Lakukan: set_sumber default\r\n");
 		return;
 	}
 	
@@ -75,6 +75,7 @@ char set_sumber(int argc, char **argv)		{
 	st_sumber = pvPortMalloc( JML_SUMBER * sizeof (struct t_sumber) );
 	if (st_sumber == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_sumber);
 		return -1;
 	}
 	printf(" -->%s(): Mallok @%X\r\n", __FUNCTION__, st_sumber);

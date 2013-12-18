@@ -14,8 +14,8 @@ void setup_hardware()	{
 	PCLKSEL0 = 0x55555555;		// PCLK is the same as CCLK
 	PCLKSEL1 = 0x55555555;
 	
-	PCONP   |= BIT(31);		// Power USB aktif
-	PCONP   |= BIT(30);		// Power Ethernet Aktif
+	PCONP   |= BIT(31);			// Power USB aktif
+	PCONP   |= BIT(30);			// Power Ethernet Aktif
 	FIO1DIR  = 0xFFFFFFFF;
 
 	/* USB Power dinyalakan supaya memory USB bisa dipakai */
@@ -91,7 +91,7 @@ void init_hardware()	{
 
 
 	
-	#if 0
+	#if 1
 	gpio_int_init();
 	#endif
 	
@@ -190,7 +190,7 @@ void gpio_init()	{
 }
 
 // fungsi gpio_int_init untuk inisialisasi input interrupt konter
-#if 0
+#if 1
 void gpio_int_init()	{
 	extern void ( gpio_ISR_Wrapper )( void );
 	extern void ( timer1_ISR_Wrapper )( void );

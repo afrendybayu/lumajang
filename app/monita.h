@@ -2,10 +2,19 @@
 #ifndef __APP_MONITA__
 #define __APP_MONITA__
 
+#include <time.h>
+
 #define JML_SECTOR_LPC 		28
 #define IAP_ADDRESS 		0x7FFFFFF1
 typedef void (*IAP)(unsigned int [],unsigned int[]);
 
+
+
+#ifdef PAKAI_SDCARD
+#include "ff/ff9b/src/ff.h"
+//FATFS xFatFs[2];
+//FATFS Fatfs[1];
+#endif
 
 typedef struct	{
   unsigned int ReturnCode;
@@ -42,13 +51,20 @@ typedef enum IAP_STATUS_t {
 
 //IAP_return_t iap_return;
 
+#define  RPM_MAX		10000
+#define  nFLOW_MAX		1000000
 
+#define  YA				1
+#define  TIDAK			0
 
 #define  sRPM			0
 #define	 sONOFF			1
 #define	 sPUSHBUTTON	2
 #define	 sFLOW1			3
 #define	 sFLOW2			4
+#define  sFLOWx			5
+#define	 sRPM_RH		6
+#define	 sRUNNING_HOURS	7
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202
@@ -57,6 +73,15 @@ typedef enum IAP_STATUS_t {
 #define  fENERGI		251
 #define	 sADC_ORI		9
 #define  sADC_7708		250
+
+#define  FOLDER_SENDED		"terkirim"
+#define	 LIHAT				0
+#define  LIHAT_ISI_SATU		1
+#define  MAX_SEND_FILE_MB	3600
+#define  MAX_RX_MB			4*1024
+#define  MAX_DEBUG_TX		2*1024
+
+#define  RTC_MEM_START		100
 
 //#define ATA		0
 //#define MMC		1
@@ -109,6 +134,16 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_ENV		(ALMT_SEKTOR_19)
 #define ALMT_SUMBER		(ALMT_SEKTOR_19+1024*1)
 #define ALMT_CRON		(ALMT_SEKTOR_19+1024*2)
+#define ALMT_FILE		(ALMT_SEKTOR_19+1024*3)
+
+enum t_struct{ 
+	DATA,
+	ENV,
+	SUMBER,
+	CRON,
+	BERKAS
+}; 
+enum t_struct st_struct;
 
 #define SEKTOR_DATA		20
 #define ALMT_DATA		ALMT_SEKTOR_20
@@ -120,6 +155,7 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_DATA_TMP		(ALMT_SEKTOR_21)
 #define ALMT_SUMBER_TMP		(ALMT_SEKTOR_21+1024*1)
 #define ALMT_CRON_TMP		(ALMT_SEKTOR_21+1024*2)
+#define ALMT_FILE_TMP		(ALMT_SEKTOR_21+1024*3)
 
 
 #define JUM_GPIO	10
@@ -128,14 +164,7 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define uchr		unsigned char
 //#define uint		unsigned int
 
-enum t_struct{ 
-	DATA,
-	ENV,
-	SUMBER,
-	CRON,
-	
-}; 
-enum t_struct st_struct;
+
 
 typedef struct {
 	//unsigned int new_period;
@@ -146,6 +175,11 @@ typedef struct {
 	unsigned char onoff;
 	unsigned int hit2;
 	unsigned int hit_lama2;		// untuk mengetahui mati atau enggak
+	time_t rh_on;				// untuk mengetahui waktu aktif
+	time_t rh_off;				// untuk mengetahui waktu mati
+	unsigned int rh_flag;		// untuk mengetahui FSM rh
+	time_t rh;					// untuk mengetahui nilai running hours, setelah running, mulai 0 ketika sebelumnya mati
+	time_t rh_x;				// untuk mengetahui nilai running hours, total sebelum running lagi
 } ts_konter;
 
 struct t2_konter{
@@ -167,6 +201,11 @@ struct t_st_hw  {
 	long int adc_c;
 	unsigned char rtc;
 	unsigned char sdc;
+	int mm;
+	time_t wkt_awal;
+	time_t wkt_now;
+	int uudetik;
+	int uuwaktu;
 };
 
 volatile struct t_st_hw st_hw;
@@ -178,9 +217,17 @@ struct t_kalib {
 	char adc;
 };
 
+#ifdef PAKAI_FILE_SIMPAN
+struct t_file	{
+	int jml;
+	int simpan;
+	int urut[JML_TITIK_DATA];
+};
+#endif
+
 struct t_adc {
 	unsigned char cur_kanal;
-	unsigned char count;
+	unsigned int count;
 	unsigned char ambil;
 	unsigned short data[JML_KANAL];
 	//float flt_data[JML_KANAL];
@@ -240,7 +287,7 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	struct t_kalib kalib[JML_KANAL];
+	struct t_kalib kalib[JML_KANAL*2];
 	int magic1;
 	int magic2;
 	int mmc_serial;
@@ -270,6 +317,7 @@ struct t_env {
 	char statusSlave;
 	int		prioDebug;
 	int		prioDebug2;
+	int		jmlfile;
 };
 //struct t_env st_env;
 

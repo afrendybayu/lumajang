@@ -143,6 +143,7 @@ char hapuskan_sektor(int sektor)	{
 int hitung_ram(int jml)	{
 	int nn;
 	
+	if (jml > 0)    nn =  256;
 	if (jml > 256)  nn =  512;
 	if (jml > 512)  nn = 1024;
 	if (jml > 1024) nn = 4096;
@@ -263,8 +264,9 @@ char simpan_rom(int sektor, unsigned int addr, unsigned short *data, int jml)	{
 		#ifdef DEBUG_IAP
 		printf("  SS[%d]", nSktr);
 		#endif
-		iap_return = iapCopyMemorySector(addr, data, jml);
-		//printf("  ---> hasil kopi: %d\r\n", iap_return.ReturnCode);
+		
+		iap_return = iapCopyMemorySector(addr, (unsigned short *) data, jml);
+		//printf("  ---> hasil kopi: %d ", iap_return.ReturnCode);
 	} 
 	else
 		return 1;
@@ -402,21 +404,65 @@ void generate_data_random()		{
 	}
 }
 
+void load_data_rtc()	{
+	int i;
+	char status;
+	float kf;
+	
+	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
+	
+	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
+		uprintf("  Baca data dari memRTC\r\n");
+		struct t_env *st_env;
+		st_env = ALMT_ENV;
+		
+		for (i=0; i<JML_KANAL; i++)		{
+			status = st_env->kalib[i].status;
+			data_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+1))));
+			if (status==sRUNNING_HOURS)		{
+				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
+				//uprintf("RUNHOUR[%d] : %d  --> ", i+1, konter.t_konter[i].rh_x);
+			}
+			if (status==sFLOWx)		{
+				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
+				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
+			}
+			//uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
+			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
+		}
+	}
+	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
+	
+	}
+	
+	
+	
+}
+
 void baca_konfig_rom()		{
 	//printf("Data env & sumber\r\n");
 	IAP_return_t iap_return = iapReadBlankSector(SEKTOR_ENV, SEKTOR_ENV);
+	int i;
+	
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
 		printf("Baca Konfig ENV & SUMBER  ");
+		//load_data_rtc();
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
 		printf(">> Init ROM: ENV, SUMBER\r\n");
 		set_env_default();
 		set_sumber_default();
+		
+		
+		#ifdef PAKAI_FILE_SIMPAN
+		printf(">> Init ROM: FILE\r\n");
+		set_file_default();
+		#endif
 	} else {
 		
 	}
 	//printf("Data data\r\n");
-	generate_data_random();
+	//generate_data_random();
 	iap_return = iapReadBlankSector(SEKTOR_DATA, SEKTOR_DATA);
 	if (iap_return.ReturnCode == SECTOR_NOT_BLANK)	{		// setting sudah ada
 		printf("Baca Konfig DATA");
@@ -426,6 +472,58 @@ void baca_konfig_rom()		{
 		set_data_default();
 	}
 	printf("\r\n");
+}
+
+char kopi_semua_blok(int almt)		{
+	
+	if (almt != SUMBER)	{
+		struct t_sumber *st_sumber;
+		st_sumber = pvPortMalloc( sizeof (struct t_sumber)*JML_SUMBER );
+				
+		if (st_sumber==NULL)	{
+			printf("  GAGAL alokmem SUMBER !");
+			vPortFree (st_sumber);
+			return 1;
+		}
+		//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_sumber);
+		taskENTER_CRITICAL();
+		memcpy((char *) st_sumber, (char *) ALMT_SUMBER_TMP, sizeof (struct t_sumber)*JML_SUMBER);
+		taskEXIT_CRITICAL();
+		simpan_rom(SEKTOR_ENV, ALMT_SUMBER, (unsigned short *) st_sumber, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
+		vPortFree (st_sumber);
+	}
+	
+	if (almt != ENV)	{
+		struct t_env *st_env;
+		st_env = pvPortMalloc( sizeof (struct t_env) );
+		if (st_env == NULL)	{
+			printf("  GAGAL alokmem ENV !");
+			return 2;
+		}
+		//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_env);
+		taskENTER_CRITICAL();
+		memcpy((char *) st_env, (char *) ALMT_ENV_TMP, (sizeof (struct t_env)));
+		taskEXIT_CRITICAL();
+		simpan_rom(SEKTOR_ENV, ALMT_ENV, (unsigned short *) st_env, hitung_ram(cek_jml_struct(ENV)) );
+		vPortFree (st_env);
+	}
+	#ifdef PAKAI_SDCARD
+	if (almt != BERKAS)	{
+		struct t_file *st_file;
+		st_file = pvPortMalloc( sizeof (struct t_file) );
+		if (st_file == NULL)	{
+			printf("  GAGAL alokmem FILE !");
+			return 3;
+		}
+		//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_file);
+		taskENTER_CRITICAL();
+		memcpy((char *) st_file, (char *) ALMT_FILE_TMP, (sizeof (struct t_file)));
+		//uprintf("jml: %d/%d\r\n", cek_jml_struct(BERKAS), hitung_ram(cek_jml_struct(BERKAS)));
+		taskEXIT_CRITICAL();
+		simpan_rom(SEKTOR_ENV, ALMT_FILE, (unsigned short *) st_file, hitung_ram(cek_jml_struct(BERKAS)) );
+		vPortFree (st_file);
+	}
+	#endif
 }
 
 // flag dipake untuk data
@@ -438,6 +536,8 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 			hapuskan_sektor(sektor);
 			simpan_rom(sektor, ALMT_ENV, (unsigned short *) pdata, hitung_ram(cek_jml_struct(ENV)) );
 			
+			kopi_semua_blok(ENV);
+			#if 0
 			struct t_sumber *st_sumber;
 			st_sumber = pvPortMalloc( sizeof (struct t_sumber)*JML_SUMBER );
 			
@@ -454,12 +554,15 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 			
 			simpan_rom(sektor, ALMT_SUMBER, (unsigned short *) st_sumber, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
 			vPortFree (st_sumber);
+			#endif
 		}
 		
 		if (st==SUMBER)	{
 			hapuskan_sektor(sektor);
 			simpan_rom(sektor, ALMT_SUMBER, (unsigned short *) pdata, hitung_ram(cek_jml_struct(SUMBER)*JML_SUMBER) );
 			
+			kopi_semua_blok(SUMBER);
+			#if 0
 			struct t_env *st_env;
 			st_env = pvPortMalloc( sizeof (struct t_env) );
 			if (st_env == NULL)	{
@@ -472,6 +575,15 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 			taskEXIT_CRITICAL();
 			simpan_rom(sektor, ALMT_ENV, (unsigned short *) st_env, hitung_ram(cek_jml_struct(ENV)) );
 			vPortFree (st_env);
+			#endif
+		}
+		
+		if (st==BERKAS)		{
+			//uprintf("sektor: %d, almt: 0x%08X, isi: %d\r\n", sektor, ALMT_FILE, pdata[0]);
+			hapuskan_sektor(sektor);
+			simpan_rom(sektor, ALMT_FILE, (unsigned short *) pdata, hitung_ram(cek_jml_struct(BERKAS)) );
+
+			kopi_semua_blok(BERKAS);
 		}
 	}
 	else if (sektor==SEKTOR_DATA)		{

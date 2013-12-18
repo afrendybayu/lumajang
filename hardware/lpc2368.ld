@@ -24,7 +24,7 @@ SECTIONS
 		*(.rodata*)
 		*(.glue_7)
 		*(.glue_7t)
-		KEEP(*(.eh_frame))		
+		KEEP(*(.eh_frame))
 	} >flash
 
 	__end_of_text__ = .;
@@ -49,21 +49,18 @@ SECTIONS
 	. = ALIGN(32 / 8);
 	_bss_end__ = . ; __bss_end__ = . ; __end__ = . ;
 
-	.usbram (NOLOAD):
+	.usbram1 (NOLOAD):
 	{
-	__usbram_beg__ = .;
-	*(.dmaram)
+		__usbram_beg__ = .;
+		*(.usbram1)
 		__usbram_end__ = .;
 	} >usbram
 
 	.ethram (NOLOAD):
 	{
-	__ethram_beg__ = .;
-	*(.ethram)
+		__ethram_beg__ = .;
 		__ethram_end__ = .;
 	} >ethram
-
-
 }
 	. = ALIGN(32 / 8);
 	_end = .;

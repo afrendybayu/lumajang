@@ -16,7 +16,7 @@ void cek_data(int argc, char **argv)	{
 	struct t_data *st_data;
 	if (argc==2)	{
 		int smb = atoi(argv[1]);
-		if (smb==0)		{
+		if (smb==0 || smb>JML_SUMBER)		{
 			printf("\r\n--> Sumber SALAH !!\r\n");
 			return;
 		}
@@ -98,6 +98,7 @@ char set_data(int argc, char **argv)		{
 	st_data = pvPortMalloc( PER_SUMBER * sizeof (struct t_data) );
 	if (st_data == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_data);
 		return 3;
 	}
 	

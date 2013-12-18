@@ -11,24 +11,26 @@
 #include "sh_sdc.h"
 #include "ff/sdc_cmd.h"
 
-//extern FATFS *FatFs[];
+
+//extern FATFS xFatFs[];
 
 
 void sh_cek_status_sdc()	{
 	qsprintf("status : %s\r\n", (cek_status_sdc()==0)?"AKTIF":"MATI" );
 }
 
+#if 0
 void mount_disk(unsigned char disk)	{
-	FATFS xFatFs[2];
+	//FATFS xFatFs[2];
 	char strFs[24];
 	unsigned char a;
-	a = f_mount(disk, &xFatFs);
+	a = f_mount(disk, &xFatFs[0]);
 	//a = f_mount(disk, &xFatFs[0]);
 	//ket_fs(a, &strFs);
 	//qsprintf("a: %d-%s, xFatFs.drive: %d, size: %d\r\n", a, ket_fs(a), xFatFs[0].drv, xFatFs[0].csize);
 	//qsprintf("a: %d-%s\r\n", a, strFs);
 }
-
+#endif
 void sh_cek_read_sdc(void)	{
 	unsigned char data[2];
 	qsprintf("====> baca %s()\r\n", __FUNCTION__);
