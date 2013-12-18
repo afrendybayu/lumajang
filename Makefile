@@ -58,7 +58,7 @@ NAMA_FILE=santer
 #DEMO_COMMON_DIR=../../Common/Minimal
 #DEMO_INCLUDE_DIR=../../Common/include
 
-RTOS_SOURCE_DIR=modul/FreeRTOSv5.2
+RTOS_SOURCE_DIR=modul/FreeRTOSv7.5.2
 
 #UIP_COMMON_DIR=../../Common/ethernet/uIP/uip-1.0/uip
 #PENULIS=../../../../../../atinom/modul/Penulis/lpc_dbe
