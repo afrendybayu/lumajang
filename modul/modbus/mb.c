@@ -403,7 +403,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 		if (index+i==24)	{			// waktu epoch !!!
 			//uprintf(">>>>> sync waktu modem[%d] : %.0f\r\n", index+i, data_f[index+i]);
 			if (st_hw.uuwaktu>2)	{
-				uprintf("+++++ waktunya update waktu modem[%d] : %.0f !!!\r\n", index+i, data_f[index+i]);
+				uprintf("+++++ update waktu modem[%d] : %.0f !!!\r\n", index+i, data_f[index+i]);
 				sync_waktu_modem(data_f[index+i]);
 				st_hw.uuwaktu=0;
 			}
