@@ -413,6 +413,9 @@ int upload_konfig(char *path)	{
 		vTaskDelay(1);
 		//if (baris==20) break;
 		//baris++;
+		
+		/* wdog diurussi dulu */
+		pll_feed();
 	}
 	
 	//uprintf("=== AKHIR FILE ====\r\n");

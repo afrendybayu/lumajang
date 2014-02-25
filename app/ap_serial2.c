@@ -2,6 +2,22 @@
 // Afrendy Bayu
 // Depok, 25 Maret 2013
 // 
+// 25 Feb 2014
+// ditambahkan timer untuk reset jika lebih dari waktu yang ditentukan
+// tidak ada data yang masuk.
+// 
+// skenario :
+// saat jadi modbus slave, request biasanya 8 byte (8 karakter)
+// jika kecepatan 115200, maka 8 byte itu kira2 akan diterima dalam
+// waktu sbb :
+// 115200 ==> 14400 byte/s, maka 1 byte perlu : 0.069 ms
+// maka jika 8 byte, mestinya akan diterima dalam : 0.55 ms
+// 
+// jika 9600 bps, ==> 9600/8 = 1200 byte/s, maka 1 byte perlu : 0.83 ms
+// jika 8 byte, maka : 6.6 ms
+// 
+// jadi jika dalam 10 ms, data tidak komplit 8, dengan aman mestinya 
+// bisa kita reset
 
 /* Scheduler include files. */
 
@@ -96,7 +112,8 @@ char s[30];
 	for( ;; )	{
 		//printd2(10, "serial 2: %d\r\n", loop2++);
 		//vSerialPutString2(xPort2, "tes2\r\n", 6);
-		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
+		//xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
+		xGotChar = xSerialGetChar2( xPort2, &ch, 1 );
 		if( xGotChar == pdTRUE )		{
 			//printf("%02x ", (char) ch);
 			//printf("%c ", (char) ch);
@@ -104,21 +121,37 @@ char s[30];
 			nmb++;
 			//strSer2[nmb+1] = '\0';
 			//sedot_mod(ch);
+			
+			printf("n%d:%X,", nmb, (unsigned char) ch);
 			flag_ms=1;
+			
+			if (nmb >= 8)
+			{
+				balas = proses_mod(8, &strmb[nmb - 8]);
+				//nmb = 0;
+				loop2 = 0;
+				printf("<bal %d>", balas);
+			}
 		}
 		else {
+			
+			/* setiap lepas dari loop diatas direset saja */
+			nmb = 0;
+			
+			#if 0
 			// sedot data respon (sendiri), clear buffer
 			if ( (balas==nmb) && (balas>0) )	{			
-				//printf("Reset MB2 !!!\r\n");
+				printf("Reset MB2 !!!\r\n");
 				nmb = 0;
 				flag_ms = 0;
 				balas = 0;
 			}
 			
 			if (flag_ms==1 && nmb>4)	{
-				balas = proses_mod(nmb, strmb);
+				//balas = proses_mod(nmb, strmb);
 				//printf("--==> BALAS MB: %d\r\n", balas);
 				nmb = 0;
+				//loop2 = 0;
 			}
 			if (balas==0)	{
 				nmb = 0;
@@ -128,13 +161,16 @@ char s[30];
 			flag_ms = 0;
 			nmb = 0;
 			#endif
+			#endif
+			
 		}
 	}
 }
 
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
-
+	
+	printf(">PP %d<", mbn);
 	#if 0
 	printf("\r\nJml CMD: %d -->", mbn);
 	int i,mm;
@@ -170,7 +206,7 @@ int proses_mod(int mbn, char *mbstr)	{
 	
 	
 	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
-		//printf(" > LULUS < !!!\r\n");
+		printf(" > LULUS < !!!\r\n");
 		
 		#if 0
 		cmd = mbstr[1];
@@ -185,7 +221,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
-			//printf("__PROSES DATA KITA !!\r\n");
+			printf("__PROSES DATA KITA !!\r\n");
 			//return respon_modbus(cmd, reg, jml, mbstr, mbn);
 			return respon_modbus(cmd, reg, jml, strmb, mbn);
 		}

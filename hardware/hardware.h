@@ -97,7 +97,7 @@ void rtcWrite(struct tm *newTime);
 		#endif
 		
 		#ifdef PAKAI_SERIAL_2
-			#ifdef PAKAI_SERIAL_2_P0
+			#ifdef SPEED_SERIAL_2_P0
 			
 				#define TXDE2	BIT(25)		// P3.25
 				//#define RXDE2	BIT(23)		--> Pull down ke GND
@@ -205,7 +205,19 @@ void rtcWrite(struct tm *newTime);
 		#define iKonter_8		BIT(26)	// P026
 		#define iKonter_9		BIT(27)	// P027
 		#define iKonter_10		BIT(28)	// P028
+		
+		/* setting P2 pull down, karena kita berharap rising edge */
+		#define pmode_konter_1	(BIT(10) | BIT(11))		// p2.5
+		#define pmode_konter_2	(BIT(12) | BIT(13))
+		#define pmode_konter_3	(BIT(14) | BIT(15))
+		#define pmode_konter_4	(BIT(16) | BIT(17))
+		#define pmode_konter_5	(BIT(18) | BIT(19))		// p2.9
 
+		#define pmode_konter_6	(BIT(16) | BIT(17))		// p0.24
+		#define pmode_konter_7	(BIT(18) | BIT(19))
+		#define pmode_konter_8	(BIT(20) | BIT(21))
+		#define pmode_konter_9	(BIT(22) | BIT(23))
+		#define pmode_konter_10	(BIT(24) | BIT(25))	
 	#endif
 #endif
 

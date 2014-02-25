@@ -57,6 +57,7 @@ typedef enum IAP_STATUS_t {
 #define  YA				1
 #define  TIDAK			0
 
+/* setting status */
 #define  sRPM			0
 #define	 sONOFF			1
 #define	 sPUSHBUTTON	2

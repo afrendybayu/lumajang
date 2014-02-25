@@ -7,6 +7,8 @@
 
 #ifdef PAKAI_MODBUS
 
+static int debug_count_modbus;
+
 extern volatile float data_f[];
 extern char strmb[];
 extern char outmb[];
@@ -100,18 +102,29 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 
 int kirim_respon_mb(int jml, char *s, int timeout)		{
 	int i, k=0;
-	
+		
 	enaTX2_485();
 	for (i=0; i<jml; i++)	{
 		k += xSerialPutChar2 (0, outmb[i], 10);
 	}
 	vTaskDelay(timeout);
 	disTX2_485();
+	
+	/* biar tidak baca punya sendiri 
+	 * Atau barangkali sebaiknya PCB dirubah untuk disable RX saat TX
+	 * */
+	for (i=0; i<jml; i++)
+	{
+		char dum;
+		xSerialGetChar2( 0, &dum, 1 );
+	}
+	
 	return k;
 }
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
+	uprintf("-->%s, %d: cmd: 0x%02x, reg: %04x, jml: %d\r\n", __FUNCTION__, debug_count_modbus++, cmd, reg, jml);
 	int i=0, j, index=0;
 	char ketemu=0;
 	
@@ -121,9 +134,9 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 			st_data = ALMT_DATA + i*JML_KOPI_TEMP;
 			//printf("i: %d, st_data: %08x\r\n", i, st_data);
 			for (j=0; j<PER_SUMBER; j++)	{
-			//	printf("id: %d, reg: %d\r\n", st_data[j].id, reg);
+				//printf("id: %d, reg: %d\r\n", st_data[j].id, reg);
 				if (st_data[j].id == reg)	{
-			//		printf("ketemu: %d\r\n", i*PER_SUMBER+j);
+					//printf("ketemu: %d\r\n", i*PER_SUMBER+j);
 					ketemu=1;
 					index = i*PER_SUMBER+j;
 					break;
@@ -313,6 +326,8 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
+	//printf("%s():\r\n", __FUNCTION__);
+	
 	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);
 	
@@ -367,7 +382,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	#endif
 	
 	
-	kirim_respon_mb(nX, outmb, 100);
+	kirim_respon_mb(nX, outmb, 10);	// 100
 	
 	#if 0
 	enaTX2_485();

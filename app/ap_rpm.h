@@ -5,7 +5,7 @@
 #define __APP_RPM__
 
 //unsigned int giliran;
-unsigned int data_putaran[JML_KANAL];
+//unsigned int data_putaran[JML_KANAL];
 unsigned int data_hit[JML_KANAL];
 
 void set_konter_rpm (int st, unsigned int period);

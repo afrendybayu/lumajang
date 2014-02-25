@@ -82,6 +82,7 @@ void gpio_ISR_Handler( void )	{
 		IO0_INT_CLR = iKonter_10;
 	}
 	#endif
+	
 	if (IO0_INT_STAT_R & iKonter_10) {
 		t = 9; zz = status_konter[t];
 		if (zz==sRPM) {
@@ -97,6 +98,9 @@ void gpio_ISR_Handler( void )	{
 		#endif
 		}
 		#endif
+		
+		/* debug FA, 25 Feb 2014 */
+		//printf("i10*");
 		IO0_INT_CLR = iKonter_10;
 	} 
 	
@@ -395,6 +399,10 @@ void gpio_ISR_Handler( void )	{
 		#endif
 		}
 		#endif
+		
+		/* debug FA, 25 Feb 2014 */
+		//printf("33*");
+		
 		IO2_INT_CLR = iKonter_3;
 	}
 
@@ -451,6 +459,10 @@ void gpio_ISR_Handler( void )	{
 		#endif
 		}
 		#endif
+		
+		/* debug FA, 25 Feb 2014 */
+		//printf("22*");
+		
 		IO2_INT_CLR = iKonter_2;
 	}
 	
@@ -500,6 +512,10 @@ void gpio_ISR_Handler( void )	{
 		#endif
 		}
 		#endif
+		
+		/* debug FA, 25 Feb 2014 */
+		//printf("x1*");
+		
 		IO2_INT_CLR = iKonter_1;
 	}
 	#if 0

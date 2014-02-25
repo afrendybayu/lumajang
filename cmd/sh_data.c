@@ -21,13 +21,14 @@ void cek_data(int argc, char **argv)	{
 			return;
 		}
 		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
-		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan |\r\n");
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | Status | \r\n");
 		smb--;
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %6d | %d\r\n", 	\
+				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], \
+					st_data[j].satuan, st_data[j].status, smb*PER_SUMBER+j);
 		}
 		return;
 	}

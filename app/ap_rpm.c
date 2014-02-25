@@ -11,6 +11,8 @@ extern unsigned int giliran;
 extern struct t2_konter konter;
 extern unsigned char status_konter[];
 
+int count_konter = 0;
+
 void set_konter_rpm(int st, unsigned int period)		{
 	//new_period = T1TC;
 	if (period > konter.t_konter[st].last_period)	{
@@ -23,6 +25,9 @@ void set_konter_rpm(int st, unsigned int period)		{
 	}
 	konter.t_konter[st].hit++;
 	konter.t_konter[st].last_period = period;
+
+	//printf("set_konter_rpm() :%d\r\n", st);
+	count_konter++;
 }
 
 void set_konter_onoff(int i, int onoff) {	// hanya menambah jml counter hit tiap kanal saja
@@ -68,11 +73,12 @@ void hitung_rpm(void)	{
 	char status = st_env->kalib[i].status;
 	if (status==sRPM || status == sRPM_RH)		{
 		
-		//portENTER_CRITICAL();
-		
+		//portENTER_CRITICAL();	
+		#if 0
 		if (konter.t_konter[giliran].hit_lama == konter.t_konter[giliran].hit)		{
 			//konter.t_konter[giliran].beda = 0;		
-			data_putaran[giliran] = 0;
+			//data_putaran[giliran] = 0;		<<< EMBUH PIYE IKI ??
+			data_putaran[giliran] = konter.t_konter[giliran].beda;
 			
 		}	else	{
 			/* didapatkan frekuensi (HZ) putaran */
@@ -81,11 +87,13 @@ void hitung_rpm(void)	{
 			/* rpm */
 			data_putaran[giliran] = konter.t_konter[giliran].beda;
 		}
+		#endif
 		data_hit[giliran] = konter.t_konter[giliran].hit;
-		
+		//uprintf("%s(): putaran %d, beda %d\r\n", __FUNCTION__, data_putaran[giliran], konter.t_konter[giliran].beda);			
+
 		konter.t_konter[giliran].hit_lama = konter.t_konter[giliran].hit; 
-		#ifdef PAKAI_PILIHAN_FLOW
-		
+
+		#ifdef PAKAI_PILIHAN_FLOW	
 		konter.t_konter[giliran].hit_lama2 = konter.t_konter[giliran].hit2; 
 		#endif
 		//portEXIT_CRITICAL();
@@ -154,7 +162,7 @@ void hitung_running_hours(int i)		{
 }
 
 void data_frek_rpm (void) {
-	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
+	qsprintf("%s() masuk ... count %d\r\n", __FUNCTION__, count_konter);
 	unsigned int i=0;
 	char status;
 	float temp_f, fl2;
@@ -166,8 +174,11 @@ void data_frek_rpm (void) {
 	for (i=0; i<JML_KANAL; i++)	{
 		status = st_env->kalib[i].status;
 		
-		if (status==sRPM || status==sRPM_RH)		{
+		if (status==sRPM || status==sRPM_RH)		
+		{
+			printf("Data rpm pada kanal %d\r\n", i);
 			
+			#if 0
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
@@ -178,8 +189,22 @@ void data_frek_rpm (void) {
 				temp_f = 0;
 				temp_rpm = 0;
 			}
+			#endif
+			if (konter.t_konter[i].beda)	{
+				// cari frekuensi
+				temp_f = (float) 1000000000.00 / konter.t_konter[i].beda; // beda msh dlm nS
+				// rpm
+				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+			}
+			else	{
+				temp_f = 0;
+				temp_rpm = 0;
+			}
+			
+			uprintf("%s(): putaran %f, beda %d\r\n", __FUNCTION__, temp_rpm, konter.t_konter[i].beda);	
 			#if 0
-			if (i==1)	{
+			if (i==1)	
+			{
 				uprintf("%s() masuk ...%d f: %.2f, rpm: %.2f\r\n", __FUNCTION__, data_putaran[i], temp_f, temp_rpm);
 			}
 			#endif

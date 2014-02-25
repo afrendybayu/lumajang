@@ -65,7 +65,7 @@ void setup_hardware()	{
 	#endif
 
 	#ifdef PAKAI_SERIAL_2			
-		#ifdef PAKAI_SERIAL_2_P0
+		#ifdef SPEED_SERIAL_2_P0
 			setup_serial2_P0();
 		#endif
 	#endif
@@ -110,7 +110,7 @@ void init_hardware()	{
 	
 	#ifdef PAKAI_SERIAL_2	
 		//qsprintf("init serial 2\r\n");
-		vAltStartCom2( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_2_P0 );
+		vAltStartCom2( mainCOM_TEST_PRIORITY, SPEED_SERIAL_2_P0 );
 		
 	#endif
 	
@@ -119,7 +119,7 @@ void init_hardware()	{
 	#endif 
 }
 
-int setup_konter_onoff(unsigned int aaa, unsigned char statk) {
+int setup_konter_onoff22(unsigned int aaa, unsigned char statk) {
 	//printf("\r\n aaa: %d, statk: %d\r\n", aaa, statk);
 	int bbb = 0;
 	if (statk==1) {
@@ -233,6 +233,13 @@ void gpio_int_init()	{
 	VICVectPriority17 = 0x05;
 	VICIntEnable	  = VIC_CHAN_TO_MASK(VIC_CHAN_NUM_EINT3);
 	#endif
+	
+	// 25 Feb 2014
+	PINSEL4  = 0x00000000;	// sebagai GPIO
+	//PINMODE4 |= BIT(14) | BIT(15);	//P2.7 iKonter_3
+	// pull down enable, karena kita tertarik risiing edge	
+	PINMODE4 |= pmode_konter_1 | pmode_konter_2 | pmode_konter_3 | pmode_konter_4 | pmode_konter_5; 	
+	PINMODE1 |= pmode_konter_6 | pmode_konter_7 | pmode_konter_8 | pmode_konter_9 | pmode_konter_10; 
 
 	// setup GPIO direction as input & interrupt
 	FIO2DIR &= ~(iKonter_1 | iKonter_2 | iKonter_3 | iKonter_4 | iKonter_5);
