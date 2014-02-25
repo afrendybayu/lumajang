@@ -139,6 +139,8 @@ xTaskHandle *hdl_led;
 xSemaphoreHandle xSemSer0 = NULL;
 #endif
 
+/* test git */
+
 /*-----------------------------------------------------------*/
 
 int main( void )	{
