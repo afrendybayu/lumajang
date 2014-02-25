@@ -124,7 +124,7 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
-	uprintf("-->%s, %d: cmd: 0x%02x, reg: %04x, jml: %d\r\n", __FUNCTION__, debug_count_modbus++, cmd, reg, jml);
+	//uprintf("-->%s, %d: cmd: 0x%02x, reg: %04x, jml: %d\r\n", __FUNCTION__, debug_count_modbus++, cmd, reg, jml);
 	int i=0, j, index=0;
 	char ketemu=0;
 	
@@ -326,7 +326,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	//printf("%s():\r\n", __FUNCTION__);
+	//printf("%s(): idx %d: jml %d\r\n", __FUNCTION__, index, jml);
 	
 	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);

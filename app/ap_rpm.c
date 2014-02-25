@@ -162,7 +162,7 @@ void hitung_running_hours(int i)		{
 }
 
 void data_frek_rpm (void) {
-	qsprintf("%s() masuk ... count %d\r\n", __FUNCTION__, count_konter);
+	//qsprintf("%s() masuk ... count %d\r\n", __FUNCTION__, count_konter);
 	unsigned int i=0;
 	char status;
 	float temp_f, fl2;
@@ -176,7 +176,7 @@ void data_frek_rpm (void) {
 		
 		if (status==sRPM || status==sRPM_RH)		
 		{
-			printf("Data rpm pada kanal %d\r\n", i);
+			//printf("Data rpm pada kanal %d\r\n", i);
 			
 			#if 0
 			if (data_putaran[i])	{
@@ -201,7 +201,7 @@ void data_frek_rpm (void) {
 				temp_rpm = 0;
 			}
 			
-			uprintf("%s(): putaran %f, beda %d\r\n", __FUNCTION__, temp_rpm, konter.t_konter[i].beda);	
+			//uprintf("%s(): putaran %f, beda %d\r\n", __FUNCTION__, temp_rpm, konter.t_konter[i].beda);	
 			#if 0
 			if (i==1)	
 			{

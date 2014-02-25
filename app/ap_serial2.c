@@ -122,7 +122,7 @@ char s[30];
 			//strSer2[nmb+1] = '\0';
 			//sedot_mod(ch);
 			
-			printf("n%d:%X,", nmb, (unsigned char) ch);
+			//printf("n%d:%X,", nmb, (unsigned char) ch);
 			flag_ms=1;
 			
 			if (nmb >= 8)
@@ -130,7 +130,7 @@ char s[30];
 				balas = proses_mod(8, &strmb[nmb - 8]);
 				//nmb = 0;
 				loop2 = 0;
-				printf("<bal %d>", balas);
+				//printf("<bal %d>", balas);
 			}
 		}
 		else {
@@ -170,7 +170,7 @@ char s[30];
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	
-	printf(">PP %d<", mbn);
+	//printf(">PP %d<", mbn);
 	#if 0
 	printf("\r\nJml CMD: %d -->", mbn);
 	int i,mm;
@@ -206,7 +206,7 @@ int proses_mod(int mbn, char *mbstr)	{
 	
 	
 	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
-		printf(" > LULUS < !!!\r\n");
+		//printf(" > LULUS < !!!\r\n");
 		
 		#if 0
 		cmd = mbstr[1];
@@ -221,7 +221,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
-			printf("__PROSES DATA KITA !!\r\n");
+			//printf("__PROSES DATA KITA !!\r\n");
 			//return respon_modbus(cmd, reg, jml, mbstr, mbn);
 			return respon_modbus(cmd, reg, jml, strmb, mbn);
 		}
