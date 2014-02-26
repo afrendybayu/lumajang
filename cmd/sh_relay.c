@@ -2,16 +2,17 @@
 // Afrendy Bayu
 // Depok, 13 Agustus 2013
 // 
+#include "FreeRTOS.h"
 
 #ifdef PAKAI_RELAY
 
-#include "FreeRTOS.h"
 #include "task.h"
 #include "monita.h"
 
 #include "sh_relay.h"
 #include "sh_utils.h"
 #include "manual.h"
+#include "hardware.h"
 
 
 char cek_relay(int argc, char **argv)	{
@@ -24,8 +25,9 @@ char cek_relay(int argc, char **argv)	{
 	int tRelay = JML_SUMBER * PER_SUMBER;
 	if (argc==1)	{
 		for(i=0; i<JML_RELAY; i++)		{
-			qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
-		}
+			//qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
+			qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));		
+			}
 	}
 	
 	if (argc==2)	{
@@ -35,7 +37,8 @@ char cek_relay(int argc, char **argv)	{
 			return 1;
 		}
 		i--;
-		qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
+		//qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
+		qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));
 	}
 	return 0;
 }
@@ -47,6 +50,8 @@ char set_relay(int argc, char **argv)	{
 		return 1;
 	}
 	
+	int i;
+
 	int no = cek_nomor_valid(argv[1], JML_RELAY);		
 	if ( (no==TIDAK_VALID) || (no==0) )	{
 		printf("  no sumber TIDAK VALID\r\n");
@@ -77,7 +82,8 @@ char set_relay(int argc, char **argv)	{
 		else if (no==7)	cRelay8();
 		data_f[tRelay+no] = 0;
 	}
-	qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
+	//qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
+	qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));
 }
 
 

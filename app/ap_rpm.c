@@ -88,10 +88,9 @@ void hitung_rpm(void)	{
 			data_putaran[giliran] = konter.t_konter[giliran].beda;
 		}
 		#endif
-		data_hit[giliran] = konter.t_konter[giliran].hit;
-		//uprintf("%s(): putaran %d, beda %d\r\n", __FUNCTION__, data_putaran[giliran], konter.t_konter[giliran].beda);			
+		data_hit[giliran] = konter.t_konter[giliran].hit;	
 
-		konter.t_konter[giliran].hit_lama = konter.t_konter[giliran].hit; 
+		//konter.t_konter[giliran].hit_lama = konter.t_konter[giliran].hit; 
 
 		#ifdef PAKAI_PILIHAN_FLOW	
 		konter.t_konter[giliran].hit_lama2 = konter.t_konter[giliran].hit2; 
@@ -195,6 +194,14 @@ void data_frek_rpm (void) {
 				temp_f = (float) 1000000000.00 / konter.t_konter[i].beda; // beda msh dlm nS
 				// rpm
 				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+
+				/* cek jika mesin mati */
+				if (konter.t_konter[i].hit == konter.t_konter[i].hit_lama)
+				{
+					temp_rpm = 0;
+				}
+
+				konter.t_konter[i].hit_lama = konter.t_konter[i].hit;
 			}
 			else	{
 				temp_f = 0;

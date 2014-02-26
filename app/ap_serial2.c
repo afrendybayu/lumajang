@@ -135,8 +135,14 @@ char s[30];
 		}
 		else {
 			
-			/* setiap lepas dari loop diatas direset saja */
-			nmb = 0;
+			loop2++;
+			
+			if (loop2 > 5)
+			{
+				/* setiap lepas dari loop diatas direset saja */
+				nmb = 0;
+				loop2 = 0;
+			}
 			
 			#if 0
 			// sedot data respon (sendiri), clear buffer

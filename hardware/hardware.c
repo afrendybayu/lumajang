@@ -24,9 +24,9 @@ void setup_hardware()	{
 	SCS 	|= (1<<0); 				// fast mode for port 0 and 1
 	MEMMAP = 0x01;					// SCB
 	
-	#ifdef PAKAI_RELAY
-		setup_relay();
-	#endif
+	//#ifdef PAKAI_RELAY
+	//	setup_relay();
+	//#endif
 	
 	#ifdef PAKAI_RTC
 		setup_rtc();
@@ -74,6 +74,10 @@ void setup_hardware()	{
 		//setup_eint1();
 		//setup_adc();
 	#endif
+
+	#ifdef PAKAI_RELAY
+		setup_relay();
+	#endif
 }
 
 void init_hardware()	{
@@ -102,16 +106,15 @@ void init_hardware()	{
 	#ifdef PAKAI_SPI_SSP1
 		init_ssp1();
 	
-	#ifdef PAKAI_ADC_7708
+		#ifdef PAKAI_ADC_7708
 		adc_int_init();
-	#endif
+		#endif
 	
 	#endif
 	
 	#ifdef PAKAI_SERIAL_2	
 		//qsprintf("init serial 2\r\n");
-		vAltStartCom2( mainCOM_TEST_PRIORITY, SPEED_SERIAL_2_P0 );
-		
+		vAltStartCom2( mainCOM_TEST_PRIORITY, SPEED_SERIAL_2_P0 );		
 	#endif
 	
 	#ifdef PAKAI_SDCARD

@@ -55,7 +55,7 @@ int ch;
 	
 
 
-	
+	int test_relay;
 	
 	st_hw.init++;
 	int loopac=0, ff=0;
@@ -79,18 +79,39 @@ int ch;
 		
 		vTaskDelay(1);
 		loopac++;
-		if (loopac>=100)	{
-			hitung_rpm();
+		if (loopac>=100)	
+		{
+			hitung_rpm();			// berarti ini dipanggil setiap 100 ms
 			
 			loopac = 0;
 			#if 1
 			ff++;
-			if (ff>10)	{
-				data_frek_rpm();
+			if (ff>10)	
+			{
+				data_frek_rpm();	// dipanggil setiap detik
+				
 				//uprintf(" waktu: %ld, fl: %d, on: %ld, rh: %ld, data_f[2]: %.0f\r\n", now_to_time(1, a), \
 				//	konter.t_konter[2].rh_flag, konter.t_konter[2].rh_on, konter.t_konter[2].rh, data_f[2]);
 				//uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
 				ff = 0;
+
+				/*
+				if (test_relay) {
+					//setup_relay();
+					sRelay1();
+					sRelay2();
+					test_relay = 0;
+					//printf("set\r\n");
+				}
+				else {
+					//setup_relay();
+					cRelay1();
+					cRelay2();
+					test_relay = 1;
+					//printf("reset\r\n");
+				}*/
+
+				cek_alarm_data();
 			}
 			#endif
 		}

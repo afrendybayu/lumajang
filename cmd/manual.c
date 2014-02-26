@@ -1,5 +1,12 @@
 
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include "sh_data.h"
+#include "monita.h"
+#include "sh_utils.h"
 #include "manual.h"
+
 
 void sumber_kitab()		{
 	printf(" Perintah untuk mengubah konfig sumber !\r\n");
@@ -88,6 +95,20 @@ void data_kitab()	{
 	printf("    artinya memberikan setting batasan alarm rendah data 5 dengan nilai 1.25\r\n");
 	printf("\r\n");
 	
+	printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
+	//printf("    misalnya  : $ set_data 4 alarm [1|2|3|aktif|hidup|atas|bawah|semua] 7 \r\n");
+	//printf("    artinya mengaktifkan relay untuk data ke 4 pada kanal 7\r\n");
+	//printf("    misalnya  : $ set_group 8 alarm [0|mati] 2\r\n");
+	//printf("    artinya me-nonaktifkan relay untuk data ke 8 pada kanal 2\r\n");
+
+	printf("    set_data 4 relay_HH 5\r\n");
+	printf("	artinya : $ data nomer 4, jika nilai lebih dari alarmHH, maka relay 5 aktif\r\n");
+	printf("	bisa juga [ relay_L, relay_LL, relay_H, relay_HH ]\r\n");
+	printf("\r\n");
+}
+
+void relay_kitab()	
+{
 	printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
 	printf("    misalnya  : $ set_data 4 alarm [1|2|3|aktif|hidup|atas|bawah|semua] 7 \r\n");
 	printf("    artinya mengaktifkan relay untuk data ke 4 pada kanal 7\r\n");

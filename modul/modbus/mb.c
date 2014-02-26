@@ -5,6 +5,9 @@
 #include "ap_utils.h"
 #include "mb.h"
 
+
+#define debug_mb	0
+
 #ifdef PAKAI_MODBUS
 
 static int debug_count_modbus;
@@ -119,12 +122,19 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 		xSerialGetChar2( 0, &dum, 1 );
 	}
 	
+	#if (debug_mb == 1)
+	printf("%s(): %d\r\n\r\n", __FUNCTION__, jml);
+	#endif
+	
 	return k;
 }
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
-	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
-	//uprintf("-->%s, %d: cmd: 0x%02x, reg: %04x, jml: %d\r\n", __FUNCTION__, debug_count_modbus++, cmd, reg, jml);
+	
+	#if (debug_mb == 1)
+	uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
+	#endif
+
 	int i=0, j, index=0;
 	char ketemu=0;
 	
@@ -326,7 +336,9 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	//printf("%s(): idx %d: jml %d\r\n", __FUNCTION__, index, jml);
+	#if (debug_mb == 1)
+	printf("%s(): idx %d: jml %d\r\n", __FUNCTION__, index, jml);
+	#endif
 	
 	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);
@@ -356,7 +368,11 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 		}
 		
 		ifl = (unsigned int *) &data_f[index+i];
-		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		
+		#if (debug_mb == 1)
+		printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		#endif
+		
 		outmb[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
 		outmb[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
 		outmb[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;

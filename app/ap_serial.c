@@ -32,6 +32,7 @@
 #include "sh_rtos.h"
 #include "sh_data.h"
 #include "sh_kanal.h"
+#include "sh_relay.h"
 
 #include "sh_utils.h"
 
@@ -248,6 +249,11 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_file_cmd);
 	tinysh_add_command(&set_file_cmd);
 	tinysh_add_command(&upload_file_cmd);
+	#endif
+
+	#ifdef PAKAI_RELAY
+	tinysh_add_command(&set_relay_cmd);
+	tinysh_add_command(&cek_relay_cmd);
 	#endif
 
 #endif

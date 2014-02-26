@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#define dd_printf	do{} while(0);
+
 //#define DEBUG_IAP
 extern volatile float data_f[];
 
@@ -603,25 +605,25 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 		else if (part==1)	{
 			int i;
 
-			printf("sektor: %d, part: %d, st: %d, flag: %d\r\n", sektor, part, st, flag);
+			dd_printf("sektor: %d, part: %d, st: %d, flag: %d\r\n", sektor, part, st, flag);
 			//for (i=0; i<ukuran_rom(SEKTOR_DATA); i++)		{
 			for (i=0; i<JML_SUMBER; i++)		{
-				printf(" >> i: %d, ", i);
+				dd_printf(" >> i: %d, ", i);
 				if (i==st)	{
 					printf("data asli\r\n");
 					simpan_rom(sektor, ALMT_DATA+(st*JML_KOPI_TEMP), (unsigned short *) pdata, \
 						hitung_ram(cek_jml_struct(DATA)*PER_SUMBER) );
 				}
 				else		{
-					printf("data temp\r\n");
+					dd_printf("data temp\r\n");
 					struct t_data *st_data;
 					st_data = pvPortMalloc( PER_SUMBER*sizeof (struct t_data) );
 					if (st_data == NULL)	{
-						printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+						dd_printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 						vPortFree (st_data);
 						return 2;
 					}
-					printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_data);
+					dd_printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_data);
 
 					taskENTER_CRITICAL();
 					memcpy((char *) st_data, (char *) ALMT_DATA_TMP+(i*JML_KOPI_TEMP), (PER_SUMBER*sizeof (struct t_data)));

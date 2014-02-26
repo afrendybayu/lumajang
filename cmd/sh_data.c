@@ -6,6 +6,7 @@
 #include "monita.h"
 #include "sh_utils.h"
 #include "manual.h"
+#include "hardware.h"
 
 //
 
@@ -34,16 +35,17 @@ void cek_data(int argc, char **argv)	{
 	}
 	
 	uprintf("\r\n    Cek data input modul    \r\n****************************************\r\n");
-	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status |\r\n");
+	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status | relay\r\n");
 	for (i=0; i<JML_SUMBER; i++ ) 	{
 		st_data = ALMT_DATA + i*JML_KOPI_TEMP;
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 			#if 1
-			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %-6s |\r\n", 	\
+			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %-6s | %d,%d,%d,%d\r\n", 	\
 				i*PER_SUMBER+j+1, st_data[j].id, st_data[j].nama, data_f[i*PER_SUMBER+j], 		\
 				st_data[j].satuan,  st_data[j].rangeL, st_data[j].batasLL, st_data[j].batasL, 	\
-				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].status?"Aktif":"Mati" );
+				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].status?"Aktif":"Mati",\
+				st_data[j].relay_LL, st_data[j].relay_L, st_data[j].relay_H, st_data[j].relay_HH );
 			#endif
 		}
 	}
@@ -51,8 +53,14 @@ void cek_data(int argc, char **argv)	{
 
 
 char set_data(int argc, char **argv)		{
-	printf("\r\n");
-	if (argc>4 || argc==1)		data_kitab();
+	//printf("\r\n");
+	printf("%s(): argc %d\r\n", __FUNCTION__, argc);
+	
+	if (argc>4 || argc==1)
+	{		
+		data_kitab();
+		return;	
+	}	
 	if (argc==2 || argc==3)	{
 		printf("\r\n");
 		if (strcmp(argv[1], "default") == 0)	{
@@ -179,6 +187,30 @@ char set_data(int argc, char **argv)		{
 			st_data[nox].status = atoi( argv[3] );
 			printf("  Status: [%d] : %s\r\n", st_data[nox].status, st_data[nox].status?"Aktif":"Mati");
 		} 
+		else if (strncmp(argv[2], "relay_LL", 8) == 0)	
+		{
+			//st_data[nox].status = atoi( argv[3] );
+			printf("OK akan set relayLL pada data %d dengan relay %d\r\n", nox+1, atoi( argv[3] ));
+			st_data[nox].relay_LL = atoi( argv[3] );
+		}
+		else if (strncmp(argv[2], "relay_L", 7) == 0)	
+		{
+			//st_data[nox].status = atoi( argv[3] );
+			printf("OK akan set relayL pada data %d dengan relay %d\r\n", nox+1, atoi( argv[3] ));
+			st_data[nox].relay_L = atoi( argv[3] );
+		}
+		else if (strncmp(argv[2], "relay_HH", 8) == 0)	
+		{
+			//st_data[nox].status = atoi( argv[3] );
+			printf("OK akan set relayHH pada data %d dengan relay %d\r\n", nox+1, atoi( argv[3] ));
+			st_data[nox].relay_HH = atoi( argv[3] );
+		}
+		else if (strncmp(argv[2], "relay_H", 7) == 0)	
+		{
+			//st_data[nox].status = atoi( argv[3] );
+			printf("OK akan set relay_H pada data %d dengan relay %d\r\n", nox+1, atoi( argv[3] ));
+			st_data[nox].relay_H = atoi( argv[3] );
+		}
 		else {
 			printf("  __ Perintah SALAH __\r\n");
 			data_kitab();
@@ -227,6 +259,98 @@ void set_data_default()		{
 		
 		vPortFree (st_data);
 	}
+}
+
+static void set_relay(char nomer)
+{
+	if (nomer == 1)	sRelay1();
+	else if (nomer == 2)	sRelay2();
+	else if (nomer == 3)	sRelay3();
+	else if (nomer == 4)	sRelay4();
+	else if (nomer == 5)	sRelay5();
+	else if (nomer == 6)	sRelay6();
+	else if (nomer == 7)	sRelay7();
+	else if (nomer == 8)	sRelay8();
+}
+
+static void unset_relay(char nomer)
+{
+	if (nomer == 1)	cRelay1();
+	else if (nomer == 2)	cRelay2();
+	else if (nomer == 3)	cRelay3();
+	else if (nomer == 4)	cRelay4();
+	else if (nomer == 5)	cRelay5();
+	else if (nomer == 6)	cRelay6();
+	else if (nomer == 7)	cRelay7();
+	else if (nomer == 8)	cRelay8();
+}
+
+/* sementara saja, supaya relay bisa on off berdasarkan data 
+	disiapkan untuk lumajang 
+
+	dipanggil tiap detik oleh ap_ambilcepat.c
+*/
+void cek_alarm_data()
+{
+	int i, j;
+	struct t_data *st_data;
+
+	for (i=0; i<JML_SUMBER; i++ ) 	{
+		st_data = ALMT_DATA + i*JML_KOPI_TEMP;
+		for (j=0; j<PER_SUMBER; j++)	
+		{
+			/* cek apakah relay diset */
+			if ( st_data[j].relay_LL)
+			{ 			
+				if (  data_f[i*PER_SUMBER+j] < (float) (st_data[j].batasLL * 1.0))	/* batasHH dalam integer */
+				{
+					printf("Data %d Melebihi batas LL, reset relay !\r\n", i*PER_SUMBER+j+1);
+					printf("(%f < %d) \r\n", data_f[i*PER_SUMBER+j] , st_data[j].batasLL);
+
+					set_relay( st_data[j].relay_LL );
+				}
+				else
+					unset_relay( st_data[j].relay_LL );
+			}	
+			if ( st_data[j].relay_L)
+			{ 			
+				if (  data_f[i*PER_SUMBER+j] < (float) (st_data[j].batasL * 1.0))	/* batasHH dalam integer */
+				{
+					printf("Data %d Melebihi batas L, reset relay !\r\n", i*PER_SUMBER+j+1);
+					printf("(%f < %d) \r\n", data_f[i*PER_SUMBER+j] , st_data[j].batasL);
+
+					set_relay( st_data[j].relay_L );
+				}
+				else
+					unset_relay( st_data[j].relay_L );	
+			}	
+			if ( st_data[j].relay_H)
+			{ 			
+				if (  data_f[i*PER_SUMBER+j] > (float) (st_data[j].batasH * 1.0))	/* batasHH dalam integer */
+				{
+					printf("Data %d Melebihi batas H, reset relay !\r\n", i*PER_SUMBER+j+1);
+					printf("(%f > %d) \r\n", data_f[i*PER_SUMBER+j] , st_data[j].batasH);
+
+					set_relay( st_data[j].relay_H );
+				}
+				else
+					unset_relay( st_data[j].relay_H );	
+			}	
+			if ( st_data[j].relay_HH)
+			{ 			
+				if (  data_f[i*PER_SUMBER+j] > (float) (st_data[j].batasHH * 1.0))	/* batasHH dalam integer */
+				{
+					printf("Data %d Melebihi batas HH, reset relay !\r\n", i*PER_SUMBER+j+1);
+					printf("(%f > %d) \r\n", data_f[i*PER_SUMBER+j] , st_data[j].batasHH);
+
+					set_relay( st_data[j].relay_HH );
+				}
+				else
+					unset_relay( st_data[j].relay_HH );	
+			}	
+		}
+	}
+
 }
 
 #if 0

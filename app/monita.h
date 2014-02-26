@@ -246,7 +246,12 @@ struct t_data {
 	int  rangeH;
 	char nama[24];
 	char status;			// 
-	char formula[16];
+	//char formula[16];
+	char formula[12];		// 26 Feb 2014, formula dikurangi 2 untuk info relay
+	char relay_LL;
+	char relay_L;
+	char relay_H;
+	char relay_HH;
 };
 //struct t_data st_data[JML_TITIK_DATA];
 

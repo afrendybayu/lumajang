@@ -78,7 +78,7 @@ void rtcWrite(struct tm *newTime);
 
 			#define setup_relay()		do {	\
 						FIO1DIR   = FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
-						FIO1DIR  |= FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
+						FIO1DIR   = FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
 					} while(0)	
 		#endif
 		

@@ -99,13 +99,13 @@
 #define ST_SHELL			20
 #define ST_SANTER			8		//	10
 
-//#define PAKAI_RELAY
+#define PAKAI_RELAY
 
 #define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
 	//#define PAKAI_SERIAL_2_P0		9600
-	#define SPEED_SERIAL_2_P0		115200
+	#define SPEED_SERIAL_2_P0		19200	//115200
 	#define ST_SER2					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	#define MODBUS_RTU_SLAVE		
@@ -118,7 +118,7 @@
 #endif
 
 
-#define PAKAI_SPI_SSP0
+//#define PAKAI_SPI_SSP0
 #ifdef  PAKAI_SPI_SSP0
 	#define PAKAI_FILE_SIMPAN
 	#define PAKAI_SDCARD
