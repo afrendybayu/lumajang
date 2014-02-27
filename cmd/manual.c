@@ -21,7 +21,7 @@ void env_kitab()	{
 	
 	printf(" 2. set_env [argumen1] [argumen2]\r\n");
 	printf("    set_env [ipaddr|gateway|server|nama|SN] [nilainya]\r\n");
-	printf("    argumen1: ipaddr, gateway, server, nama, SN, file\r\n");
+	printf("    argumen1: idslave, ipaddr, gateway, server, nama, SN, file\r\n");
 	printf("\r\n");
 	printf(" Setting environment utama untuk board / modul\r\n");
 	//garis_bawah();
@@ -67,6 +67,10 @@ void env_kitab()	{
 	printf("     misalnya $ set_env jedareset 60 (dalam detik)\r\n");
 	printf(" \r\n");
 	#endif
+	
+	printf("   idslave : id monita sebagai device modbus slave\r\n");
+	printf("     misalnya $ set_env idslave 17\r\n");
+	printf(" \r\n");
 }
 
 void data_kitab()	{
@@ -118,8 +122,8 @@ void relay_kitab()
 }
 
 void info_kanal()	{
-	printf(" Setting Nomor Status input kanal\r\n");
-	printf(" CMD : set_kanal [nokanal] status [nostatus]\r\n");
+	printf("Setting Nomor Status input kanal\r\n");
+	printf("CMD : set_kanal [nokanal] status [nostatus]\r\n");
 	printf("   %4d : sRPM\r\n", sRPM);
 	printf("   %4d : sONOFF\r\n", sONOFF);
 	printf("   %4d : sPUSHBUTTON\r\n", sPUSHBUTTON);
@@ -133,6 +137,16 @@ void info_kanal()	{
 
 void kanal_kitab()	{
 	printf(" Perintah untuk mengubah konfig kanal !\r\n");
+	printf(" 1. set_data help/default\r\n");
+	printf("    help    : printout keterangan ini\r\n");
+	printf("    default : memberikan default setting kanal\r\n");
+	printf("\r\n");
+	
+	printf(" 2. set_kanal [nokanal] [opt1] [opt2]\r\n");
+	printf("    set_kanal x [nama|satuan|alarm|alarmLL|alarmL|alarmH|alarmHH] [nilainya]\r\n");
+	printf("    x    : nomer data\r\n");
+	printf("    opt1 : nama, set/aktif, desc/ket\r\n");
+	printf("\r\n");
 }
 
 void file_kitab()	{

@@ -36,7 +36,10 @@ char set_kanal(int argc, char **argv)		{
 	int ret;
 	
 	printf("\r\n");
-	if (argc>4 || argc==1)		kanal_kitab();
+	if (argc>4 || argc==2)		{
+		kanal_kitab();
+		return;
+	}
 	
 	//cek_kanal();
 	sprintf(str_kanal, "%s", argv[1]);
