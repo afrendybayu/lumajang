@@ -153,8 +153,19 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 				}
 			}
 			i++;
+			
+			#ifdef PAKAI_RELAY
+			for (j=0; j<JML_RELAY; j++)	{
+				if (reg==(ID_RELAY+j))	{
+					ketemu=1;
+					break;
+				}
+			}
+			#endif
+			
 			if (i>JML_SUMBER)	{
 				printf("===> ID tidak ditemukan !!\r\n");
+				uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 				return 0;
 			}
 		} while (ketemu==0);
@@ -171,6 +182,13 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	if (cmd==READ_FILE_NAME)		{
 		
 	}
+	
+	#ifdef PAKAI_RELAY
+	if (cmd==WRITE_SINGLE_COIL)	{
+		//uprintf("-->setting relay %s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
+		ubah_relay(reg, jml);
+	}
+	#endif
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
 		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
@@ -189,6 +207,17 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	return 10;
 }
+
+#ifdef PAKAI_RELAY
+void ubah_relay(int reg, int st)	{
+	if (st==0xFF00)	{
+		sRelay(reg-ID_RELAY+1);
+	}
+	if (st==0x0000)	{
+		unsRelay(reg-ID_RELAY+1);
+	}
+}
+#endif
 
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int no, int len, char *str)		{

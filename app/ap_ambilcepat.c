@@ -60,6 +60,8 @@ int ch;
 	st_hw.init++;
 	int loopac=0, ff=0;
 	struct tm a;
+	
+	//int ww=0;
 	for( ;; )	{
 		
 
@@ -95,6 +97,15 @@ int ch;
 				//uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
 				ff = 0;
 
+				#if 0
+				if (ww==0)	{
+					sRelay(1);
+				} else {
+					unsRelay(1);
+				}
+				ww=1-ww;
+				#endif
+
 				/*
 				if (test_relay) {
 					//setup_relay();
@@ -111,7 +122,8 @@ int ch;
 					//printf("reset\r\n");
 				}*/
 
-				cek_alarm_data();
+				// dimatikan dulu alarm
+				//cek_alarm_data();
 			}
 			#endif
 		}

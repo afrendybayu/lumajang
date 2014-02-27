@@ -28,6 +28,10 @@ unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch);
 unsigned short crc_ccitt_0xffff(int len, char *data);
 //int tulis_single_mb(int reg, int index, char* str);
 
+#ifdef PAKAI_RELAY
+	void ubah_relay(int reg, int st);
+#endif
+
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int reg, int len, char *str);
 int proses_file_terkirim(int len, char *str);

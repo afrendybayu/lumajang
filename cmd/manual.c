@@ -110,11 +110,25 @@ void data_kitab()	{
 void relay_kitab()	
 {
 	printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
-	printf("    misalnya  : $ set_data 4 alarm [1|2|3|aktif|hidup|atas|bawah|semua] 7 \r\n");
+	printf("    misalnya  : $ set_relay 4 [1|aktif|0|mati]\r\n");
 	printf("    artinya mengaktifkan relay untuk data ke 4 pada kanal 7\r\n");
 	printf("    misalnya  : $ set_group 8 alarm [0|mati] 2\r\n");
 	printf("    artinya me-nonaktifkan relay untuk data ke 8 pada kanal 2\r\n");
 	printf("\r\n");
+}
+
+void info_kanal()	{
+	printf(" Setting Nomor Status input kanal\r\n");
+	printf(" CMD : set_kanal [nokanal] status [nostatus]\r\n");
+	printf("   %4d : sRPM\r\n", sRPM);
+	printf("   %4d : sONOFF\r\n", sONOFF);
+	printf("   %4d : sPUSHBUTTON\r\n", sPUSHBUTTON);
+	printf("   %4d : sFLOW1\r\n", sFLOW1);
+	printf("   %4d : sFLOW2\r\n", sFLOW2);
+	printf("   %4d : sRPM_RH\r\n", sRPM_RH);
+	printf("   %4d : sRUNNING_HOURS\r\n", sRUNNING_HOURS);
+	printf("   %4d : MONITA\r\n", 250);
+	
 }
 
 void kanal_kitab()	{

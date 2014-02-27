@@ -2,7 +2,7 @@
 
 #include "FreeRTOS.h"
 #include "hardware.h"
-
+#include "monita.h"
 
 void setup_hardware()	{
 	
@@ -164,6 +164,35 @@ int setup_konter_onoff22(unsigned int aaa, unsigned char statk) {
 	}
 	return bbb;
 }
+
+void sRelay(char nomer)
+{
+	int tRelay = JML_SUMBER * PER_SUMBER;
+	if (nomer == 1)	sRelay1();
+	else if (nomer == 2)	sRelay2();
+	else if (nomer == 3)	sRelay3();
+	else if (nomer == 4)	sRelay4();
+	else if (nomer == 5)	sRelay5();
+	else if (nomer == 6)	sRelay6();
+	else if (nomer == 7)	sRelay7();
+	else if (nomer == 8)	sRelay8();
+	data_f[tRelay+nomer-1] = 1;
+}
+
+void unsRelay(char nomer)
+{
+	int tRelay = JML_SUMBER * PER_SUMBER;
+	if (nomer == 1)	cRelay1();
+	else if (nomer == 2)	cRelay2();
+	else if (nomer == 3)	cRelay3();
+	else if (nomer == 4)	cRelay4();
+	else if (nomer == 5)	cRelay5();
+	else if (nomer == 6)	cRelay6();
+	else if (nomer == 7)	cRelay7();
+	else if (nomer == 8)	cRelay8();
+	data_f[tRelay+nomer-1] = 0;
+}
+
 
 void gpio_init()	{
 	// paksa PINSEL untuk GPIO //

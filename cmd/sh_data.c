@@ -261,6 +261,7 @@ void set_data_default()		{
 	}
 }
 
+#if 0
 static void set_relay(char nomer)
 {
 	if (nomer == 1)	sRelay1();
@@ -284,12 +285,14 @@ static void unset_relay(char nomer)
 	else if (nomer == 7)	cRelay7();
 	else if (nomer == 8)	cRelay8();
 }
+#endif
 
 /* sementara saja, supaya relay bisa on off berdasarkan data 
 	disiapkan untuk lumajang 
 
 	dipanggil tiap detik oleh ap_ambilcepat.c
 */
+#if 0
 void cek_alarm_data()
 {
 	int i, j;
@@ -352,6 +355,7 @@ void cek_alarm_data()
 	}
 
 }
+#endif
 
 #if 0
 void set_data_default()		{

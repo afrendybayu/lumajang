@@ -21,13 +21,13 @@ char cek_relay(int argc, char **argv)	{
 	}
 	
 	int i;
-	printf("\r\n");
+	printf("\r\nCek Relay\r\n*********************************\r\n");
 	int tRelay = JML_SUMBER * PER_SUMBER;
 	if (argc==1)	{
 		for(i=0; i<JML_RELAY; i++)		{
 			//qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
-			qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));		
-			}
+			uprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));		
+		}
 	}
 	
 	if (argc==2)	{
@@ -57,33 +57,21 @@ char set_relay(int argc, char **argv)	{
 		printf("  no sumber TIDAK VALID\r\n");
 		return 1;
 	}
-	no--;
+	//no--;
 	int tRelay = JML_SUMBER * PER_SUMBER;
 	
+	uprintf("\r\n");
 	if ( (strcmp(argv[2], "aktif")==0) || (argv[2][0]=='1') )	{
-		if 		 (no==0)	sRelay1();
-		else if (no==1)	sRelay2();
-		else if (no==2)	sRelay3();
-		else if (no==3)	sRelay4();
-		else if (no==4)	sRelay5();
-		else if (no==5)	sRelay6();
-		else if (no==6)	sRelay7();
-		else if (no==7)	sRelay8();
-		data_f[tRelay+no] = 1;
+		sRelay(no);
+		uprintf("relay %d AKTIF\r\n", no);
 	}
 	else if ( (strcmp(argv[2], "mati")==0) || (argv[2][0]=='0') )	{
-		if 		 (no==0)	cRelay1();
-		else if (no==1)	cRelay2();
-		else if (no==2)	cRelay3();
-		else if (no==3)	cRelay4();
-		else if (no==4)	cRelay5();
-		else if (no==5)	cRelay6();
-		else if (no==6)	cRelay7();
-		else if (no==7)	cRelay8();
-		data_f[tRelay+no] = 0;
+		unsRelay(no);
+		uprintf("relay %d MATI\r\n", no);
 	}
-	//qsprintf("  Relay-%d : %d - %s\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]) ?"Aktif","Mati");
-	qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));
+	int r = (int) data_f[tRelay+no-1];
+	qsprintf("  Relay-%d : %d - %s\r\n", no, r, (r==1)?"Aktif":"Mati");
+	//qsprintf("  Relay-%d : %d - %d\r\n", i+1, (int) data_f[tRelay+i], (int) (data_f[tRelay+i]));
 }
 
 

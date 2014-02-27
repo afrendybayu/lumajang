@@ -16,6 +16,10 @@ int setup_konter_onoff(unsigned int kanale, unsigned char statk);
 
 void rtcWrite(struct tm *newTime);
 
+void sRelay(char nomer);
+void unsRelay(char nomer);
+
+
 #define PORT2_INPUT(kanal)	(FIO2PIN & BIT(kanal)) ? 1 : 0;
 #define PORT1_INPUT(kanal)	(FIO1PIN & BIT(kanal)) ? 1 : 0;
 #define PORT0_INPUT(kanal)	(FIO0PIN & BIT(kanal)) ? 1 : 0;
