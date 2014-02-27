@@ -10,6 +10,32 @@
 
 void sumber_kitab()		{
 	printf(" Perintah untuk mengubah konfig sumber !\r\n");
+	printf(" Perintah set_sumber tidak perlu untuk santer versi ini\r\n");
+	/*
+	printf(" 1. set_sumber help/default\r\n");
+	printf("    help    : printout keterangan ini\r\n");
+	printf("    default : memberikan default setting sumber\r\n");
+	printf("\r\n");
+	
+	printf(" 2. set_sumber x [opt1] [opt2]\r\n");
+	printf("    set_data x [nama|satuan|alarm|alarmLL|alarmL|alarmH|alarmHH] [nilainya]\r\n");
+	printf("    x    : nomer data\r\n");
+	printf("    opt1 : nama, set/aktif, desc/ket\r\n");
+	printf("\r\n");
+	
+	printf("    [opt1]\r\n");				
+	printf("    nama     : memberikan nama data yang akan ditampilkan\r\n");
+	printf("    misalnya : $ set_data 2 nama GMT_#4\r\n");
+	printf("    artinya memberikan nama data 1 dengan GMT_#4\r\n");
+	printf("\r\n");
+	
+	printf("    alarm    : memberikan setting batasan alarm data\r\n");
+	printf("    misalnya : $ set_data 2 alarmH 84.3\r\n");
+	printf("    artinya memberikan setting batasan alarm tinggi data 2 dengan nilai 84.3\r\n");
+	printf("    misalnya : $ set_data 5 alarmL 1.25\r\n");
+	printf("    artinya memberikan setting batasan alarm rendah data 5 dengan nilai 1.25\r\n");
+	printf("\r\n");
+	//*/
 }
 
 void env_kitab()	{
@@ -99,7 +125,7 @@ void data_kitab()	{
 	printf("    artinya memberikan setting batasan alarm rendah data 5 dengan nilai 1.25\r\n");
 	printf("\r\n");
 	
-	printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
+	//printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
 	//printf("    misalnya  : $ set_data 4 alarm [1|2|3|aktif|hidup|atas|bawah|semua] 7 \r\n");
 	//printf("    artinya mengaktifkan relay untuk data ke 4 pada kanal 7\r\n");
 	//printf("    misalnya  : $ set_group 8 alarm [0|mati] 2\r\n");
@@ -111,8 +137,7 @@ void data_kitab()	{
 	printf("\r\n");
 }
 
-void relay_kitab()	
-{
+void relay_kitab()	{
 	printf("    relay : mengaktif/nonaktifkan relay pada kanal tertentu\r\n");
 	printf("    misalnya  : $ set_relay 4 [1|aktif|0|mati]\r\n");
 	printf("    artinya mengaktifkan relay untuk data ke 4 pada kanal 7\r\n");
@@ -142,10 +167,9 @@ void kanal_kitab()	{
 	printf("    default : memberikan default setting kanal\r\n");
 	printf("\r\n");
 	
-	printf(" 2. set_kanal [nokanal] [opt1] [opt2]\r\n");
-	printf("    set_kanal x [nama|satuan|alarm|alarmLL|alarmL|alarmH|alarmHH] [nilainya]\r\n");
-	printf("    x    : nomer data\r\n");
-	printf("    opt1 : nama, set/aktif, desc/ket\r\n");
+	printf(" 2. set_kanal [nokanal] [status|nilaiM] [nilaiC]\r\n");
+	printf("    misal: set_kanal 6 status 0\r\n");
+	printf("         : set_kanal 6 125.23 -38.74\r\n");
 	printf("\r\n");
 }
 

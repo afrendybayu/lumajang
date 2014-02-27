@@ -131,8 +131,8 @@ int kirim_respon_mb(int jml, char *s, int timeout)		{
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	
-	//#if (debug_mb == 1)
-	#if 1
+	#if (debug_mb == 1)
+	//#if 1
 	uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	#endif
 
