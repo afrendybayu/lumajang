@@ -211,12 +211,32 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 
 #ifdef PAKAI_RELAY
 void ubah_relay(int reg, int st)	{
+	int i;
 	if (st==0xFF00)	{
 		sRelay(reg-ID_RELAY+1);
 	}
 	if (st==0x0000)	{
 		unsRelay(reg-ID_RELAY+1);
 	}
+	
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	
+	outmb[0] = st_env->almtSlave;
+	outmb[1] = WRITE_SINGLE_COIL;
+	outmb[2] = (reg>>8) & 0xff;
+	outmb[3] = (reg & 0xff);
+	outmb[4] = (st>>8) & 0xff;
+	outmb[5] = (st & 0xff);
+	
+	unsigned int Crc = 0xFFFF;
+	for (i=0; i<(jml_st_mb10H-2); i++)	{
+		Crc = CRC16 (Crc, outmb[i]);
+	}
+	outmb[jml_st_mb10H-1] = ((Crc&0xFF00)>>8);	
+	outmb[jml_st_mb10H-2] = (Crc&0xFF);
+	
+	kirim_respon_mb(jml_st_mb10H, outmb, 100);
 }
 #endif
 
